@@ -1,4 +1,3 @@
-
 public enum Frequency {
 	ONCE,
 	DAILY,
@@ -6,4 +5,3 @@ public enum Frequency {
 	MONTHLY,
 	ANNUALLY;
 }
-

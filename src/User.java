@@ -1,14 +1,30 @@
 import java.util.Vector;
 
-
 public class User {
+
 	private int id;
 	private String name;
-	private Vector<Task> taskList = new Vector<Task>();
-	private Vector<Project> projectList = new Vector<Project>();
-	private Vector<User> friendList = new Vector<User>();
+	private Vector<Task> taskList;
+	private Vector<Project> projectList;
+	private Vector<User> friendList;
+
+	public User(){
+		id = 0;
+		name = "John Smith";
+		taskList = new Vector<Task>();
+		projectList = new Vector<Project>();
+		friendList = new Vector<User>();
+	}
+
+	public User(int id, String name){
+		this.id = id; // Generate new ID?
+		this.name = name;
+		taskList = new Vector<Task>();
+		projectList = new Vector<Project>();
+		friendList = new Vector<User>();
+	}
 	
-	//Getters
+	// Getters
 	public int GetId(){
 		return id;
 	}
@@ -24,9 +40,9 @@ public class User {
 	public Vector<User> GetFriendList(){
 		return (Vector<User>) friendList;
 	}
-	//End Getters
+	// End Getters
 	
-	//Setters
+	// Setters
 	public int SetId(int id){
 		this.id = id;
 	}
@@ -42,7 +58,5 @@ public class User {
 	public Vector<User> SetUserList(Vector<User> friendList){
 		this.friendList = friendList;
 	}
-	//End Setters
-	
-	
+	// End Setters	
 }

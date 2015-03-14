@@ -1,5 +1,3 @@
-
-
 public class Task {
 
 	private String title;
@@ -18,7 +16,8 @@ public class Task {
 		user_id = 99;
 	}
 	
-	public Task(String title, String description, Frequency frequency, Urgency urgency, Date deadline, User user){
+	public Task(String title, String description, Frequency frequency, 
+				Urgency urgency, Date deadline, User user){
 		this.title = title;
 		this.description = description;
 		this.frequency = frequency;
@@ -70,8 +69,8 @@ public class Task {
 	public void SetDeadline(Date deadline){
 		this.deadline = deadline;
 	}
-	public void SetUser(int user_id){
-		this.user_id = user_id;
+	public void SetUser(User user){
+		this.user_id = user.id;
 	}
 	//End Setters
 }
