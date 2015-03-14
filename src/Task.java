@@ -1,3 +1,4 @@
+
 public class Task {
 
 	private String title;
@@ -5,16 +6,7 @@ public class Task {
 	private Frequency frequency;
 	private Urgency urgency;
 	private Date deadline;
-	private int user_id;
-	
-	public Task(){
-		title = "Blank Task";
-		description = "Empty";
-		frequency = Frequency.ONCE;
-		urgency = Urgency.LOW;
-		deadline = new Date();
-		user_id = 99;
-	}
+	private UserId user_id;
 	
 	public Task(String title, String description, Frequency frequency, 
 				Urgency urgency, Date deadline, User user){
@@ -23,7 +15,11 @@ public class Task {
 		this.frequency = frequency;
 		this.urgency = urgency;
 		this.deadline = deadline;
-		this.user_id = user.id;
+		this.user_id = user.GetId();
+	}
+	
+	public Task(){
+		this("Blank Task", "Empty", Frequency.ONCE, Urgency.LOW, new Date(), new User());
 	}
 	
 	/*
@@ -48,7 +44,7 @@ public class Task {
 	public Date getDeadline(){
 		return deadline;
 	}
-	public int getUserID(){
+	public UserId getUserID(){
 		return user_id;
 	}
 	//End Getters
@@ -70,7 +66,7 @@ public class Task {
 		this.deadline = deadline;
 	}
 	public void SetUser(User user){
-		this.user_id = user.id;
+		this.user_id = user.GetId();
 	}
 	//End Setters
 }

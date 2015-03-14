@@ -1,35 +1,36 @@
+
 import java.util.Vector;
 
 public class User {
 
-	private int id;
-	private String name;
+	private FullName name;
+	private UserId id;
 	private Vector<Task> taskList;
 	private Vector<Project> projectList;
 	private Vector<User> friendList;
 
-	public User(){
-		id = 0;
-		name = "John Smith";
-		taskList = new Vector<Task>();
-		projectList = new Vector<Project>();
-		friendList = new Vector<User>();
-	}
-
-	public User(int id, String name){
-		this.id = id; // Generate new ID?
+	public User(FullName name){
 		this.name = name;
+		id = new UserId();
 		taskList = new Vector<Task>();
 		projectList = new Vector<Project>();
 		friendList = new Vector<User>();
 	}
 	
-	// Getters
-	public int GetId(){
-		return id;
+	public User(String firstName, String lastName){
+		this(new FullName(firstName, lastName));
 	}
-	public String GetName(){
+	
+	public User(){
+		this(new FullName());
+	}
+	
+	// Getters
+	public FullName GetName(){
 		return name;
+	}
+	public UserId GetId(){
+		return id;
 	}
 	public Vector<Task> GetTaskList(){
 		return (Vector<Task>) taskList;
@@ -43,19 +44,16 @@ public class User {
 	// End Getters
 	
 	// Setters
-	public int SetId(int id){
-		this.id = id;
-	}
-	public String SetName(String name){
+	public void SetName(FullName name){
 		this.name = name;
 	}
-	public Vector<Task> SetTaskList(Vector<Task> taskList){
+	public void SetTaskList(Vector<Task> taskList){
 		this.taskList = taskList;
 	}
-	public Vector<Project> SetProjectList(Vector<Project> projectList){
+	public void SetProjectList(Vector<Project> projectList){
 		this.projectList = projectList;
 	}
-	public Vector<User> SetUserList(Vector<User> friendList){
+	public void SetUserList(Vector<User> friendList){
 		this.friendList = friendList;
 	}
 	// End Setters	
