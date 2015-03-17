@@ -9,7 +9,7 @@ public class FullName {
 	}
 	
 	public FullName(){
-		this("John", "Smith");
+		this("John", "Doe");
 	}
 	
 	// Getters
