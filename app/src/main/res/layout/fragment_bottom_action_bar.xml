@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="@dimen/bottom_activity_bar_button"
+    tools:context="com.cse120.ontask.BottomActionBarFragment"
+    android:weightSum="1"
+    android:background="@string/light_blue"
+    android:gravity="bottom">
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="@dimen/bottom_activity_bar_button"
+        android:layout_height="@dimen/bottom_activity_bar_button"
+        android:text="@string/allTasks"
+        android:textSize="@dimen/fontSize"
+        android:id="@+id/allTasksButton"
+        android:onClick="AllTasksButtonOnClick"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="@dimen/bottom_activity_button_margin"
+        android:layout_marginStart="@dimen/bottom_activity_button_margin"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="@dimen/bottom_activity_bar_button"
+        android:layout_height="@dimen/bottom_activity_bar_button"
+        android:text="@string/groupTasks"
+        android:textSize="@dimen/fontSize"
+        android:id="@+id/groupTasksButton"
+        android:layout_gravity="bottom"
+        android:onClick="GroupTasksButtonOnClick"
+        android:layout_marginEnd="@dimen/bottom_activity_button_margin" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="@dimen/bottom_activity_bar_button"
+        android:layout_height="@dimen/bottom_activity_bar_button"
+        android:text="@string/requestedTasks"
+        android:textSize="@dimen/fontSize"
+        android:id="@+id/requestedTasksButton"
+        android:layout_gravity="bottom"
+        android:onClick="RequestedTasksButtonOnClick"
+        android:layout_marginEnd="@dimen/bottom_activity_button_margin" />
+
+    <Button
+        android:layout_width="@dimen/bottom_activity_bar_button"
+        android:layout_height="@dimen/bottom_activity_bar_button"
+        android:text="@string/moreOptions"
+        android:textSize="@dimen/fontSize"
+        android:id="@+id/moreOptionsButton"
+        android:layout_gravity="bottom"
+        android:onClick="MoreOptionsButtonOnClick" />
+</LinearLayout>
