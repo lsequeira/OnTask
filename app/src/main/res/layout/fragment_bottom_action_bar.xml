@@ -3,7 +3,7 @@
     android:layout_height="@dimen/bottom_activity_bar_button"
     tools:context="com.cse120.ontask.BottomActionBarFragment"
     android:weightSum="1"
-    android:background="@string/light_blue"
+    android:background="@color/light_blue"
     android:gravity="bottom">
 
 
@@ -44,7 +44,7 @@
     <Button
         android:layout_width="@dimen/bottom_activity_bar_button"
         android:layout_height="@dimen/bottom_activity_bar_button"
-        android:text="@string/moreOptions"
+        android:text="@string/moreOptionsBottomBar"
         android:textSize="@dimen/fontSize"
         android:id="@+id/moreOptionsButton"
         android:layout_gravity="bottom"

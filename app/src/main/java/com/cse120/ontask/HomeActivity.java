@@ -1,14 +1,18 @@
 package com.cse120.ontask;
 
+
 import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.content.Intent;
 import android.widget.TextView;
 
 
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends FragmentActivity implements BottomActionBarFragment.BottomActionBarListener,
+                            TopActionBarFragment.TopActionBarListener, TaskListFragment.OnFragmentInteractionListener{
 
     //changes as the bottom action bar buttons are pressed
     //reflects which list is currently displayed
@@ -17,29 +21,15 @@ public class HomeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentListDisplayed.setText("@string/allTaskList");
+        //currentListDisplayed.setText("@string/allTaskList");
         setContentView(R.layout.activity_home);
     }
 
-
-
-    //bottom action bar button on clicks START
-    public void AllTasksButtonOnClick(View v){
-
-    }
-
-    public void GroupTasksButtonOnClick(View v){
+    //method for TaskListFragment
+    //TODO:rename method with appropriate names
+    public void onFragmentInteraction(String id){
 
     }
-
-    public void RequestedTasksButtonOnClick(View v){
-
-    }
-
-    public void MoreOptionsButtonOnClick(View v){
-
-    }
-    //bottom action bar button on clicks END
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

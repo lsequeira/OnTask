@@ -20,10 +20,6 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
-        <activity
-            android:name=".BottomActionBarFragment"
-            android:label="@string/title_activity_bottom_action_bar" >
-        </activity>
     </application>
 
 </manifest>

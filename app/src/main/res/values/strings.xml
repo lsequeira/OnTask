@@ -5,8 +5,11 @@
     <string name="action_settings">Settings</string>
 
     //Colors
-    <string name="light_blue">#9fe8ee</string>
+    <!--<string name="light_blue">#9fe8ee</string>
     <string name="light_gray">#c3c3c3</string>
+    -->
+    <string name="light_blue">#ffff</string>
+    <string name="light_gray">#ffff</string>
     //Colors END
 
     //Home Page Display
@@ -14,7 +17,7 @@
     <string name="allTaskList">All</string>
     <string name="groupTaskList">Group</string>
     <string name="requestTaskList">Requests</string>
-    <string name="moreOptions">Options</string>
+    <string name="moreOptionsDisplay">Options</string>
     //Home Page Display END
 
     //Login Page
@@ -30,10 +33,7 @@
     <string name="allTasks">All</string>
     <string name="groupTasks">Group</string>
     <string name="requestedTasks">Reqsts</string>
-    <string name="moreOptions">...</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="moreOptionsBottomBar">...</string>
     //Bottom Action Bar END
 
 </resources>

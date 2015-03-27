@@ -2,7 +2,7 @@ package com.cse120.ontask;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +64,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
      */
     public TaskListFragment() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
     }
