@@ -4,14 +4,6 @@
     <string name="app_name">OnTask</string>
     <string name="action_settings">Settings</string>
 
-    //Colors
-    <!--<string name="light_blue">#9fe8ee</string>
-    <string name="light_gray">#c3c3c3</string>
-    -->
-    <string name="light_blue">#ffff</string>
-    <string name="light_gray">#ffff</string>
-    //Colors END
-
     //Home Page Display
     <string name="homePageTitleText">All</string>
     <string name="allTaskList">All</string>
@@ -34,6 +26,13 @@
     <string name="groupTasks">Group</string>
     <string name="requestedTasks">Reqsts</string>
     <string name="moreOptionsBottomBar">...</string>
+    <string name="title_activity_choose_task_or_project">ChooseTaskOrProject</string>
     //Bottom Action Bar END
+
+    //Choose Task or Project
+    <string name="chooseTaskOrProject">Choose Task or Project</string>
+    <string name="task">Task</string>
+    <string name="project">Project</string>
+    //Choose Task or Project END
 
 </resources>

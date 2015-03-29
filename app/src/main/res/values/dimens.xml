@@ -7,6 +7,10 @@
     <dimen name="titleFontSize">50sp</dimen>
     //Title END
 
+    //Choose Task or Project
+    <dimen name="choose_task_or_project_button_dim">150dp</dimen>
+    //Choose Task or Project END
+
     //Bottom Action Bar
     <dimen name="bottom_activity_bar_button">70dp</dimen>
     <dimen name="bottom_activity_button_margin">20dp</dimen>

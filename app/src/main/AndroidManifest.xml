@@ -20,6 +20,10 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
+        <activity
+            android:name=".ChooseTaskOrProject"
+            android:label="@string/title_activity_choose_task_or_project" >
+        </activity>
     </application>
 
 </manifest>

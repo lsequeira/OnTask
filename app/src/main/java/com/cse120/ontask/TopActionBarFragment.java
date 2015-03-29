@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.content.Intent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +19,8 @@ import android.view.ViewGroup;
  */
 public class TopActionBarFragment extends Fragment {
 
+    TopActionBarListener activityCommander;
+
     public TopActionBarFragment() {
         // Required empty public constructor
     }
@@ -28,11 +30,23 @@ public class TopActionBarFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try{
+            activityCommander = (TopActionBarListener) activity;
+        }catch (ClassCastException e){
+            throw new ClassCastException(activity.toString());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_top_action_bar, container, false);
     }
+
 
 
 }

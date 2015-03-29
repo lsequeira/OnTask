@@ -1,40 +1,25 @@
 package com.cse120.ontask;
 
-
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.widget.TextView;
 
-
-public class HomeActivity extends FragmentActivity implements BottomActionBarFragment.BottomActionBarListener,
-                            TopActionBarFragment.TopActionBarListener, TaskListFragment.OnFragmentInteractionListener{
-
-    //changes as the bottom action bar buttons are pressed
-    //reflects which list is currently displayed
-    private TextView currentListDisplayed;
+public class ChooseTaskOrProject extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //currentListDisplayed.setText("@string/allTaskList");
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_choose_task_or_project);
     }
 
-    //method for TaskListFragment
-    //TODO:rename method with appropriate names
-    public void onFragmentInteraction(String id){
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_choose_task_or_project, menu);
         return true;
     }
 
@@ -53,9 +38,18 @@ public class HomeActivity extends FragmentActivity implements BottomActionBarFra
         return super.onOptionsItemSelected(item);
     }
 
-    public void addButtonOnClick(View v){
-        Intent i = new Intent(this, ChooseTaskOrProject.class);
+    public void chooseActivityBackButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
 
+    public void chooseTaskButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
+
+    public void chooseProjectButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
 }
