@@ -28,6 +28,10 @@
         <activity
             android:name=".AddTaskActivity"
             android:label="@string/title_activity_add_task" >
+=======
+            android:name=".ChooseTaskOrProject"
+            android:label="@string/title_activity_choose_task_or_project" >
+>>>>>>> origin/Android-Studio-branch
         </activity>
     </application>
 

@@ -52,4 +52,7 @@ public class ChooseTaskOrProject extends ActionBarActivity {
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
+
 }
+
+
