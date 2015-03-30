@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OnTask</string>
+    <string name="action_settings">Settings</string>
+
+    //Home Page Display
+    <string name="homePageTitleText">All</string>
+    <string name="allTaskList">All</string>
+    <string name="groupTaskList">Group</string>
+    <string name="requestTaskList">Requests</string>
+    <string name="moreOptionsDisplay">Options</string>
+    //Home Page Display END
+
+    //Login Page
+    <string name="onTaskTitleText">OnTask</string>
+    <string name="emailHint">Email</string>
+    <string name="passwordHint">Password</string>
+    <string name="loginButton">Log In</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_bottom_action_bar">BottomActionBar</string>
+    //Login Page END
+
+    //Bottom Action Bar
+    <string name="allTasks">All</string>
+    <string name="groupTasks">Group</string>
+    <string name="requestedTasks">Reqsts</string>
+    <string name="moreOptionsBottomBar">...</string>
+    <string name="title_activity_choose_task_or_project">ChooseTaskOrProject</string>
+    //Bottom Action Bar END
+
+    <string name="title_activity_add_task">AddTaskActivity</string>
+
+    //Choose Task or Project
+    <string name="chooseTaskOrProject">Choose Task or Project</string>
+    <string name="task">Task</string>
+    <string name="project">Project</string>
+    //Choose Task or Project END
+
+</resources>
