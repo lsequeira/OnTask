@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LogIn"
+            android:name=".LogInActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".ChooseTaskOrProject"
+            android:name=".ChooseTaskOrProjectActivity"
             android:label="@string/title_activity_choose_task_or_project" >
         </activity>
         <activity

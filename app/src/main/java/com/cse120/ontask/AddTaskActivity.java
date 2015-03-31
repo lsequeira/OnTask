@@ -4,7 +4,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.content.Intent;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.cse120.ontask.com.cse120.ontask.task.Task;
 
 public class AddTaskActivity extends ActionBarActivity {
 
@@ -35,5 +40,22 @@ public class AddTaskActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addTaskButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+
+        //TODO: pass input to Task constructor to create a task
+        final EditText titleInput = (EditText) findViewById(R.id.taskTitle);
+        final EditText descriptionInput = (EditText) findViewById(R.id.taskDescription);
+        final EditText dateInput = (EditText) findViewById(R.id.taskDate);
+
+        Toast.makeText(getApplicationContext(),"Created Task: " + titleInput.getText().toString() , Toast.LENGTH_LONG).show();
+        startActivity(i);
+    }
+
+    public void cancelTaskButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
     }
 }

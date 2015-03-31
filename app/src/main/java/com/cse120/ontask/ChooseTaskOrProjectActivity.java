@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 
-public class ChooseTaskOrProject extends ActionBarActivity {
+public class ChooseTaskOrProjectActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
