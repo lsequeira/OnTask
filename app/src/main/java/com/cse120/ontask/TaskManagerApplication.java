@@ -7,12 +7,13 @@ import android.app.Application;
 
 public class TaskManagerApplication extends Application {
 
-    private ArrayList<Task> currentTasks;
+    public static List<Task> currentTasks;
+    public static Map<String, Task> currentTasks_map = new HashMap<String, Task>();
 
     @Override
     public void onCreate() {
         super.onCreate();
-        if (null == currentTasks) {
+        if (currentTasks == null) {
             currentTasks = new ArrayList<Task>();
         }
     }
@@ -21,16 +22,13 @@ public class TaskManagerApplication extends Application {
         this.currentTasks = currentTasks;
     }
 
-    public ArrayList<Task> getCurrentTasks() {
+    public List<Task> getCurrentTasks() {
         return currentTasks;
     }
 
     public void addTask(Task t) {
         assert (null != t);
-        if (null == currentTasks) {
-            currentTasks = new ArrayList<Task>();
-        }
-        else
-            currentTasks.add(t);
+
+        currentTasks.add(t);
     }
 }
