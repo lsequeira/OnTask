@@ -1,12 +1,18 @@
 package com.cse120.ontask;
 
+import com.cse120.ontask.com.cse120.ontask.task.Task;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.content.Intent;
 
 
 public class AddTaskActivity extends ActionBarActivity {
+
+    private EditText taskNameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +41,26 @@ public class AddTaskActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addTaskButtonOnClick(View v){
+        //Add Task Object to the List
+        taskNameEditText = (EditText)findViewById(R.id.editText);
+        String taskName = taskNameEditText.getText().toString();
+        Task t = new Task(taskName);
+        getTaskManagerApplication().addTask(t);
+
+        //Go to home screen after adding task
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
+
+    public void cancelTaskButtonOnClick(View v) {
+        finish();
+    }
+
+    private TaskManagerApplication getTaskManagerApplication() {
+        TaskManagerApplication tma = (TaskManagerApplication) getApplication();
+        return tma;
     }
 }
