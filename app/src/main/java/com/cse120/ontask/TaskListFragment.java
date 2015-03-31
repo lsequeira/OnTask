@@ -12,8 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-
+import com.cse120.ontask.com.cse120.ontask.task.Task;
 import com.cse120.ontask.dummy.DummyContent;
+import com.cse120.ontask.dummy.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -75,9 +76,9 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
+        mAdapter = new ArrayAdapter<Task>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, TaskManagerApplication.currentTasks);
     }
 
     @Override
