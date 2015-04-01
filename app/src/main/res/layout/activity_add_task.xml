@@ -4,53 +4,119 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.cse120.ontask.AddTaskActivity">
+    tools:context="com.cse120.ontask.AddTaskActivity"
+    android:background="@color/light_gray">
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/taskTitle"
         android:layout_marginTop="18dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:hint="Title"
+        android:background="@color/input_gray"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Task"
-        android:id="@+id/add_task_text"
+        android:id="@+id/addTaskText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add Task"
-        android:id="@+id/add_task"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="85dp"
-        android:layout_alignParentRight="true"
+        android:id="@+id/addTaskButton"
+        android:layout_above="@+id/cancelTaskButton"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:onClick="addTaskButtonOnClick"/>
-    />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Cancel"
-        android:id="@+id/cancel_task"
+        android:id="@+id/cancelTaskButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="40dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:onClick="cancelTaskButtonOnClick"/>
-    />
+
+    <RadioGroup
+        android:id="@+id/urgencyRadioGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:focusable="false"
+        android:layout_above="@+id/addTaskButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="48dp">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"/>
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5" />
+    </RadioGroup>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/taskDate"
+        android:hint="Date"
+        android:background="@color/input_gray"
+        android:layout_below="@+id/taskDescription"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:id="@+id/taskDescription"
+        android:hint="Enter description..."
+        android:gravity="top"
+        android:background="@color/input_gray"
+        android:layout_marginTop="33dp"
+        android:layout_below="@+id/taskTitle"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Urgency"
+        android:id="@+id/urgencyText"
+        android:layout_above="@+id/urgencyRadioGroup"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
