@@ -12,7 +12,9 @@ import android.content.Intent;
 
 public class AddTaskActivity extends ActionBarActivity {
 
-    private EditText taskNameEditText;
+    private EditText titleInput;
+    private EditText descriptionInput;
+    private EditText dateInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +47,7 @@ public class AddTaskActivity extends ActionBarActivity {
 
     public void addTaskButtonOnClick(View v){
         //Add Task Object to the List
-        taskNameEditText = (EditText)findViewById(R.id.editText);
-        String taskName = taskNameEditText.getText().toString();
-        Task t = new Task(taskName);
+        Task t = createTaskObject();
         getTaskManagerApplication().addTask(t);
 
         //Go to home screen after adding task
@@ -55,10 +55,30 @@ public class AddTaskActivity extends ActionBarActivity {
         startActivity(i);
     }
 
+    protected Task createTaskObject() {
+        //Task Name
+        titleInput = (EditText)findViewById(R.id.taskTitle);
+        String taskName = titleInput.getText().toString();
+
+        //Task Description
+        descriptionInput = (EditText)findViewById(R.id.taskDescription);
+        String taskDescription = descriptionInput.getText().toString();
+
+        //Task Deadline
+        dateInput = (EditText)findViewById(R.id.taskDate);
+        String taskDeadline = dateInput.getText().toString();
+
+        Task t = new Task(taskName, taskDescription, taskDeadline);
+
+        return t;
+    }
+
     public void cancelTaskButtonOnClick(View v) {
+        //Returns to previous ChooseTaskOrProject Activity
         finish();
     }
 
+    //Function to interact with the Task Manager Application
     private TaskManagerApplication getTaskManagerApplication() {
         TaskManagerApplication tma = (TaskManagerApplication) getApplication();
         return tma;
