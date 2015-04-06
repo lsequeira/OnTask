@@ -52,9 +52,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:focusable="false"
+        android:layout_marginBottom="28dp"
         android:layout_above="@+id/addTaskButton"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="48dp">
+        android:layout_alignParentStart="true">
 
         <RadioButton
             android:id="@+id/radioButton1"
@@ -88,18 +88,6 @@
     </RadioGroup>
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/taskDate"
-        android:hint="Date"
-        android:background="@color/input_gray"
-        android:layout_below="@+id/taskDescription"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp" />
-
-    <EditText
         android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:id="@+id/taskDescription"
@@ -118,5 +106,48 @@
         android:id="@+id/urgencyText"
         android:layout_above="@+id/urgencyRadioGroup"
         android:layout_alignParentStart="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:id="@+id/taskDate"
+        android:layout_below="@+id/taskDescription"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="26dp"
+        android:onClick="datePickerButtonOnClick"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:id="@+id/taskTime"
+        android:onClick="timePickerButtonOnClick"
+        android:layout_alignTop="@+id/taskDate"
+        android:layout_alignEnd="@+id/urgencyRadioGroup"
+        android:layout_marginEnd="115dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DD/MM/YY"
+        android:id="@+id/dateTextView"
+        android:layout_marginStart="13dp"
+        android:layout_alignBaseline="@+id/taskDate"
+        android:layout_alignBottom="@+id/taskDate"
+        android:layout_toEndOf="@+id/taskDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HH:MM"
+        android:id="@+id/timeTextView"
+        android:layout_marginEnd="48dp"
+        android:layout_alignBaseline="@+id/taskTime"
+        android:layout_alignBottom="@+id/taskTime"
+        android:layout_alignEnd="@+id/urgencyRadioGroup" />
+
 
 </RelativeLayout>
