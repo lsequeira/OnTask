@@ -77,8 +77,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
-        mAdapter = new ArrayAdapter<Task>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, TaskManagerApplication.currentTasks);
+        mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
@@ -120,6 +119,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            System.out.println(DummyContent.ITEMS.get(position).id);
         }
     }
 

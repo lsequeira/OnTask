@@ -1,7 +1,6 @@
 package com.cse120.ontask;
 
 
-import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,7 +27,10 @@ public class HomeActivity extends FragmentActivity implements BottomActionBarFra
     //method for TaskListFragment
     //TODO:rename method with appropriate names
     public void onFragmentInteraction(String id){
-
+        Intent i = new Intent(this, TaskDetailsActivity.class);
+        String taskID = id;
+        i.putExtra("taskId", taskID);
+        startActivity(i);
     }
 
     @Override

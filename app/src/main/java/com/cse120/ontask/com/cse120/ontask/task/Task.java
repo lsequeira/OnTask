@@ -3,21 +3,22 @@ package com.cse120.ontask.com.cse120.ontask.task;
 
 public class Task {
 
-    private String title;
+
     private String description;
+    private String title;
     private Frequency frequency;
     private Urgency urgency;
     private Date deadline;
     private UserId user_id;
 
     //For Debugging Purposes
-    public Task(String title, String description, String deadline)
+    public Task(String title, String description, Date deadline)
     {
         this.title = title;
         this.description = description;
         frequency = Frequency.ONCE;
         urgency = Urgency.LOW;
-        this.deadline = new Date();
+        this.deadline = deadline;
         user_id = new User().GetId();
 
     }
@@ -29,8 +30,9 @@ public class Task {
 
     public Task(String title, String description, Frequency frequency,
                 Urgency urgency, Date deadline, User user){
-        this.title = title;
+
         this.description = description;
+        this.title = title;
         this.frequency = frequency;
         this.urgency = urgency;
         this.deadline = deadline;
