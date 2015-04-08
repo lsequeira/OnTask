@@ -35,6 +35,9 @@
     <string name="chooseTaskOrProject">Choose Task or Project</string>
     <string name="task">Task</string>
     <string name="project">Project</string>
+    <string name="title_activity_task_details">taskDetailsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
     //Choose Task or Project END
 
 </resources>
