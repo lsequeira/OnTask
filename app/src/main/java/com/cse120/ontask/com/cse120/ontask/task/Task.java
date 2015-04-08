@@ -12,12 +12,20 @@ public class Task {
     private UserId user_id;
 
     //For Debugging Purposes
+<<<<<<< HEAD
     public Task(String title, String description, Date deadline)
+=======
+    public Task(String title, String description, Date deadline, Urgency urgency)
+>>>>>>> CarlosTrunk
     {
         this.title = title;
         this.description = description;
         frequency = Frequency.ONCE;
+<<<<<<< HEAD
         urgency = Urgency.LOW;
+=======
+        this.urgency = urgency;
+>>>>>>> CarlosTrunk
         this.deadline = deadline;
         user_id = new User().GetId();
 
