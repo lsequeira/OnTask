@@ -8,16 +8,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:id="@+id/backButton"
-            android:layout_weight="1" />
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

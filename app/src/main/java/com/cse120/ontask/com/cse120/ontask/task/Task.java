@@ -11,13 +11,13 @@ public class Task {
     private UserId user_id;
 
     //For Debugging Purposes
-    public Task(String title, String description, String deadline)
+    public Task(String title, String description, Date deadline, Urgency urgency)
     {
         this.title = title;
         this.description = description;
         frequency = Frequency.ONCE;
-        urgency = Urgency.LOW;
-        this.deadline = new Date();
+        this.urgency = urgency;
+        this.deadline = deadline;
         user_id = new User().GetId();
 
     }
