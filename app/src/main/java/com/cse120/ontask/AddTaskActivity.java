@@ -116,6 +116,7 @@ public class AddTaskActivity extends FragmentActivity
                 }
                 break;
             default:
+                urgency = urgency.NONE;
                 break;
         }
     }

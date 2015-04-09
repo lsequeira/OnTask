@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:id="@+id/horizontalLayout">
+
+    <TextView
+        android:layout_width="15dp"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/urgencyColor" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -25,5 +31,7 @@
             android:text="Small Text"
             android:id="@+id/taskDeadline"
             android:layout_margin="5dp" />
+
     </LinearLayout>
+
 </LinearLayout>

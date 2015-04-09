@@ -33,7 +33,6 @@ public class TaskDetailsActivity extends ActionBarActivity {
         taskDescription.setText(taskDisplayed.getDescription());
 
         String urgency = "no urgency specified";
-        System.out.print("chk1" + taskDisplayed.getUrgency());
         switch (taskDisplayed.getUrgency()){
             case LOWEST:
                 urgency = "1";
@@ -56,11 +55,11 @@ public class TaskDetailsActivity extends ActionBarActivity {
 
         taskUrgency.setText(urgency);
         taskDeadline.setText(
-                Integer.toString(taskDisplayed.getDeadline().GetDay()) + " / " +
-                Integer.toString(taskDisplayed.getDeadline().GetMonth()) + " / " +
+                Integer.toString(taskDisplayed.getDeadline().GetMonth()) + "/" +
+                Integer.toString(taskDisplayed.getDeadline().GetDay()) + "/" +
                 Integer.toString(taskDisplayed.getDeadline().GetYear()) +
-                "\n" +
-                Integer.toString(taskDisplayed.getDeadline().GetHour()) + " : " +
+                "\t\t\t\t" +
+                Integer.toString(taskDisplayed.getDeadline().GetHour()) + ":" +
                 Integer.toString((taskDisplayed.getDeadline().GetMinute()))
             );
     }
