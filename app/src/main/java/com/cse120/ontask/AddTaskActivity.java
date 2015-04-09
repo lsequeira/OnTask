@@ -101,6 +101,7 @@ public class AddTaskActivity extends FragmentActivity
                 break;
             case R.id.radio_medium:
                 if (checked) {
+                    System.out.print("chk1");
                     urgency = urgency.MEDIUM;
                 }
                 break;
@@ -113,6 +114,8 @@ public class AddTaskActivity extends FragmentActivity
                 if (checked) {
                     urgency = urgency.HIGHEST;
                 }
+                break;
+            default:
                 break;
         }
     }

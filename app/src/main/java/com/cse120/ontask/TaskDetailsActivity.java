@@ -31,8 +31,30 @@ public class TaskDetailsActivity extends ActionBarActivity {
 
         taskTitle.setText(taskDisplayed.getTitle());
         taskDescription.setText(taskDisplayed.getDescription());
-        taskUrgency.setText(Integer.toString(taskDisplayed.getUrgency()));
 
+        String urgency = "no urgency specified";
+        System.out.print("chk1" + taskDisplayed.getUrgency());
+        switch (taskDisplayed.getUrgency()){
+            case LOWEST:
+                urgency = "1";
+                break;
+            case LOW:
+                urgency = "2";
+                break;
+            case MEDIUM:
+                urgency = "3";
+                break;
+            case HIGH:
+                urgency = "4";
+                break;
+            case HIGHEST:
+                urgency = "5";
+                break;
+            default:
+                break;
+        }
+
+        taskUrgency.setText(urgency);
         taskDeadline.setText(
                 Integer.toString(taskDisplayed.getDeadline().GetDay()) + " / " +
                 Integer.toString(taskDisplayed.getDeadline().GetMonth()) + " / " +
