@@ -1,6 +1,10 @@
 package com.cse120.ontask.com.cse120.ontask.task;
 
-public class UserId {
+import java.io.Serializable;
+
+public class UserId implements Serializable{
+
+    private static final long serialVersionUID = 687987546843515L;
 
     private int user_id;
 

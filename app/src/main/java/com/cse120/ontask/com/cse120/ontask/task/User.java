@@ -1,8 +1,11 @@
 package com.cse120.ontask.com.cse120.ontask.task;
 
 import java.util.Vector;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
+
+    private static final long serialVersionUID = 6879876854546815L;
 
     private FullName name;
     private UserId id;

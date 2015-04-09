@@ -1,6 +1,9 @@
 package com.cse120.ontask.com.cse120.ontask.task;
+import java.io.Serializable;
 
-public class Date {
+public class Date implements Serializable{
+
+    private static final long serialVersionUID = 6879816854546843515L;
 
     private int year;
     private int month;
