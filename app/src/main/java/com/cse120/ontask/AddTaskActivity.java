@@ -54,6 +54,10 @@ public class AddTaskActivity extends FragmentActivity
         initializeDateSuffixLists();
         initializeDateTime();
 
+        //initialize urgency to LOWEST
+        //in case urgency buttons left unchecked
+        urgency = Urgency.LOWEST;
+
         //Update Date and Time Text Views
         displayDate = (TextView) findViewById(R.id.dateTextView);
         displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));

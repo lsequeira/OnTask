@@ -33,6 +33,10 @@
             android:name=".TaskDetailsActivity"
             android:label="@string/title_activity_task_details" >
         </activity>
+        <activity
+            android:name=".Activities.UpdateTaskActivity"
+            android:label="@string/title_activity_update_task" >
+        </activity>
     </application>
 
 </manifest>

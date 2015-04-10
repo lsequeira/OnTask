@@ -1,35 +1,39 @@
-package com.cse120.ontask;
+package com.cse120.ontask.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.Intent;
 import android.widget.TextView;
-
-import com.cse120.ontask.Activities.UpdateTaskActivity;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
+import android.widget.EditText;
 import android.view.View;
 
-import org.w3c.dom.Text;
+import com.cse120.ontask.R;
+import com.cse120.ontask.TaskDetailsActivity;
+import com.cse120.ontask.com.cse120.ontask.task.Task;
 
-public class TaskDetailsActivity extends ActionBarActivity {
+/*TODO:access the task object directly in order to change the value
+*/
+
+public class UpdateTaskActivity extends ActionBarActivity {
 
     Task taskDisplayed;
+    EditText taskTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_details);
+        setContentView(R.layout.activity_update_task);
 
         Bundle taskData = getIntent().getExtras();
         if(taskData == null){
             return;
         }
 
-        taskDisplayed = (Task) taskData.getSerializable("taskSelected");
+        taskDisplayed = (Task) taskData.getSerializable("taskToUpdate");
 
-        TextView taskTitle = (TextView) findViewById(R.id.taskTitle);
+        taskTitle = (EditText) findViewById(R.id.taskTitle);
         TextView taskDescription = (TextView) findViewById(R.id.taskDescription);
         TextView taskDeadline = (TextView) findViewById(R.id.taskDeadline);
         TextView taskUrgency = (TextView) findViewById(R.id.taskUrgency);
@@ -61,19 +65,20 @@ public class TaskDetailsActivity extends ActionBarActivity {
         taskUrgency.setText(urgency);
         taskDeadline.setText(
                 Integer.toString(taskDisplayed.getDeadline().GetMonth()) + "/" +
-                Integer.toString(taskDisplayed.getDeadline().GetDay()) + "/" +
-                Integer.toString(taskDisplayed.getDeadline().GetYear()) +
-                "\t\t\t\t" +
-                Integer.toString(taskDisplayed.getDeadline().GetHour()) + ":" +
-                Integer.toString((taskDisplayed.getDeadline().GetMinute()))
-            );
+                        Integer.toString(taskDisplayed.getDeadline().GetDay()) + "/" +
+                        Integer.toString(taskDisplayed.getDeadline().GetYear()) +
+                        "\t\t\t\t" +
+                        Integer.toString(taskDisplayed.getDeadline().GetHour()) + ":" +
+                        Integer.toString((taskDisplayed.getDeadline().GetMinute()))
+        );
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_task_details, menu);
+        getMenuInflater().inflate(R.menu.menu_update_task, menu);
         return true;
     }
 
@@ -92,15 +97,12 @@ public class TaskDetailsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void UpdateButtonOnClick(View v){
-        Intent i = new Intent(this, UpdateTaskActivity.class);
+    public void SubmitChangesButtonOnClick(View v){
+        Intent i = new Intent(this, TaskDetailsActivity.class);
 
-        i.putExtra("taskToUpdate", taskDisplayed);
-        startActivity(i);
-    }
+        taskDisplayed.setTitle(taskTitle.getText().toString());
 
-    public void BackButtonOnClick(View v){
-        Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra("taskSelected", taskDisplayed);
         startActivity(i);
     }
 }
