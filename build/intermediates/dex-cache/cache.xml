@@ -2,53 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Spencer Hirasawa\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/classes-0f580db2e614027ba3339ee17b318a3f862d0b1f.jar" />
+    </item>
+    <item
+        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-138d9ac49e14acb16e0f6d4b8eb539b34d067297.jar" />
+    </item>
+    <item
+        jar="/Users/carlos/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-3b2063e9a062493d9786d7d0eef778f7e175faee.jar" />
+        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-8cab830605e4892e55ec56f589b115ea445c486f.jar" />
     </item>
     <item
-        jar="C:\Users\Spencer Hirasawa\Documents\GitHub\OnTask\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\GitHub\OnTask\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-a4efb55305a9a9ec83223c5717394b2887f739c4.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\GitHub\OnTask\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\GitHub\OnTask\app\build\intermediates\pre-dexed\debug\classes-77093bd488941449aa22330dfd77c290314f870a.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-2e0ba353d0ef705f215b4672869da53774e5aaa4.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-c6f1095ded2765050215a2d6898b62b4fa93649c.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-22d94a198decdc0bff572c2807c39a5ce8034dc0.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\GitHub\OnTask\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\GitHub\OnTask\app\build\intermediates\pre-dexed\debug\classes-72cdc0561ccda9e8b8e2693f71f539c8d3eea433.jar" />
+        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/classes-023ec91e62a3b48928e3f520eff842bea9ef60c3.jar" />
     </item>
 
 </items>

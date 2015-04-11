@@ -80,8 +80,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Update Task"
-            android:id="@+id/updateButton"
-            android:onClick="UpdateButtonOnClick"
+            android:id="@+id/submitChangesButton"
+            android:onClick="SubmitChangesButtonOnClick"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp" />
@@ -126,8 +126,8 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"

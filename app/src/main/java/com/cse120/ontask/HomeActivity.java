@@ -1,6 +1,7 @@
 package com.cse120.ontask;
 
 
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cse120.ontask.com.cse120.ontask.task.Task;
+
+import java.io.Serializable;
 
 public class HomeActivity extends FragmentActivity implements BottomActionBarFragment.BottomActionBarListener,
         TopActionBarFragment.TopActionBarListener, TaskListFragment.OnFragmentInteractionListener {
@@ -26,11 +31,13 @@ public class HomeActivity extends FragmentActivity implements BottomActionBarFra
 
     //method for TaskListFragment
     //TODO:rename method with appropriate names
-    public void onFragmentInteraction(String id){
+    public void onFragmentInteraction(Task taskSelected){
+        //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
         Intent i = new Intent(this, TaskDetailsActivity.class);
-        String taskID = id;
-        i.putExtra("taskId", taskID);
+        i.putExtra("taskSelected", taskSelected);
+
         startActivity(i);
+       //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

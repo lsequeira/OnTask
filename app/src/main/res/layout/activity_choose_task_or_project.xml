@@ -11,26 +11,19 @@
         android:id="@+id/chooseTaskButton"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:onClick="chooseTaskButtonOnClick"/>
+        android:onClick="chooseTaskButtonOnClick"
+        android:layout_margin="20dp" />
 
     <Button
         android:layout_width="@dimen/choose_task_or_project_button_dim"
         android:layout_height="@dimen/choose_task_or_project_button_dim"
         android:text="@string/project"
         android:id="@+id/chooseProjectButton"
+        android:onClick="chooseProjectButtonOnClick"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_alignTop="@+id/chooseTaskButton"
-        android:layout_alignParentEnd="true"
-        android:onClick="chooseProjectButtonOnClick"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/chooseTaskOrProject"
-        android:id="@+id/chooseTextView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="74dp" />
+        android:layout_toEndOf="@+id/chooseTaskButton" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -38,13 +31,27 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@color/light_blue"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="10dp">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"
             android:id="@+id/chooseActivityBackButton"
-            android:onClick="chooseActivityBackButtonOnClick"/>
+            android:onClick="chooseActivityBackButtonOnClick"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/chooseTaskOrProject"
+            android:id="@+id/chooseTextView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
 </RelativeLayout>

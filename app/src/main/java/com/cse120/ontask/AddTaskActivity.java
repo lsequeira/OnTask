@@ -2,11 +2,7 @@ package com.cse120.ontask;
 
 import com.cse120.ontask.com.cse120.ontask.task.Task;
 import com.cse120.ontask.com.cse120.ontask.task.Date;
-<<<<<<< HEAD
-
-=======
 import com.cse120.ontask.com.cse120.ontask.task.Urgency;
->>>>>>> CarlosTrunk
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -22,25 +18,11 @@ import android.widget.EditText;
 import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
-<<<<<<< HEAD
-=======
 import android.widget.RadioButton;
->>>>>>> CarlosTrunk
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-<<<<<<< HEAD
-
-public class AddTaskActivity extends FragmentActivity
-        implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-
-    private int day, month, year, hour, minute;
-
-    TextView displayDate;
-    TextView displayTime;
-
-=======
 
 public class AddTaskActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -52,7 +34,6 @@ public class AddTaskActivity extends FragmentActivity
 
     Urgency urgency;
 
->>>>>>> CarlosTrunk
     //    the suffix arrays and array lists
     ArrayList<Integer> arrayList_st = new ArrayList<Integer>();
     int[] array_st = {1, 21, 31};
@@ -72,6 +53,10 @@ public class AddTaskActivity extends FragmentActivity
 
         initializeDateSuffixLists();
         initializeDateTime();
+
+        //initialize urgency to LOWEST
+        //in case urgency buttons left unchecked
+        urgency = Urgency.LOWEST;
 
         //Update Date and Time Text Views
         displayDate = (TextView) findViewById(R.id.dateTextView);
@@ -102,33 +87,6 @@ public class AddTaskActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
-<<<<<<< HEAD
-    public void datePickerButtonOnClick(View v) {
-        DialogFragment myDatePickerFragment = new DatePickerFragment();
-        myDatePickerFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-    public void onDateSet(DatePicker view, int year, int month, int day)
-    {
-        String suffix = getSuffix(day);
-        Toast.makeText(this, monthsArray[month] + " " +
-                String.valueOf(day) + suffix + " "
-                        + String.valueOf(year), Toast.LENGTH_SHORT).show();
-        //Initialize the date attributes
-        setDate(day, month, year);
-        displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
-    }
-
-    public void timePickerButtonOnClick(View v) {
-        //Need to Get The User Info...
-        DialogFragment myTimePickerFragment = new TimePickerFragment();
-        myTimePickerFragment.show(getSupportFragmentManager(), "timePicker");
-    }
-
-    public void onTimeSet(TimePicker view, int hour, int minute) {
-        updateTime(hour, minute);
-        Toast.makeText(this, new StringBuilder().append("Time chosen is ").append(displayTime.getText()), Toast.LENGTH_SHORT).show();
-=======
     /* On-Click Functions */
     public void radioButtonOnClick(View v) {
         //Check to see if a button is checked
@@ -147,6 +105,7 @@ public class AddTaskActivity extends FragmentActivity
                 break;
             case R.id.radio_medium:
                 if (checked) {
+                    System.out.print("chk1");
                     urgency = urgency.MEDIUM;
                 }
                 break;
@@ -160,13 +119,15 @@ public class AddTaskActivity extends FragmentActivity
                     urgency = urgency.HIGHEST;
                 }
                 break;
+            default:
+                urgency = urgency.NONE;
+                break;
         }
     }
 
     public void cancelTaskButtonOnClick(View v) {
         //Returns to previous ChooseTaskOrProject Activity
         finish();
->>>>>>> CarlosTrunk
     }
 
     public void addTaskButtonOnClick(View v) {
@@ -203,11 +164,7 @@ public class AddTaskActivity extends FragmentActivity
         Date deadline = new Date(year, month, day, hour, minute);
 
         //Create the Task Object
-<<<<<<< HEAD
-        Task t = new Task(taskName, taskDescription, deadline);
-=======
         Task t = new Task(taskName, taskDescription, deadline, urgency);
->>>>>>> CarlosTrunk
 
         return t;
     }
@@ -222,17 +179,6 @@ public class AddTaskActivity extends FragmentActivity
         return myeditText.getText().toString().trim().length() == 0;
     }
 
-<<<<<<< HEAD
-    //Add padding to minutes
-    private static String pad(int min) {
-        if (min >= 10)
-            return String.valueOf(min);
-        else
-            return "0" + String.valueOf(min);
-    }
-
-    //Begin Date Suffix Functions
-=======
     /* Begin Date Picker Functionality */
     public void datePickerButtonOnClick(View v) {
         DialogFragment myDatePickerFragment = new DatePickerFragment();
@@ -244,7 +190,7 @@ public class AddTaskActivity extends FragmentActivity
         String suffix = getSuffix(day);
         Toast.makeText(this, monthsArray[month] + " " +
                 String.valueOf(day) + suffix + " "
-                        + String.valueOf(year), Toast.LENGTH_SHORT).show();
+                + String.valueOf(year), Toast.LENGTH_SHORT).show();
         //Initialize the date attributes
         setDate(day, month, year);
         displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
@@ -267,7 +213,6 @@ public class AddTaskActivity extends FragmentActivity
         year = calendar.get(Calendar.YEAR);
     }
 
->>>>>>> CarlosTrunk
     public void initializeDateSuffixLists() {
         //Initialize the lists with pre-defined arrays
         for (int i = 0; i < array_st.length; i++) {
@@ -297,44 +242,6 @@ public class AddTaskActivity extends FragmentActivity
         }
         return suffix;
     }
-<<<<<<< HEAD
-    //End Date Suffix Functions
-
-    //Begin Date Setters and Getters
-    public void setDate(int day, int month, int year) {
-        this.day = day;
-        this.month = month;
-        this.year = year;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-    public int getHour() {
-        return hour;
-    }
-    public int getDay() {
-        return day;
-    }
-    public int getMonth() {
-        return month;
-    }
-    public int getYear() {
-        return year;
-    }
-    //End Date Setters and Getters
-
-    public void initializeDateTime() {
-        //Initialize Date and Time
-        final Calendar calendar = Calendar.getInstance();
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        month = calendar.get(Calendar.MONTH);
-        year = calendar.get(Calendar.YEAR);
-    }
-
-=======
     /* End Date Picker Functionality */
 
     /* Begin Time Picker Functionality */
@@ -350,7 +257,6 @@ public class AddTaskActivity extends FragmentActivity
     }
 
     //Update the dateTextView field and convert from 24-hr to 12-hr format
->>>>>>> CarlosTrunk
     public void updateTime(int hour, int minute) {
         int hour_ampm = hour%12;
         String am_pm;
@@ -376,8 +282,6 @@ public class AddTaskActivity extends FragmentActivity
 
         displayTime.setText(new StringBuilder().append(hour_ampm).append(":").append(pad(minute)).append(" ").append(am_pm));
     }
-<<<<<<< HEAD
-=======
 
     //Add padding to minutes
     private static String pad(int min) {
@@ -387,5 +291,4 @@ public class AddTaskActivity extends FragmentActivity
             return "0" + String.valueOf(min);
     }
     /* End Time Picker Functionality */
->>>>>>> CarlosTrunk
 }
