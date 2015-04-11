@@ -54,6 +54,10 @@ public class AddTaskActivity extends FragmentActivity
         initializeDateSuffixLists();
         initializeDateTime();
 
+        //initialize urgency to LOWEST
+        //in case urgency buttons left unchecked
+        urgency = Urgency.LOWEST;
+
         //Update Date and Time Text Views
         displayDate = (TextView) findViewById(R.id.dateTextView);
         displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
@@ -101,6 +105,7 @@ public class AddTaskActivity extends FragmentActivity
                 break;
             case R.id.radio_medium:
                 if (checked) {
+                    System.out.print("chk1");
                     urgency = urgency.MEDIUM;
                 }
                 break;
@@ -113,6 +118,9 @@ public class AddTaskActivity extends FragmentActivity
                 if (checked) {
                     urgency = urgency.HIGHEST;
                 }
+                break;
+            default:
+                urgency = urgency.NONE;
                 break;
         }
     }
@@ -182,7 +190,7 @@ public class AddTaskActivity extends FragmentActivity
         String suffix = getSuffix(day);
         Toast.makeText(this, monthsArray[month] + " " +
                 String.valueOf(day) + suffix + " "
-                        + String.valueOf(year), Toast.LENGTH_SHORT).show();
+                + String.valueOf(year), Toast.LENGTH_SHORT).show();
         //Initialize the date attributes
         setDate(day, month, year);
         displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));

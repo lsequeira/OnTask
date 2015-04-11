@@ -1,36 +1,51 @@
 package com.cse120.ontask.com.cse120.ontask.task;
+import java.io.Serializable;
 
+public class Task implements  Serializable{
 
-public class Task {
+    private static final long serialVersionUID = 6879876854546843515L;
 
-    private String title;
+    private int task_id;
     private String description;
+    private String title;
     private Frequency frequency;
     private Urgency urgency;
     private Date deadline;
     private UserId user_id;
 
     //For Debugging Purposes
-    public Task(String title, String description, Date deadline, Urgency urgency)
-    {
+    public Task(String title, String description, Date deadline, Urgency urgency) {
         this.title = title;
         this.description = description;
         frequency = Frequency.ONCE;
         this.urgency = urgency;
         this.deadline = deadline;
         user_id = new User().GetId();
+    }
+
+    public Task(int task_id, String title, String description, Frequency frequency, Date deadline, Urgency urgency)
+    {
+        this.task_id = task_id;
+        this.title = title;
+        this.description = description;
+        this.frequency = Frequency.NEVER;
+        this.urgency = urgency;
+        this.deadline = deadline;
+        user_id = new User().GetId();
 
     }
 
-    @Override
+
+        @Override
     public String toString() {
         return title;
     }
 
     public Task(String title, String description, Frequency frequency,
                 Urgency urgency, Date deadline, User user){
-        this.title = title;
+
         this.description = description;
+        this.title = title;
         this.frequency = frequency;
         this.urgency = urgency;
         this.deadline = deadline;
@@ -48,10 +63,12 @@ public class Task {
     */
 
     //Getters
+    public int getTask_id() {
+        return task_id;
+    }
     public String getTitle(){
         return title;
     }
-
     public String getDescription(){
         return description;
     }
@@ -70,6 +87,9 @@ public class Task {
     //End Getters
 
     //Setters
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
+    }
     public void setTitle(String title){
         this.title = title;
     }

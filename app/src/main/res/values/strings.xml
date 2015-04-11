@@ -38,6 +38,7 @@
     <string name="title_activity_task_details">taskDetailsActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_update_task">UpdateTaskActivity</string>
     //Choose Task or Project END
 
 </resources>

@@ -1,6 +1,9 @@
 package com.cse120.ontask.com.cse120.ontask.task;
+import java.io.Serializable;
 
-public class Date {
+public class Date implements Serializable{
+
+    private static final long serialVersionUID = 6879816854546843515L;
 
     private int year;
     private int month;
@@ -25,37 +28,37 @@ public class Date {
     }
 
     // Getters
-    public int GetYear() {
+    public int getYear() {
         return year;
     }
-    public int GetMonth() {
+    public int getMonth() {
         return month;
     }
-    public int GetDay() {
+    public int getDay() {
         return day;
     }
-    public int GetHour() {
+    public int getHour() {
         return hour;
     }
-    public int GetMinute() {
+    public int getMinute() {
         return minute;
     }
     // End Getters
 
     // Setters
-    public void SetYear( int year ) {
+    public void setYear( int year ) {
         this.year = year;
     }
-    public void SetMonth( int month ) {
+    public void setMonth( int month ) {
         this.month = month;
     }
-    public void SetDay( int day ) {
+    public void setDay( int day ) {
         this.day = day;
     }
-    public void SetHour( int hour ) {
+    public void setHour( int hour ) {
         this.hour = hour;
     }
-    public void SetMinute( int minute ) {
+    public void setMinute( int minute ) {
         this.minute = minute;
     }
     //End Setters
