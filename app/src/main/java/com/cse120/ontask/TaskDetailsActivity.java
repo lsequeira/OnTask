@@ -97,8 +97,9 @@ public class TaskDetailsActivity extends ActionBarActivity {
     }
 
     public void UpdateButtonOnClick(View v){
-        Intent i = new Intent(this, UpdateTaskActivity.class);
-
+        Intent i = new Intent(this, AddTaskActivity.class);
+        boolean isUpdating = true;
+        i.putExtra("isUpdating", isUpdating);
         i.putExtra("taskToUpdate", taskListIndex);
         startActivity(i);
     }

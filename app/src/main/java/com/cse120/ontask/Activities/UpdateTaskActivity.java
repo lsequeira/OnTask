@@ -14,8 +14,6 @@ import com.cse120.ontask.TaskDetailsActivity;
 import com.cse120.ontask.TaskManagerApplication;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
 
-/*TODO:access the task object directly in order to change the value
-*/
 
 public class UpdateTaskActivity extends ActionBarActivity {
 

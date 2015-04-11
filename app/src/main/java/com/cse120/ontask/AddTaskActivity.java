@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.EditText;
@@ -46,23 +47,42 @@ public class AddTaskActivity extends FragmentActivity
             , "May", "June", "July", "August", "September"
             , "October", "November", "December"};
 
+    //Used only for updating tasks
+    boolean isUpdating;
+    int taskListIndex;
+    EditText taskTitle;
+    EditText taskDescription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
         initializeDateSuffixLists();
-        initializeDateTime();
-
-        //initialize urgency to LOWEST
-        //in case urgency buttons left unchecked
-        urgency = Urgency.LOWEST;
-
-        //Update Date and Time Text Views
         displayDate = (TextView) findViewById(R.id.dateTextView);
-        displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
 
-        updateTime(hour, minute);
+        Bundle updateData = getIntent().getExtras();
+
+        //if isUpdating then updating a task
+        //else adding a task
+        if(updateData == null){
+            initializeDateTime();
+
+            //initialize urgency to LOWEST
+            //in case urgency buttons left unchecked
+            urgency = Urgency.LOWEST;
+
+            //Update Date and Time Text Views
+
+            displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+
+            updateTime(hour, minute);
+        }
+        else if(updateData.getBoolean("isUpdating")) {
+            //set all of the fields to the current task's information
+            InitializeUpdate(updateData);
+        }
+
     }
 
     @Override
@@ -131,12 +151,34 @@ public class AddTaskActivity extends FragmentActivity
     }
 
     public void addTaskButtonOnClick(View v) {
-        //Add Task Object to the List
-        Task t = createTaskObject();
-        getTaskManagerApplication().addTask(t);
+        Intent i;
+        if(isUpdating){
+            i = new Intent(this, TaskDetailsActivity.class);
 
-        //Go to home screen after adding task
-        Intent i = new Intent(this, HomeActivity.class);
+            //Update task information
+            TaskManagerApplication.currentTasks.get(taskListIndex).setTitle(taskTitle.getText().toString());
+            TaskManagerApplication.currentTasks.get(taskListIndex).setDescription(taskDescription.getText().toString());
+            TaskManagerApplication.currentTasks.get(taskListIndex).setUrgency(urgency);
+
+            Date deadline = new Date();
+            deadline.SetDay(day);
+            deadline.SetMonth(month);
+            deadline.SetYear(year);
+            deadline.SetHour(hour);
+            deadline.SetMinute(minute);
+
+            TaskManagerApplication.currentTasks.get(taskListIndex).setDeadline(deadline);
+
+            i.putExtra("taskSelected", taskListIndex);
+        }
+        else {
+            //Add Task Object to the List
+            Task t = createTaskObject();
+            getTaskManagerApplication().addTask(t);
+
+            //Go to home screen after adding task
+            i = new Intent(this, HomeActivity.class);
+        }
         startActivity(i);
     }
     /* End On-Click Functions */
@@ -291,4 +333,59 @@ public class AddTaskActivity extends FragmentActivity
             return "0" + String.valueOf(min);
     }
     /* End Time Picker Functionality */
+
+    private void InitializeUpdate(Bundle updateData){
+        isUpdating = updateData.getBoolean("isUpdating");
+        taskListIndex = updateData.getInt("taskToUpdate");
+        Task taskToUpdate = TaskManagerApplication.currentTasks.get(taskListIndex);
+
+        TextView staticUpdateText = (TextView) findViewById(R.id.addTaskText);
+        staticUpdateText.setText("Update Task");
+
+        taskTitle = (EditText) findViewById(R.id.taskTitle);
+        taskTitle.setText(taskToUpdate.getTitle());
+
+        taskDescription = (EditText) findViewById(R.id.taskDescription);
+        taskDescription.setText(taskToUpdate.getDescription());
+
+        TextView taskDate = (TextView) findViewById(R.id.dateTextView);
+        taskDate.setText(new StringBuilder().append(taskToUpdate.getDeadline().GetMonth()).append("/").append(taskToUpdate.getDeadline().GetDay()).append("/").append(taskToUpdate.getDeadline().GetYear()));
+
+        day = taskToUpdate.getDeadline().GetDay();
+        month = taskToUpdate.getDeadline().GetMonth();
+        year = taskToUpdate.getDeadline().GetYear();
+        hour = taskToUpdate.getDeadline().GetHour();
+        minute = taskToUpdate.getDeadline().GetMinute();
+
+        updateTime(taskToUpdate.getDeadline().GetHour(), taskToUpdate.getDeadline().GetMinute());
+
+        RadioButton taskUrgency;
+        switch (taskToUpdate.getUrgency()){
+            case LOWEST:
+                taskUrgency = (RadioButton) findViewById(R.id.radio_lowest);
+                taskUrgency.setChecked(true);
+                break;
+            case LOW:
+                taskUrgency = (RadioButton) findViewById(R.id.radio_low);
+                taskUrgency.setChecked(true);
+                break;
+            case MEDIUM:
+                taskUrgency = (RadioButton) findViewById(R.id.radio_medium);
+                taskUrgency.setChecked(true);
+                break;
+            case HIGH:
+                taskUrgency = (RadioButton) findViewById(R.id.radio_high);
+                taskUrgency.setChecked(true);
+                break;
+            case HIGHEST:
+                taskUrgency = (RadioButton) findViewById(R.id.radio_highest);
+                taskUrgency.setChecked(true);
+                break;
+            default:
+                break;
+        }
+
+        Button submitButton = (Button) findViewById(R.id.addTaskButton);
+        submitButton.setText("Submit Changes");
+    }
 }
