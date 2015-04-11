@@ -2,32 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jar="/Users/Luis/GitHub/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/classes-0f580db2e614027ba3339ee17b318a3f862d0b1f.jar" />
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/classes-d13db89641e1bfb5bc060833266c273947e80666.jar" />
     </item>
     <item
-        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jar="/Users/Luis/GitHub/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-138d9ac49e14acb16e0f6d4b8eb539b34d067297.jar" />
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-a2d211000101c6953bee83c9ddf0a2002f9d6b96.jar" />
     </item>
     <item
-        jar="/Users/carlos/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-8cab830605e4892e55ec56f589b115ea445c486f.jar" />
-    </item>
-    <item
-        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jar="/Users/Luis/GitHub/OnTask/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/classes-023ec91e62a3b48928e3f520eff842bea9ef60c3.jar" />
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/classes-fc7bec180f82c0c31617f0229b5aa594391040aa.jar" />
+    </item>
+    <item
+        jar="/Users/Luis/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-ee9869a9892c5a4682acbcfcc721c2564b63894e.jar" />
+    </item>
+    <item
+        jar="/Users/Luis/GitHub/OnTask/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0f254ec13d6671680482d2218f01ecf14dfa93e6">
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/classes-afccaef0f7dec0815878c74856d01a8c76928c7f.jar" />
+    </item>
+    <item
+        jar="/Users/Luis/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-3a3f2028aab3130a3962be9f13ac4599bf3b7b77.jar" />
     </item>
 
 </items>
