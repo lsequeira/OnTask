@@ -4,27 +4,6 @@
     tools:context="com.cse120.ontask.ChooseTaskOrProject"
     android:background="@color/light_gray">
 
-    <Button
-        android:layout_width="@dimen/choose_task_or_project_button_dim"
-        android:layout_height="@dimen/choose_task_or_project_button_dim"
-        android:text="@string/task"
-        android:id="@+id/chooseTaskButton"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:onClick="chooseTaskButtonOnClick"
-        android:layout_margin="20dp" />
-
-    <Button
-        android:layout_width="@dimen/choose_task_or_project_button_dim"
-        android:layout_height="@dimen/choose_task_or_project_button_dim"
-        android:text="@string/project"
-        android:id="@+id/chooseProjectButton"
-        android:onClick="chooseProjectButtonOnClick"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignTop="@+id/chooseTaskButton"
-        android:layout_toEndOf="@+id/chooseTaskButton" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -32,15 +11,14 @@
         android:layout_alignParentTop="true"
         android:background="@color/light_blue"
         android:layout_alignParentEnd="true"
-        android:paddingBottom="10dp">
+        android:id="@+id/linearLayout">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"
             android:id="@+id/chooseActivityBackButton"
             android:onClick="chooseActivityBackButtonOnClick"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,8 +28,39 @@
             android:id="@+id/chooseTextView"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="101dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:text="@string/task"
+            android:id="@+id/chooseTaskButton"
+            android:onClick="chooseTaskButtonOnClick"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:layout_weight="2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:text="@string/project"
+            android:id="@+id/chooseProjectButton"
+            android:onClick="chooseProjectButtonOnClick"
+            android:layout_alignTop="@+id/chooseTaskButton"
+            android:layout_toEndOf="@+id/chooseTaskButton"
+            android:layout_margin="20dp"
+            android:layout_weight="2" />
+
     </LinearLayout>
 
 </RelativeLayout>

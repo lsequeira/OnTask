@@ -103,8 +103,7 @@
         android:layout_height="wrap_content"
         android:background="@color/light_blue"
         android:id="@+id/topActionBar"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="10dp">
+        android:layout_alignParentTop="true">
 
         <Button
             android:layout_width="wrap_content"
@@ -112,8 +111,7 @@
             android:text="Back"
             android:id="@+id/backButton"
             android:onClick="BackButtonOnClick"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -121,8 +119,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Task Details"
             android:id="@+id/topActionBarTitle"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="40dp" />
 
     </LinearLayout>
 
@@ -134,7 +131,8 @@
         android:id="@+id/taskTitle"
         android:layout_below="@+id/staticTitle"
         android:layout_alignStart="@+id/staticDescription"
-        android:background="@color/input_gray" />
+        android:background="@color/input_gray"
+        android:layout_marginRight="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -143,6 +141,7 @@
         android:text="Title:"
         android:id="@+id/staticTitle"
         android:layout_below="@+id/topActionBar"
-        android:layout_alignStart="@+id/taskTitle" />
+        android:layout_alignStart="@+id/taskTitle"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

@@ -16,6 +16,7 @@ import org.w3c.dom.Text;
 public class TaskDetailsActivity extends ActionBarActivity {
 
     Task taskDisplayed;
+    int taskListIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,10 @@ public class TaskDetailsActivity extends ActionBarActivity {
             return;
         }
 
-        taskDisplayed = (Task) taskData.getSerializable("taskSelected");
+        //taskDisplayed = (Task) taskData.getSerializable("taskSelected");
+        taskListIndex = taskData.getInt("taskSelected");
+
+        taskDisplayed = TaskManagerApplication.currentTasks.get(taskListIndex);
 
         TextView taskTitle = (TextView) findViewById(R.id.taskTitle);
         TextView taskDescription = (TextView) findViewById(R.id.taskDescription);
@@ -95,7 +99,7 @@ public class TaskDetailsActivity extends ActionBarActivity {
     public void UpdateButtonOnClick(View v){
         Intent i = new Intent(this, UpdateTaskActivity.class);
 
-        i.putExtra("taskToUpdate", taskDisplayed);
+        i.putExtra("taskToUpdate", taskListIndex);
         startActivity(i);
     }
 

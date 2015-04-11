@@ -31,11 +31,11 @@ public class HomeActivity extends FragmentActivity implements BottomActionBarFra
 
     //method for TaskListFragment
     //TODO:rename method with appropriate names
-    public void onFragmentInteraction(Task taskSelected){
+    public void onFragmentInteraction(int taskListIndex){
         //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
         Intent i = new Intent(this, TaskDetailsActivity.class);
-        i.putExtra("taskSelected", taskSelected);
-
+        //i.putExtra("taskSelected", taskSelected);
+        i.putExtra("taskSelected", taskListIndex);
         startActivity(i);
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
