@@ -11,14 +11,14 @@ import android.view.View;
 
 import com.cse120.ontask.R;
 import com.cse120.ontask.TaskDetailsActivity;
-import com.cse120.ontask.TaskManagerApplication;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
 
+/*TODO:access the task object directly in order to change the value
+*/
 
 public class UpdateTaskActivity extends ActionBarActivity {
 
     Task taskDisplayed;
-    int taskListindex;
     EditText taskTitle;
 
     @Override
@@ -31,8 +31,7 @@ public class UpdateTaskActivity extends ActionBarActivity {
             return;
         }
 
-        taskListindex = taskData.getInt("taskToUpdate");
-        taskDisplayed = TaskManagerApplication.currentTasks.get(taskListindex);
+        taskDisplayed = (Task) taskData.getSerializable("taskToUpdate");
 
         taskTitle = (EditText) findViewById(R.id.taskTitle);
         TextView taskDescription = (TextView) findViewById(R.id.taskDescription);
@@ -65,12 +64,12 @@ public class UpdateTaskActivity extends ActionBarActivity {
 
         taskUrgency.setText(urgency);
         taskDeadline.setText(
-                Integer.toString(taskDisplayed.getDeadline().GetMonth()) + "/" +
-                        Integer.toString(taskDisplayed.getDeadline().GetDay()) + "/" +
-                        Integer.toString(taskDisplayed.getDeadline().GetYear()) +
+                Integer.toString(taskDisplayed.getDeadline().getMonth()) + "/" +
+                        Integer.toString(taskDisplayed.getDeadline().getDay()) + "/" +
+                        Integer.toString(taskDisplayed.getDeadline().getYear()) +
                         "\t\t\t\t" +
-                        Integer.toString(taskDisplayed.getDeadline().GetHour()) + ":" +
-                        Integer.toString((taskDisplayed.getDeadline().GetMinute()))
+                        Integer.toString(taskDisplayed.getDeadline().getHour()) + ":" +
+                        Integer.toString((taskDisplayed.getDeadline().getMinute()))
         );
 
     }
@@ -98,17 +97,10 @@ public class UpdateTaskActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void CancelButtonOnClick(View v){
-        Intent i = new Intent(this, TaskDetailsActivity.class);
-        i.putExtra("taskSelected", taskListindex);
-        startActivity(i);
-    }
-
     public void SubmitChangesButtonOnClick(View v){
         Intent i = new Intent(this, TaskDetailsActivity.class);
 
-        TaskManagerApplication.currentTasks.get(taskListindex).setTitle(taskTitle.getText().toString());
+        taskDisplayed.setTitle(taskTitle.getText().toString());
 
         i.putExtra("taskSelected", taskDisplayed);
         startActivity(i);

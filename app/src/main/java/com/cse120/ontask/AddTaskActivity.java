@@ -1,5 +1,6 @@
 package com.cse120.ontask;
 
+import com.cse120.ontask.com.cse120.ontask.task.Frequency;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
 import com.cse120.ontask.com.cse120.ontask.task.Date;
 import com.cse120.ontask.com.cse120.ontask.task.Urgency;
@@ -24,7 +25,7 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
+//TODO: breaks on update when no fields are changed
 public class AddTaskActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -155,19 +156,9 @@ public class AddTaskActivity extends FragmentActivity
         if(isUpdating){
             i = new Intent(this, TaskDetailsActivity.class);
 
-            //Update task information
-            TaskManagerApplication.currentTasks.get(taskListIndex).setTitle(taskTitle.getText().toString());
-            TaskManagerApplication.currentTasks.get(taskListIndex).setDescription(taskDescription.getText().toString());
-            TaskManagerApplication.currentTasks.get(taskListIndex).setUrgency(urgency);
+            Task t = createTaskObject();
 
-            Date deadline = new Date();
-            deadline.SetDay(day);
-            deadline.SetMonth(month);
-            deadline.SetYear(year);
-            deadline.SetHour(hour);
-            deadline.SetMinute(minute);
-
-            TaskManagerApplication.currentTasks.get(taskListIndex).setDeadline(deadline);
+            getTaskManagerApplication().updateTask(t, taskListIndex);
 
             i.putExtra("taskSelected", taskListIndex);
         }
@@ -205,8 +196,14 @@ public class AddTaskActivity extends FragmentActivity
         //Task Deadline
         Date deadline = new Date(year, month, day, hour, minute);
 
+        //Task Frequency
+        Frequency taskFreq = Frequency.ONCE;
+
+        //Task ID
+        int taskID = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
+
         //Create the Task Object
-        Task t = new Task(taskName, taskDescription, deadline, urgency);
+        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency);
 
         return t;
     }
@@ -349,15 +346,15 @@ public class AddTaskActivity extends FragmentActivity
         taskDescription.setText(taskToUpdate.getDescription());
 
         TextView taskDate = (TextView) findViewById(R.id.dateTextView);
-        taskDate.setText(new StringBuilder().append(taskToUpdate.getDeadline().GetMonth()).append("/").append(taskToUpdate.getDeadline().GetDay()).append("/").append(taskToUpdate.getDeadline().GetYear()));
+        taskDate.setText(new StringBuilder().append(taskToUpdate.getDeadline().getMonth()).append("/").append(taskToUpdate.getDeadline().getDay()).append("/").append(taskToUpdate.getDeadline().getYear()));
 
-        day = taskToUpdate.getDeadline().GetDay();
-        month = taskToUpdate.getDeadline().GetMonth();
-        year = taskToUpdate.getDeadline().GetYear();
-        hour = taskToUpdate.getDeadline().GetHour();
-        minute = taskToUpdate.getDeadline().GetMinute();
+        day = taskToUpdate.getDeadline().getDay();
+        month = taskToUpdate.getDeadline().getMonth();
+        year = taskToUpdate.getDeadline().getYear();
+        hour = taskToUpdate.getDeadline().getHour();
+        minute = taskToUpdate.getDeadline().getMinute();
 
-        updateTime(taskToUpdate.getDeadline().GetHour(), taskToUpdate.getDeadline().GetMinute());
+        updateTime(taskToUpdate.getDeadline().getHour(), taskToUpdate.getDeadline().getMinute());
 
         RadioButton taskUrgency;
         switch (taskToUpdate.getUrgency()){

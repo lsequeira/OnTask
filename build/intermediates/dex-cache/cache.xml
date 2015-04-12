@@ -6,28 +6,42 @@
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-3b2063e9a062493d9786d7d0eef778f7e175faee.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-3b2063e9a062493d9786d7d0eef778f7e175faee.jar" />
     </item>
     <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-2e0ba353d0ef705f215b4672869da53774e5aaa4.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-c6f1095ded2765050215a2d6898b62b4fa93649c.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-cefbc2586df1f03651c6a081b5d2635ba8c69154.jar" />
     </item>
     <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jar="C:\Users\Spencer Hirasawa\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-android\1.1.4\129874135e6081269ace2312092031558865de12\bolts-android-1.1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.4-e69df244198f2531a0f8f60466574d34042c58f8.jar" />
+    </item>
+    <item
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-master\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-22d94a198decdc0bff572c2807c39a5ce8034dc0.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-0c42902bfdd96ce307b008ee106e5f1b8e453ac2.jar" />
+    </item>
+    <item
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0f254ec13d6671680482d2218f01ecf14dfa93e6">
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-7baf1a3f219c3496f4e61914be54c9bdf6e2bae7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-master\app\build\intermediates\pre-dexed\debug\classes-349f81adf4d3123c98a4b04d8a88a75e2553d3f8.jar" />
     </item>
 
 </items>

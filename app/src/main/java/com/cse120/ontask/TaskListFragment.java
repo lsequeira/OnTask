@@ -118,7 +118,6 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            //mListener.onFragmentInteraction(TaskManagerApplication.currentTasks.get(position));
             mListener.onFragmentInteraction(position);
             //System.out.println(DummyContent.ITEMS.get(position).id);
         }
@@ -149,8 +148,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        //public void onFragmentInteraction(Task taskSelected);
-        public void onFragmentInteraction(int taskIndexPosition);
+        public void onFragmentInteraction(int taskListIndex);
     }
 
 }

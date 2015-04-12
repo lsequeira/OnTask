@@ -5,6 +5,7 @@ public class Task implements  Serializable{
 
     private static final long serialVersionUID = 6879876854546843515L;
 
+    private int task_id;
     private String description;
     private String title;
     private Frequency frequency;
@@ -20,6 +21,18 @@ public class Task implements  Serializable{
         this.urgency = urgency;
         this.deadline = deadline;
         user_id = new User().GetId();
+    }
+
+    public Task(int task_id, String title, String description, Frequency frequency, Date deadline, Urgency urgency)
+    {
+        this.task_id = task_id;
+        this.title = title;
+        this.description = description;
+        this.frequency = Frequency.NEVER;
+        this.urgency = urgency;
+        this.deadline = deadline;
+        user_id = new User().GetId();
+
     }
 
 
@@ -50,10 +63,12 @@ public class Task implements  Serializable{
     */
 
     //Getters
+    public int getTask_id() {
+        return task_id;
+    }
     public String getTitle(){
         return title;
     }
-
     public String getDescription(){
         return description;
     }
@@ -72,6 +87,9 @@ public class Task implements  Serializable{
     //End Getters
 
     //Setters
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
+    }
     public void setTitle(String title){
         this.title = title;
     }

@@ -1,18 +1,19 @@
 package com.cse120.ontask;
 
+
+import com.cse120.ontask.com.cse120.ontask.task.Task;
+
+import android.app.Application;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.TextView;
-
-import com.cse120.ontask.Activities.UpdateTaskActivity;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
 import android.view.View;
 
-import org.w3c.dom.Text;
 
+//TODO:use getTaskManagerApplication from AddTaskActivity in DeleteButtonOnClick
 public class TaskDetailsActivity extends ActionBarActivity {
 
     Task taskDisplayed;
@@ -28,7 +29,6 @@ public class TaskDetailsActivity extends ActionBarActivity {
             return;
         }
 
-        //taskDisplayed = (Task) taskData.getSerializable("taskSelected");
         taskListIndex = taskData.getInt("taskSelected");
 
         taskDisplayed = TaskManagerApplication.currentTasks.get(taskListIndex);
@@ -64,13 +64,13 @@ public class TaskDetailsActivity extends ActionBarActivity {
 
         taskUrgency.setText(urgency);
         taskDeadline.setText(
-                Integer.toString(taskDisplayed.getDeadline().GetMonth()) + "/" +
-                Integer.toString(taskDisplayed.getDeadline().GetDay()) + "/" +
-                Integer.toString(taskDisplayed.getDeadline().GetYear()) +
-                "\t\t\t\t" +
-                Integer.toString(taskDisplayed.getDeadline().GetHour()) + ":" +
-                Integer.toString((taskDisplayed.getDeadline().GetMinute()))
-            );
+                Integer.toString(taskDisplayed.getDeadline().getMonth()) + "/" +
+                        Integer.toString(taskDisplayed.getDeadline().getDay()) + "/" +
+                        Integer.toString(taskDisplayed.getDeadline().getYear()) +
+                        "\t\t\t\t" +
+                        Integer.toString(taskDisplayed.getDeadline().getHour()) + ":" +
+                        Integer.toString((taskDisplayed.getDeadline().getMinute()))
+        );
     }
 
 
@@ -106,6 +106,14 @@ public class TaskDetailsActivity extends ActionBarActivity {
 
     public void BackButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
+
+    public void DeleteButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        Application app = (Application) TaskManagerApplication.getContext();
+        TaskManagerApplication a = (TaskManagerApplication) app;
+        a.deleteTask(taskDisplayed, taskListIndex);
         startActivity(i);
     }
 }

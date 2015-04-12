@@ -67,12 +67,12 @@ public class TaskListAdapter extends ArrayAdapter{
 
         //set task deadline text
         taskDeadline.setText(
-                Integer.toString(taskSelected.getDeadline().GetMonth()) + "/" +
-                        Integer.toString(taskSelected.getDeadline().GetDay()) + "/" +
-                        Integer.toString(taskSelected.getDeadline().GetYear()) +
+                Integer.toString(taskSelected.getDeadline().getMonth()) + "/" +
+                        Integer.toString(taskSelected.getDeadline().getDay()) + "/" +
+                        Integer.toString(taskSelected.getDeadline().getYear()) +
                         "\t\t\t\t"+
-                        Integer.toString(taskSelected.getDeadline().GetHour()) + ":" +
-                        Integer.toString((taskSelected.getDeadline().GetMinute()))
+                        Integer.toString(taskSelected.getDeadline().getHour()) + ":" +
+                        Integer.toString((taskSelected.getDeadline().getMinute()))
         );
         return  taskListView;
     }
