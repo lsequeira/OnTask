@@ -16,11 +16,25 @@
         <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-138d9ac49e14acb16e0f6d4b8eb539b34d067297.jar" />
     </item>
     <item
+        jar="/Users/carlos/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="129874135e6081269ace2312092031558865de12">
+        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/bolts-android-1.1.4-4d30b8aaee195d0ce8ddc1e3088fb1eb3907c5ca.jar" />
+    </item>
+    <item
         jar="/Users/carlos/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
         <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-8cab830605e4892e55ec56f589b115ea445c486f.jar" />
+    </item>
+    <item
+        jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0f254ec13d6671680482d2218f01ecf14dfa93e6">
+        <dex dex="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/pre-dexed/debug/classes-40e51da569e4480770013864235779f51424257b.jar" />
     </item>
     <item
         jar="/Users/carlos/AndroidStudioProjects/OnTask/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"

@@ -1,21 +1,22 @@
 package com.cse120.ontask;
 
+
+import com.cse120.ontask.com.cse120.ontask.task.Task;
+
+import android.app.Application;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.TextView;
-
-import com.cse120.ontask.Activities.UpdateTaskActivity;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
 import android.view.View;
 
-import org.w3c.dom.Text;
 
 public class TaskDetailsActivity extends ActionBarActivity {
 
     Task taskDisplayed;
+    int taskListIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,9 @@ public class TaskDetailsActivity extends ActionBarActivity {
             return;
         }
 
-        taskDisplayed = (Task) taskData.getSerializable("taskSelected");
+        taskListIndex = taskData.getInt("taskSelected");
+
+        taskDisplayed = TaskManagerApplication.currentTasks.get(taskListIndex);
 
         TextView taskTitle = (TextView) findViewById(R.id.taskTitle);
         TextView taskDescription = (TextView) findViewById(R.id.taskDescription);
@@ -61,12 +64,10 @@ public class TaskDetailsActivity extends ActionBarActivity {
         taskUrgency.setText(urgency);
         taskDeadline.setText(
                 Integer.toString(taskDisplayed.getDeadline().getMonth()) + "/" +
-                Integer.toString(taskDisplayed.getDeadline().getDay()) + "/" +
-                Integer.toString(taskDisplayed.getDeadline().getYear()) +
-                "\t\t\t\t" +
-                Integer.toString(taskDisplayed.getDeadline().getHour()) + ":" +
-                Integer.toString((taskDisplayed.getDeadline().getMinute()))
-            );
+                        Integer.toString(taskDisplayed.getDeadline().getDay()) + "/" +
+                        Integer.toString(taskDisplayed.getDeadline().getYear()) +
+                        "\t\t\t\t" + convertTime(taskDisplayed.getDeadline().getHour(), taskDisplayed.getDeadline().getMinute())
+        );
     }
 
 
@@ -93,14 +94,58 @@ public class TaskDetailsActivity extends ActionBarActivity {
     }
 
     public void UpdateButtonOnClick(View v){
-        Intent i = new Intent(this, UpdateTaskActivity.class);
-
-        i.putExtra("taskToUpdate", taskDisplayed);
+        Intent i = new Intent(this, AddTaskActivity.class);
+        boolean isUpdating = true;
+        i.putExtra("isUpdating", isUpdating);
+        i.putExtra("taskToUpdate", taskListIndex);
         startActivity(i);
     }
 
     public void BackButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
+    }
+
+    public void DeleteButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        getTaskManagerApplication().deleteTask(taskDisplayed, taskListIndex);
+        startActivity(i);
+    }
+
+    private TaskManagerApplication getTaskManagerApplication() {
+        TaskManagerApplication tma = (TaskManagerApplication) getApplication();
+        return tma;
+    }
+
+    public String convertTime(int hour, int minute) {
+        int hour_ampm = hour%12;
+        String am_pm;
+
+
+        //Find Whether it is AM or PM
+        if (hour >= 12) {
+            am_pm = "PM";
+        }
+        else {
+            am_pm = "AM";
+            //Ima add this comment so the brackets are not in vain
+        }
+
+        //Print correct 12-hour hour
+        if (hour_ampm == 0) {
+            hour_ampm = 12;
+        }
+        else {
+
+        }
+
+        return String.valueOf(hour_ampm) + ":"+ pad(minute) + " " + am_pm;
+
+    }
+    private static String pad(int min) {
+        if (min >= 10)
+            return String.valueOf(min);
+        else
+            return "0" + String.valueOf(min);
     }
 }

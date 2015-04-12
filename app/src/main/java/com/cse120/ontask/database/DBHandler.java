@@ -65,6 +65,19 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateTask(Task task){
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TASK_TITLE, task.getTitle());
+        values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
+        values.put(COLUMN_TASK_FREQUENCY, frequencyToStringConvert(task));
+        values.put(COLUMN_TASK_DEADLINE, dateToStringConvert(task));
+        values.put(COLUMN_TASK_URGENCY, urgencyToIntegerConvert(task));
+
+        String whereClause = COLUMN_ID + "=" + task.getTask_id();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TASK_TABLE, values, whereClause, null);
+    }
+
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> DBTasks = new ArrayList<Task>();
         String query = "SELECT * FROM " + TASK_TABLE;
@@ -79,11 +92,8 @@ public class DBHandler extends SQLiteOpenHelper {
             String title = cursor.getString(1);
             String description = cursor.getString(2);
             Frequency frequency = stringToFrequencyConvert(cursor.getString(3));
-            System.out.println("KEY: " + key + " TITLE: " + title + " DESCRIPTION: " + description + " FREQUENCY: " + frequency);
-            System.out.println("DATE: " + cursor.getString(4));
             Date deadline = stringToDateConvert(cursor.getString(4));
             Urgency urgency = integerToUrgencyConvert(Integer.parseInt(cursor.getString(5)));
-
             Task currentTask = new Task(key, title, description, frequency, deadline, urgency);
             DBTasks.add(currentTask);
             cursor.moveToNext();
@@ -103,7 +113,7 @@ public class DBHandler extends SQLiteOpenHelper {
         boolean result = false;
         Task DBTask = new Task();
 
-        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_TITLE + " = \"" + task.getTitle() + "\"";
+        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_ID + " = " + task.getTask_id();
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -245,7 +255,6 @@ public class DBHandler extends SQLiteOpenHelper {
         year = task.getDeadline().getYear();
 
         //Build the date as YYYYMMDD HH:MM:SS 24-hr format
-        System.out.println();
         date = String.valueOf(year) + datePad(month) + datePad(day)
                 + " " + datePad(hour) + ":" + datePad(minute)
                 + ":00";
