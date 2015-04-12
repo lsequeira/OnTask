@@ -226,7 +226,7 @@ public class AddTaskActivity extends FragmentActivity
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
         //Initialize the date attributes
-        setDate(day, month, year);
+        setDate(day, month+1, year);
         displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
         String suffix = getSuffix(day);
         Toast.makeText(this, monthsArray[month] + " " +
@@ -318,7 +318,7 @@ public class AddTaskActivity extends FragmentActivity
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        month = calendar.get(Calendar.MONTH);
+        month = calendar.get(Calendar.MONTH)+1;
         year = calendar.get(Calendar.YEAR);
 
         //Date
