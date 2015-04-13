@@ -1,15 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cse120.ontask.ChooseTaskOrProject"
-    android:background="@color/light_gray">
+    tools:context="com.cse120.ontask.ChooseTaskOrProject">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/light_blue"
+        android:background="@color/light_gray"
         android:layout_alignParentEnd="true"
         android:id="@+id/linearLayout">
         <Button
@@ -37,29 +36,28 @@
         android:layout_height="fill_parent"
         android:layout_marginTop="101dp"
         android:layout_below="@+id/linearLayout"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:text="@string/task"
+            android:layout_width="145dp"
+            android:layout_height="136dp"
             android:id="@+id/chooseTaskButton"
             android:onClick="chooseTaskButtonOnClick"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
             android:layout_margin="20dp"
-            android:layout_weight="2" />
+            android:background="@drawable/taskbutton" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:text="@string/project"
+            android:layout_width="145dp"
+            android:layout_height="136dp"
             android:id="@+id/chooseProjectButton"
             android:onClick="chooseProjectButtonOnClick"
             android:layout_alignTop="@+id/chooseTaskButton"
             android:layout_toEndOf="@+id/chooseTaskButton"
             android:layout_margin="20dp"
-            android:layout_weight="2" />
+            android:background="@drawable/projectbutton" />
 
     </LinearLayout>
 

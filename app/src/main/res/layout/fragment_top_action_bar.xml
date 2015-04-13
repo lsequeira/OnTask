@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.cse120.ontask.TopActionBarFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cse120.ontask.TopActionBarFragment"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="56dp"
@@ -9,24 +10,33 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/homePageTitleText"
-            android:id="@+id/titleTextView"
-            android:layout_weight="5"
-            android:gravity="center" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/homePageTitleText"
+        android:id="@+id/titleTextView"
+        android:layout_weight="5"
+        android:gravity="center" />
 
-        <com.cse120.ontask.custom_shapes.CircleButton
-            android:id="@+id/addButton"
-            android:layout_width="match_parent"
-            android:layout_height="64dip"
-            android:layout_centerHorizontal="false"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dip"
-            android:onClick="addButtonOnClick"
-            android:src="@drawable/ic_action_plus"
-            app:cb_color="#99CC00" />
+    <com.cse120.ontask.custom_shapes.CircleButton
+        android:id="@+id/addButton"
+        android:layout_width="match_parent"
+        android:layout_height="64dip"
+        android:layout_centerHorizontal="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dip"
+        android:onClick="addButtonOnClick"
+        android:src="@drawable/ic_action_plus"
+        app:cb_color="#99CC00" />
+    <!-- Original Add Button (Use for prototype if custom circle doesn't work
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/addButton"
+        android:layout_weight="1"
+        android:onClick="addButtonOnClick"/>
+        -->
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.cse120.ontask;
 
+import com.cse120.ontask.com.cse120.ontask.task.Project;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
 import com.cse120.ontask.database.DBHandler;
 
@@ -9,8 +10,9 @@ import android.app.Application;
 public class TaskManagerApplication extends Application {
 
     public static List<Task> currentTasks;
-    public static Map<String, Task> currentTasks_map = new HashMap<String, Task>();
-    public int maxKey;
+    public static List<Project> currentProjects;
+    public int taskMaxKey;
+    public int projectMaxKey;
 
     @Override
     public void onCreate() {
@@ -18,15 +20,25 @@ public class TaskManagerApplication extends Application {
 
         DBHandler handler = new DBHandler(this, null, null, 1);
 
+        //load tasks from database to lists
         if (currentTasks == null) {
             currentTasks = handler.loadTasks();
             if (currentTasks != null) {
-                //TODO: when adding tasks start from maxKey to assign task id
-                maxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
+                taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
             }
             else {
                 currentTasks = new ArrayList<Task>();
-                maxKey = -1;
+                taskMaxKey = -1;
+            }
+        }
+        if (currentProjects == null) {
+            currentProjects = handler.loadProjects();
+            if (currentProjects != null) {
+                projectMaxKey = currentProjects.get(currentProjects.size()-1).getProject_key();
+            }
+            else {
+                currentProjects = new ArrayList<Project>();
+                taskMaxKey = -1;
             }
         }
         handler.close();
@@ -49,6 +61,18 @@ public class TaskManagerApplication extends Application {
 
         //Add To Database
         handler.addTask(task);
+        handler.close();
+    }
+
+    public void addProject(Project project) {
+        DBHandler handler = new DBHandler(this, null, null, 1);
+
+        assert (null != project);
+        //Add to List
+        currentProjects.add(project);
+
+        //Add To Database
+        handler.addProject(project);
         handler.close();
     }
 

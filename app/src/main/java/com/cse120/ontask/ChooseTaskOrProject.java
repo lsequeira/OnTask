@@ -49,7 +49,8 @@ public class ChooseTaskOrProject extends ActionBarActivity {
     }
 
     public void chooseProjectButtonOnClick(View v){
-        Intent i = new Intent(this, HomeActivity.class);
+        Intent i = new Intent(this, AddTaskActivity.class);
+        i.putExtra("isProject", true);
         startActivity(i);
     }
 }

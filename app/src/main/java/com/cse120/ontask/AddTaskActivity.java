@@ -2,6 +2,7 @@ package com.cse120.ontask;
 
 import com.cse120.ontask.com.cse120.ontask.task.Frequency;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
+import com.cse120.ontask.com.cse120.ontask.task.Project;
 import com.cse120.ontask.com.cse120.ontask.task.Date;
 import com.cse120.ontask.com.cse120.ontask.task.Urgency;
 
@@ -25,7 +26,6 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-//TODO: breaks on update when no fields are changed
 public class AddTaskActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -54,6 +54,12 @@ public class AddTaskActivity extends FragmentActivity
     EditText taskTitle;
     EditText taskDescription;
 
+    //Used only for adding projects
+    boolean isProject;
+
+    //Used only for adding project tasks
+    boolean forProject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,20 +67,24 @@ public class AddTaskActivity extends FragmentActivity
 
         initializeDateSuffixLists();
 
-        Bundle updateData = getIntent().getExtras();
-
+        Bundle extraData = getIntent().getExtras();
+        forProject = false;
+        isProject = false;
+        isUpdating = false;
         //if isUpdating then updating a task
         //else adding a task
-        if(updateData == null){
+        if(extraData == null){
             //Set the Date and Time TextViews to the current date/time
             initializeDateTime();
-
             //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
         }
-        else if(updateData.getBoolean("isUpdating")) {
+        else if(extraData.getBoolean("isUpdating")) {
             //set all of the fields to the current task's information
-            InitializeUpdate(updateData);
+            InitializeUpdate(extraData);
+        }
+        else if(extraData.getBoolean("isProject")){
+            InitializeAddProject();
         }
 
     }
@@ -155,7 +165,13 @@ public class AddTaskActivity extends FragmentActivity
 
             i.putExtra("taskSelected", taskListIndex);
         }
-        else {
+        else if(isProject){
+            Project p = createProjectObject();
+            getTaskManagerApplication().addProject(p);
+            //TODO:link to project list view
+            i = new Intent(this, HomeActivity.class);
+        }
+        else{
             //Add Task Object to the List
             Task t = createTaskObject();
             getTaskManagerApplication().addTask(t);
@@ -194,17 +210,63 @@ public class AddTaskActivity extends FragmentActivity
         Frequency taskFreq = Frequency.ONCE;
 
         //Task ID
-        if (TaskManagerApplication.currentTasks.size() != 0) {
+        if (isUpdating) {
             taskID = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
         }
         else {
-            taskID = 0;
+            taskID = getTaskManagerApplication().taskMaxKey;
+        }
+
+        //Set taskProject_id if it is part of a project
+        int taskProject_id = -1;
+        if(forProject){
+            //Get extra intent data for project object position in list
+            //then get the project id
+            //taskProject_id = ProjectObject().getProject_id();
         }
 
         //Create the Task Object
-        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency);
+        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency, forProject, taskProject_id);
 
         return t;
+    }
+
+    protected Project createProjectObject(){
+        String projectName, projectDescription;
+        int projectKey;
+
+        //Name
+        EditText titleInput = (EditText)findViewById(R.id.taskTitle);
+        if (!isEmpty(titleInput)) {
+            projectName = titleInput.getText().toString();
+        }
+        else
+            projectName = "Untitled";
+
+        //Description
+        EditText descriptionInput = (EditText)findViewById(R.id.taskDescription);
+        if (!isEmpty(descriptionInput)) {
+            projectDescription = descriptionInput.getText().toString();
+        }
+        else
+            projectDescription = "Blank Description";
+
+        //Deadline
+        Date deadline = new Date(year, month, day, hour, minute);
+
+
+        //ID
+        if (isUpdating) {
+            projectKey = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
+        }
+        else {
+            projectKey = getTaskManagerApplication().taskMaxKey;
+        }
+
+        //Create the Task Object
+        Project p = new Project(projectKey, projectName, projectName, projectDescription, deadline, urgency);
+
+        return p;
     }
 
     //Function to interact with the Task Manager Application
@@ -406,5 +468,15 @@ public class AddTaskActivity extends FragmentActivity
 
         Button submitButton = (Button) findViewById(R.id.addTaskButton);
         submitButton.setText("Submit Changes");
+    }
+
+    private void InitializeAddProject(){
+        isProject = true;
+        urgency = Urgency.LOWEST;
+        TextView staticProjectText = (TextView) findViewById(R.id.addTaskText);
+        staticProjectText.setText("Add Project");
+
+        Button submitButton = (Button) findViewById(R.id.addTaskButton);
+        submitButton.setText("Add Project");
     }
 }
