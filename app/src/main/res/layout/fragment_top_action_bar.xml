@@ -4,7 +4,7 @@
     tools:context="com.cse120.ontask.TopActionBarFragment"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="56dp"
+    android:layout_height="50dp"
     android:layout_gravity="center_horizontal|top"
     android:background="@color/light_blue">
 
@@ -12,23 +12,23 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/homePageTitleText"
         android:id="@+id/titleTextView"
-        android:layout_weight="5"
+        android:layout_weight="2"
         android:gravity="center" />
 
     <com.cse120.ontask.custom_shapes.CircleButton
         android:id="@+id/addButton"
-        android:layout_width="match_parent"
-        android:layout_height="64dip"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
         android:layout_centerHorizontal="false"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="8dip"
         android:onClick="addButtonOnClick"
         android:src="@drawable/ic_action_plus"
-        app:cb_color="#99CC00" />
+        app:cb_color="@color/add_button_green"
+        android:layout_weight="0.07" />
     <!-- Original Add Button (Use for prototype if custom circle doesn't work
     <Button
         android:layout_width="0dp"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent" tools:context="com.cse120.ontask.TaskListFragment">
 
     <GridView android:id="@android:id/list" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:numColumns="2" />
+        android:layout_height="match_parent" android:numColumns="2" android:background="@color/task_list"/>
 
     <TextView android:id="@android:id/empty" android:layout_width="match_parent"
         android:layout_height="match_parent" android:gravity="center" />

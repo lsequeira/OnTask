@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="light_blue">#9fe8ee</color>
+    <color name="light_blue">#1ca0c7</color>
     <color name="light_gray">#c3c3c3</color>
     <color name="input_gray">#e1e1e1</color>
+    <color name="task_list">#ffffff</color>
+    <color name="add_button_green">#69ba2d</color>
 </resources>
