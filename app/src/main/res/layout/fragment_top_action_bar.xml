@@ -1,11 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context="com.cse120.ontask.TopActionBarFragment"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="56dp"
     android:layout_gravity="center_horizontal|top"
-    android:background="@color/light_blue">
+    android:background="@color/light_gray">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -18,15 +17,14 @@
             android:layout_weight="5"
             android:gravity="center" />
 
-        <com.cse120.ontask.custom_shapes.CircleButton
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="+"
             android:id="@+id/addButton"
-            android:layout_width="match_parent"
-            android:layout_height="64dip"
-            android:layout_centerHorizontal="false"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dip"
+            android:layout_weight="1"
             android:onClick="addButtonOnClick"
-            android:src="@drawable/ic_action_plus"
-            app:cb_color="#99CC00" />
+            android:clickable="false"
+            android:nestedScrollingEnabled="true" />
 
 </LinearLayout>

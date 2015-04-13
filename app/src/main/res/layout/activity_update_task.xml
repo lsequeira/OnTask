@@ -77,31 +77,33 @@
         android:layout_alignStart="@+id/topActionBar">
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Update Task"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
             android:id="@+id/submitChangesButton"
             android:onClick="SubmitChangesButtonOnClick"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:background="@drawable/updatetaskbutton"
+            android:layout_gravity="center_horizontal" />
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Task"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
             android:id="@+id/deleteButton"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/deletetaskbutton"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue"
+        android:background="@color/light_gray"
         android:id="@+id/topActionBar"
         android:layout_alignParentTop="true">
 

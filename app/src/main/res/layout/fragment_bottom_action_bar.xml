@@ -3,50 +3,50 @@
     android:layout_height="@dimen/bottom_activity_bar_button"
     tools:context="com.cse120.ontask.BottomActionBarFragment"
     android:weightSum="1"
-    android:background="@color/light_blue"
-    android:gravity="bottom">
+    android:gravity="bottom"
+    android:background="@color/light_gray">
 
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="@dimen/bottom_activity_bar_button"
-        android:layout_height="@dimen/bottom_activity_bar_button"
-        android:text="@string/allTasks"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:textSize="@dimen/fontSize"
         android:id="@+id/allTasksButton"
         android:onClick="AllTasksButtonOnClick"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/bottom_activity_button_margin"
-        android:layout_marginStart="@dimen/bottom_activity_button_margin"/>
+        android:layout_marginStart="@dimen/bottom_activity_button_margin"
+        android:background="@drawable/allbutton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="@dimen/bottom_activity_bar_button"
-        android:layout_height="@dimen/bottom_activity_bar_button"
-        android:text="@string/groupTasks"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:textSize="@dimen/fontSize"
         android:id="@+id/groupTasksButton"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
         android:onClick="GroupTasksButtonOnClick"
-        android:layout_marginEnd="@dimen/bottom_activity_button_margin" />
+        android:layout_marginEnd="@dimen/bottom_activity_button_margin"
+        android:background="@drawable/groupbutton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="@dimen/bottom_activity_bar_button"
-        android:layout_height="@dimen/bottom_activity_bar_button"
-        android:text="@string/requestedTasks"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:textSize="@dimen/fontSize"
         android:id="@+id/requestedTasksButton"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_vertical"
         android:onClick="RequestedTasksButtonOnClick"
-        android:layout_marginEnd="@dimen/bottom_activity_button_margin" />
+        android:layout_marginEnd="@dimen/bottom_activity_button_margin"
+        android:background="@drawable/requestsbutton" />
 
     <Button
-        android:layout_width="@dimen/bottom_activity_bar_button"
-        android:layout_height="@dimen/bottom_activity_bar_button"
-        android:text="@string/moreOptionsBottomBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:textSize="@dimen/fontSize"
         android:id="@+id/moreOptionsButton"
-        android:layout_gravity="bottom"
-        android:onClick="MoreOptionsButtonOnClick" />
+        android:layout_gravity="center_vertical"
+        android:onClick="MoreOptionsButtonOnClick"
+        android:background="@drawable/dotbutton" />
 </LinearLayout>
