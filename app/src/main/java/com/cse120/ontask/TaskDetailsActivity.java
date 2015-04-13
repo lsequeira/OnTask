@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.view.View;
 
 
-//TODO:use getTaskManagerApplication from AddTaskActivity in DeleteButtonOnClick
 public class TaskDetailsActivity extends ActionBarActivity {
 
     Task taskDisplayed;
@@ -67,9 +66,7 @@ public class TaskDetailsActivity extends ActionBarActivity {
                 Integer.toString(taskDisplayed.getDeadline().getMonth()) + "/" +
                         Integer.toString(taskDisplayed.getDeadline().getDay()) + "/" +
                         Integer.toString(taskDisplayed.getDeadline().getYear()) +
-                        "\t\t\t\t" +
-                        Integer.toString(taskDisplayed.getDeadline().getHour()) + ":" +
-                        Integer.toString((taskDisplayed.getDeadline().getMinute()))
+                        "\t\t\t\t" + convertTime(taskDisplayed.getDeadline().getHour(), taskDisplayed.getDeadline().getMinute())
         );
     }
 
@@ -111,9 +108,44 @@ public class TaskDetailsActivity extends ActionBarActivity {
 
     public void DeleteButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
-        Application app = (Application) TaskManagerApplication.getContext();
-        TaskManagerApplication a = (TaskManagerApplication) app;
-        a.deleteTask(taskDisplayed, taskListIndex);
+        getTaskManagerApplication().deleteTask(taskDisplayed, taskListIndex);
         startActivity(i);
+    }
+
+    private TaskManagerApplication getTaskManagerApplication() {
+        TaskManagerApplication tma = (TaskManagerApplication) getApplication();
+        return tma;
+    }
+
+    public String convertTime(int hour, int minute) {
+        int hour_ampm = hour%12;
+        String am_pm;
+
+
+        //Find Whether it is AM or PM
+        if (hour >= 12) {
+            am_pm = "PM";
+        }
+        else {
+            am_pm = "AM";
+            //Ima add this comment so the brackets are not in vain
+        }
+
+        //Print correct 12-hour hour
+        if (hour_ampm == 0) {
+            hour_ampm = 12;
+        }
+        else {
+
+        }
+
+        return String.valueOf(hour_ampm) + ":"+ pad(minute) + " " + am_pm;
+
+    }
+    private static String pad(int min) {
+        if (min >= 10)
+            return String.valueOf(min);
+        else
+            return "0" + String.valueOf(min);
     }
 }

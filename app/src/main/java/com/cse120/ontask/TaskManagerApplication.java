@@ -1,41 +1,47 @@
 package com.cse120.ontask;
 
+import com.cse120.ontask.com.cse120.ontask.task.Project;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
 import com.cse120.ontask.database.DBHandler;
 
 import java.util.*;
 import android.app.Application;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 public class TaskManagerApplication extends Application {
 
     public static List<Task> currentTasks;
-    public static Map<String, Task> currentTasks_map = new HashMap<String, Task>();
-    private static Context mContext;
-    public int maxKey;
+    public static List<Project> currentProjects;
+    public int taskMaxKey;
+    public int projectMaxKey;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        this.mContext = this;
-
         DBHandler handler = new DBHandler(this, null, null, 1);
 
+        //load tasks from database to lists
         if (currentTasks == null) {
             currentTasks = handler.loadTasks();
-            if (currentTasks == null) {
+            if (currentTasks != null) {
+                taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
+            }
+            else {
                 currentTasks = new ArrayList<Task>();
+                taskMaxKey = -1;
+            }
+        }
+        if (currentProjects == null) {
+            currentProjects = handler.loadProjects();
+            if (currentProjects != null) {
+                projectMaxKey = currentProjects.get(currentProjects.size()-1).getProject_key();
+            }
+            else {
+                currentProjects = new ArrayList<Project>();
+                taskMaxKey = -1;
             }
         }
         handler.close();
-        //TODO: when adding tasks start from maxKey to assign task id
-        maxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
-    }
-
-    public static Context getContext(){
-        return mContext;
     }
 
     public void setCurrentTasks(ArrayList<Task> currentTasks) {
@@ -58,12 +64,25 @@ public class TaskManagerApplication extends Application {
         handler.close();
     }
 
+    public void addProject(Project project) {
+        DBHandler handler = new DBHandler(this, null, null, 1);
+
+        assert (null != project);
+        //Add to List
+        currentProjects.add(project);
+
+        //Add To Database
+        handler.addProject(project);
+        handler.close();
+    }
+
     public void updateTask(Task t, int taskListIndex){
         //Update task information
-        TaskManagerApplication.currentTasks.get(taskListIndex).setTitle(t.getTitle());
-        TaskManagerApplication.currentTasks.get(taskListIndex).setDescription(t.getDescription());
-        TaskManagerApplication.currentTasks.get(taskListIndex).setUrgency(t.getUrgency());
-        TaskManagerApplication.currentTasks.get(taskListIndex).setDeadline(t.getDeadline());
+        currentTasks.get(taskListIndex).setTitle(t.getTitle());
+        currentTasks.get(taskListIndex).setDescription(t.getDescription());
+        currentTasks.get(taskListIndex).setUrgency(t.getUrgency());
+        currentTasks.get(taskListIndex).setFrequency(t.getFrequency());
+        currentTasks.get(taskListIndex).setDeadline(t.getDeadline());
 
         DBHandler handler = new DBHandler(this, null, null, 1);
         handler.updateTask(t);
@@ -71,7 +90,7 @@ public class TaskManagerApplication extends Application {
     }
 
     public void deleteTask(Task t, int taskListIndex){
-        TaskManagerApplication.currentTasks.remove(taskListIndex);
+        currentTasks.remove(taskListIndex);
         DBHandler handler = new DBHandler(this, null, null, 1);
         handler.deleteTask(t);
         handler.close();

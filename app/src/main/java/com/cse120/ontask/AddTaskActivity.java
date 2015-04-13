@@ -2,6 +2,7 @@ package com.cse120.ontask;
 
 import com.cse120.ontask.com.cse120.ontask.task.Frequency;
 import com.cse120.ontask.com.cse120.ontask.task.Task;
+import com.cse120.ontask.com.cse120.ontask.task.Project;
 import com.cse120.ontask.com.cse120.ontask.task.Date;
 import com.cse120.ontask.com.cse120.ontask.task.Urgency;
 
@@ -25,7 +26,6 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-//TODO: breaks on update when no fields are changed
 public class AddTaskActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -54,34 +54,37 @@ public class AddTaskActivity extends FragmentActivity
     EditText taskTitle;
     EditText taskDescription;
 
+    //Used only for adding projects
+    boolean isProject;
+
+    //Used only for adding project tasks
+    boolean forProject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
         initializeDateSuffixLists();
-        displayDate = (TextView) findViewById(R.id.dateTextView);
 
-        Bundle updateData = getIntent().getExtras();
-
+        Bundle extraData = getIntent().getExtras();
+        forProject = false;
+        isProject = false;
+        isUpdating = false;
         //if isUpdating then updating a task
         //else adding a task
-        if(updateData == null){
+        if(extraData == null){
+            //Set the Date and Time TextViews to the current date/time
             initializeDateTime();
-
-            //initialize urgency to LOWEST
-            //in case urgency buttons left unchecked
+            //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
-
-            //Update Date and Time Text Views
-
-            displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
-
-            updateTime(hour, minute);
         }
-        else if(updateData.getBoolean("isUpdating")) {
+        else if(extraData.getBoolean("isUpdating")) {
             //set all of the fields to the current task's information
-            InitializeUpdate(updateData);
+            InitializeUpdate(extraData);
+        }
+        else if(extraData.getBoolean("isProject")){
+            InitializeAddProject();
         }
 
     }
@@ -162,7 +165,13 @@ public class AddTaskActivity extends FragmentActivity
 
             i.putExtra("taskSelected", taskListIndex);
         }
-        else {
+        else if(isProject){
+            Project p = createProjectObject();
+            getTaskManagerApplication().addProject(p);
+            //TODO:link to project list view
+            i = new Intent(this, HomeActivity.class);
+        }
+        else{
             //Add Task Object to the List
             Task t = createTaskObject();
             getTaskManagerApplication().addTask(t);
@@ -176,6 +185,7 @@ public class AddTaskActivity extends FragmentActivity
 
     protected Task createTaskObject() {
         String taskName, taskDescription;
+        int taskID;
 
         //Task Name
         EditText titleInput = (EditText)findViewById(R.id.taskTitle);
@@ -200,12 +210,63 @@ public class AddTaskActivity extends FragmentActivity
         Frequency taskFreq = Frequency.ONCE;
 
         //Task ID
-        int taskID = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
+        if (isUpdating) {
+            taskID = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
+        }
+        else {
+            taskID = getTaskManagerApplication().taskMaxKey;
+        }
+
+        //Set taskProject_id if it is part of a project
+        int taskProject_id = -1;
+        if(forProject){
+            //Get extra intent data for project object position in list
+            //then get the project id
+            //taskProject_id = ProjectObject().getProject_id();
+        }
 
         //Create the Task Object
-        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency);
+        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency, forProject, taskProject_id);
 
         return t;
+    }
+
+    protected Project createProjectObject(){
+        String projectName, projectDescription;
+        int projectKey;
+
+        //Name
+        EditText titleInput = (EditText)findViewById(R.id.taskTitle);
+        if (!isEmpty(titleInput)) {
+            projectName = titleInput.getText().toString();
+        }
+        else
+            projectName = "Untitled";
+
+        //Description
+        EditText descriptionInput = (EditText)findViewById(R.id.taskDescription);
+        if (!isEmpty(descriptionInput)) {
+            projectDescription = descriptionInput.getText().toString();
+        }
+        else
+            projectDescription = "Blank Description";
+
+        //Deadline
+        Date deadline = new Date(year, month, day, hour, minute);
+
+
+        //ID
+        if (isUpdating) {
+            projectKey = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
+        }
+        else {
+            projectKey = getTaskManagerApplication().taskMaxKey;
+        }
+
+        //Create the Task Object
+        Project p = new Project(projectKey, projectName, projectName, projectDescription, deadline, urgency);
+
+        return p;
     }
 
     //Function to interact with the Task Manager Application
@@ -226,30 +287,13 @@ public class AddTaskActivity extends FragmentActivity
 
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
+        //Initialize the date attributes
+        setDate(day, month+1, year);
+        displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
         String suffix = getSuffix(day);
         Toast.makeText(this, monthsArray[month] + " " +
                 String.valueOf(day) + suffix + " "
                 + String.valueOf(year), Toast.LENGTH_SHORT).show();
-        //Initialize the date attributes
-        setDate(day, month, year);
-        displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
-    }
-
-    public void setDate(int day, int month, int year) {
-        this.day = day;
-        this.month = month;
-        this.year = year;
-    }
-
-
-    public void initializeDateTime() {
-        //Initialize Date and Time
-        final Calendar calendar = Calendar.getInstance();
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        month = calendar.get(Calendar.MONTH);
-        year = calendar.get(Calendar.YEAR);
     }
 
     public void initializeDateSuffixLists() {
@@ -291,16 +335,15 @@ public class AddTaskActivity extends FragmentActivity
     }
 
     public void onTimeSet(TimePicker view, int hour, int minute) {
-        updateTime(hour, minute);
-        Toast.makeText(this, new StringBuilder().append("Time chosen is ").append(displayTime.getText()), Toast.LENGTH_SHORT).show();
+        setTime(hour,minute);
+        displayTime.setText(convertTime(hour,minute));
+        Toast.makeText(this, new StringBuilder().append("Time chosen is ").append(convertTime(hour,minute)), Toast.LENGTH_SHORT).show();
     }
 
-    //Update the dateTextView field and convert from 24-hr to 12-hr format
-    public void updateTime(int hour, int minute) {
+    //Convert from 24-hr to 12-hr format and display the TextView
+    public String convertTime(int hour, int minute) {
         int hour_ampm = hour%12;
         String am_pm;
-
-        displayTime = (TextView)findViewById(R.id.timeTextView);
 
         //Find Whether it is AM or PM
         if (hour >= 12) {
@@ -318,8 +361,7 @@ public class AddTaskActivity extends FragmentActivity
         else {
 
         }
-
-        displayTime.setText(new StringBuilder().append(hour_ampm).append(":").append(pad(minute)).append(" ").append(am_pm));
+        return String.valueOf(hour_ampm) + ":"+ pad(minute) + " " + am_pm;
     }
 
     //Add padding to minutes
@@ -330,6 +372,45 @@ public class AddTaskActivity extends FragmentActivity
             return "0" + String.valueOf(min);
     }
     /* End Time Picker Functionality */
+
+    /* Begin Date and Time Initializer Functions */
+    public void initializeDateTime() {
+        //Initialize Date and Time
+        final Calendar calendar = Calendar.getInstance();
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH)+1;
+        year = calendar.get(Calendar.YEAR);
+
+        //Date
+        displayDate = (TextView)findViewById(R.id.dateTextView);
+        displayDate.setText(new StringBuilder().append(month).append("/").append(day).append("/").append(year));
+        //Time
+        displayTime = (TextView)findViewById(R.id.timeTextView);
+        displayTime.setText(convertTime(hour,minute));
+    }
+
+    public void setDate(int day, int month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
+    public void setTime(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    public void setDateTime(int day, int month, int year, int hour, int minute) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.hour = hour;
+        this.minute = minute;
+    }
+    /* End Date and Time Initializer Functions */
+
 
     private void InitializeUpdate(Bundle updateData){
         isUpdating = updateData.getBoolean("isUpdating");
@@ -345,38 +426,41 @@ public class AddTaskActivity extends FragmentActivity
         taskDescription = (EditText) findViewById(R.id.taskDescription);
         taskDescription.setText(taskToUpdate.getDescription());
 
-        TextView taskDate = (TextView) findViewById(R.id.dateTextView);
-        taskDate.setText(new StringBuilder().append(taskToUpdate.getDeadline().getMonth()).append("/").append(taskToUpdate.getDeadline().getDay()).append("/").append(taskToUpdate.getDeadline().getYear()));
+        setDateTime(taskToUpdate.getDeadline().getDay(),taskToUpdate.getDeadline().getMonth(), taskToUpdate.getDeadline().getYear(),
+                taskToUpdate.getDeadline().getHour(), taskToUpdate.getDeadline().getMinute());
 
-        day = taskToUpdate.getDeadline().getDay();
-        month = taskToUpdate.getDeadline().getMonth();
-        year = taskToUpdate.getDeadline().getYear();
-        hour = taskToUpdate.getDeadline().getHour();
-        minute = taskToUpdate.getDeadline().getMinute();
+        displayDate = (TextView) findViewById(R.id.dateTextView);
+        displayDate.setText(new StringBuilder().append(taskToUpdate.getDeadline().getMonth()).append("/").append(taskToUpdate.getDeadline().getDay()).append("/").append(taskToUpdate.getDeadline().getYear()));
 
-        updateTime(taskToUpdate.getDeadline().getHour(), taskToUpdate.getDeadline().getMinute());
+        displayTime = (TextView)findViewById(R.id.timeTextView);
+        displayTime.setText(convertTime(taskToUpdate.getDeadline().getHour(),taskToUpdate.getDeadline().getMinute()));
 
         RadioButton taskUrgency;
         switch (taskToUpdate.getUrgency()){
             case LOWEST:
                 taskUrgency = (RadioButton) findViewById(R.id.radio_lowest);
                 taskUrgency.setChecked(true);
+                urgency = Urgency.LOWEST;
                 break;
             case LOW:
                 taskUrgency = (RadioButton) findViewById(R.id.radio_low);
                 taskUrgency.setChecked(true);
+                urgency = Urgency.LOW;
                 break;
             case MEDIUM:
                 taskUrgency = (RadioButton) findViewById(R.id.radio_medium);
                 taskUrgency.setChecked(true);
+                urgency = Urgency.MEDIUM;
                 break;
             case HIGH:
                 taskUrgency = (RadioButton) findViewById(R.id.radio_high);
                 taskUrgency.setChecked(true);
+                urgency = Urgency.HIGH;
                 break;
             case HIGHEST:
                 taskUrgency = (RadioButton) findViewById(R.id.radio_highest);
                 taskUrgency.setChecked(true);
+                urgency = Urgency.HIGHEST;
                 break;
             default:
                 break;
@@ -384,5 +468,15 @@ public class AddTaskActivity extends FragmentActivity
 
         Button submitButton = (Button) findViewById(R.id.addTaskButton);
         submitButton.setText("Submit Changes");
+    }
+
+    private void InitializeAddProject(){
+        isProject = true;
+        urgency = Urgency.LOWEST;
+        TextView staticProjectText = (TextView) findViewById(R.id.addTaskText);
+        staticProjectText.setText("Add Project");
+
+        Button submitButton = (Button) findViewById(R.id.addTaskButton);
+        submitButton.setText("Add Project");
     }
 }
