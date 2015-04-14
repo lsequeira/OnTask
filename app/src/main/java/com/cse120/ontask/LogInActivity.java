@@ -8,7 +8,10 @@ import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
 
-public class LogIn extends ActionBarActivity {
+import com.cse120.ontask.HomeActivity;
+import com.cse120.ontask.R;
+
+public class LogInActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

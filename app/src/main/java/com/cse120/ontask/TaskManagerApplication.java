@@ -1,7 +1,7 @@
 package com.cse120.ontask;
 
-import com.cse120.ontask.com.cse120.ontask.task.Project;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
+import com.cse120.ontask.task_attributes.Project;
+import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.database.DBHandler;
 
 import java.util.*;

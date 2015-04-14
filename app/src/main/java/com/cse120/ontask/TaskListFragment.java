@@ -8,13 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import com.cse120.ontask.com.cse120.ontask.task.Task;
-import com.cse120.ontask.dummy.DummyContent;
-import com.cse120.ontask.dummy.DummyItem;
 
 /**
  * A fragment representing a list of Items.

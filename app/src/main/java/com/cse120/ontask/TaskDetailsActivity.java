@@ -1,9 +1,12 @@
 package com.cse120.ontask;
 
 
-import com.cse120.ontask.com.cse120.ontask.task.Task;
+import com.cse120.ontask.AddTaskActivity;
+import com.cse120.ontask.HomeActivity;
+import com.cse120.ontask.R;
+import com.cse120.ontask.TaskManagerApplication;
+import com.cse120.ontask.task_attributes.Task;
 
-import android.app.Application;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;

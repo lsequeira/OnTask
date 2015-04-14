@@ -7,6 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 
+import com.cse120.ontask.AddTaskActivity;
+import com.cse120.ontask.HomeActivity;
+import com.cse120.ontask.R;
+
 public class ChooseTaskOrProject extends ActionBarActivity {
 
     @Override

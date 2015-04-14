@@ -1,19 +1,15 @@
 package com.cse120.ontask;
 
 
-import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cse120.ontask.com.cse120.ontask.task.Task;
-
-import java.io.Serializable;
 
 public class HomeActivity extends FragmentActivity implements BottomActionBarFragment.BottomActionBarListener,
         TopActionBarFragment.TopActionBarListener, TaskListFragment.OnFragmentInteractionListener {
@@ -21,6 +17,7 @@ public class HomeActivity extends FragmentActivity implements BottomActionBarFra
     //changes as the bottom action bar buttons are pressed
     //reflects which list is currently displayed
     private TextView currentListDisplayed;
+    DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +62,13 @@ public class HomeActivity extends FragmentActivity implements BottomActionBarFra
     public void addButtonOnClick(View v){
         Intent i = new Intent(this, ChooseTaskOrProject.class);
         startActivity(i);
+    }
+
+    public void navButtonOnClick(View v) {
+       // mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //mDrawerLayout.openDrawer(mDrawerLayout);
+        // calling onPrepareOptionsMenu() to hide action bar icons
+        //invalidateOptionsMenu();
     }
 
 }
