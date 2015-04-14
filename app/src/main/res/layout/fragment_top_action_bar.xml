@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.cse120.ontask.TopActionBarFragment"
@@ -20,23 +20,32 @@
         android:layout_marginTop="15dp" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/homePageTitleText"
         android:id="@+id/titleTextView"
         android:layout_weight="2"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <com.cse120.ontask.custom_shapes.CircleButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="53dp"
-        android:layout_centerHorizontal="false"
-        android:layout_alignParentBottom="true"
         android:onClick="addButtonOnClick"
         android:src="@drawable/ic_action_plus"
         app:cb_color="@color/add_button_green"
-        android:layout_weight="0.07" />
+        android:layout_weight="0.07"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
-</LinearLayout>
+   <FrameLayout
+       android:id="@+id/content_parent"
+       android:layout_width="match_parent"
+       android:layout_height="fill_parent"
+       android:layout_below="@+id/titleTextView"
+       android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
