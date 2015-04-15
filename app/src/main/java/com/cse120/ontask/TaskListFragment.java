@@ -164,11 +164,15 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         switch (filter){
             case 0:
                 mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
-                System.out.println("chk all tasks");
                 break;
             case 1:
                 mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.currentProjects);
-                System.out.println("chk project");
+                break;
+            case 2:
+                mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.completedTasks);
+                break;
+            case 3:
+                mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.completedProjects);
                 break;
         }
         mListView.setAdapter(mAdapter);

@@ -7,14 +7,16 @@ import com.cse120.ontask.database.DBHandler;
 import java.util.*;
 import android.app.Application;
 
+//TODO: decide whether to have a separate list for completed/deleted tasks/projects
 public class TaskManagerApplication extends Application {
 
     public static List<Task> currentTasks;
+    public static List<Task> completedTasks;
     public static List<Project> currentProjects;
+    public static List<Project> completedProjects;
+
     public int taskMaxKey;
     public int projectMaxKey;
-    public String user_id;
-    public String fullname;
 
     @Override
     public void onCreate() {
@@ -22,9 +24,10 @@ public class TaskManagerApplication extends Application {
 
         DBHandler handler = new DBHandler(this, null, null, 1);
 
-        //load tasks from database to lists
+        /*--------------Load Tasks--------------*/
+        //load current tasks from database to current task list
         if (currentTasks == null) {
-            currentTasks = handler.loadTasks();
+            currentTasks = handler.loadTasks(false);
             if (currentTasks != null) {
                 taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
             }
@@ -33,6 +36,20 @@ public class TaskManagerApplication extends Application {
                 taskMaxKey = -1;
             }
         }
+        //load completed tasks
+        if (completedTasks == null) {
+            completedTasks = handler.loadTasks(true);
+            if (completedTasks != null) {
+                //taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
+            }
+            else {
+                completedTasks = new ArrayList<Task>();
+                //taskMaxKey = -1;
+            }
+        }
+
+        //TODO:if completed tasks work do same for completed projects
+        /*--------------Load Projects--------------*/
         if (currentProjects == null) {
             currentProjects = handler.loadProjects();
             if (currentProjects != null) {
@@ -54,16 +71,21 @@ public class TaskManagerApplication extends Application {
         return currentTasks;
     }
 
-    public List<Project> getCurrentProjects() {
-        return currentProjects;
+    public List<Task> getCompletedTasks() {
+        return completedTasks;
     }
 
     public void addTask(Task task) {
         DBHandler handler = new DBHandler(this, null, null, 1);
 
         assert (null != task);
-        //Add to List
-        currentTasks.add(task);
+        //Add to correct List
+        if(task.getIsCompleted()) {
+            completedTasks.add(task);
+        }
+        else{
+            currentTasks.add(task);
+        }
 
         //Add To Database
         handler.addTask(task);
@@ -89,6 +111,7 @@ public class TaskManagerApplication extends Application {
         currentTasks.get(taskListIndex).setUrgency(t.getUrgency());
         currentTasks.get(taskListIndex).setFrequency(t.getFrequency());
         currentTasks.get(taskListIndex).setDeadline(t.getDeadline());
+        currentTasks.get(taskListIndex).setIsCompleted(t.getIsCompleted());
 
         DBHandler handler = new DBHandler(this, null, null, 1);
         handler.updateTask(t);

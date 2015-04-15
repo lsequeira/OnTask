@@ -15,6 +15,7 @@ public class Task implements  Serializable{
     private UserId user_id;
     private boolean forProject;
     private int taskProject_id;
+    private boolean isComplete;
 
     //For Debugging Purposes
     public Task(String title, String description, Date deadline, Urgency urgency) {
@@ -26,7 +27,7 @@ public class Task implements  Serializable{
         user_id = new User().GetId();
     }
 
-    public Task(int task_id, String title, String description, Frequency frequency, Date deadline, Urgency urgency, boolean forProject, int taskProject_id)
+    public Task(int task_id, String title, String description, Frequency frequency, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
     {
         this.task_id = task_id;
         this.title = title;
@@ -37,6 +38,7 @@ public class Task implements  Serializable{
         user_id = new User().GetId();
         this.forProject = forProject;
         this.taskProject_id = taskProject_id;
+        this.isComplete = isComplete;
     }
 
 
@@ -94,6 +96,9 @@ public class Task implements  Serializable{
     public int getTaskProject_id(){
         return taskProject_id;
     }
+    public boolean getIsCompleted(){
+        return isComplete;
+    }
     //End Getters
 
     //Setters
@@ -123,6 +128,9 @@ public class Task implements  Serializable{
     }
     public void setTaskProject_id(int taskProject_id){
         this.taskProject_id = taskProject_id;
+    }
+    public void setIsCompleted(boolean isComplete){
+        this.isComplete = isComplete;
     }
     //End Setters
 }

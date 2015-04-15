@@ -5,6 +5,7 @@ import com.cse120.ontask.AddTaskActivity;
 import com.cse120.ontask.HomeActivity;
 import com.cse120.ontask.R;
 import com.cse120.ontask.TaskManagerApplication;
+import com.cse120.ontask.database.DBHandler;
 import com.cse120.ontask.task_attributes.Task;
 
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +16,8 @@ import android.content.Intent;
 import android.widget.TextView;
 import android.view.View;
 
-
+//TODO: need to specify which item is being displayed (task/proj)
+//taskListIndex only refers to currentTask list causes indexing issues when dealing with other lists
 public class TaskDetailsActivity extends ActionBarActivity {
 
     Task taskDisplayed;
@@ -101,6 +103,23 @@ public class TaskDetailsActivity extends ActionBarActivity {
         boolean isUpdating = true;
         i.putExtra("isUpdating", isUpdating);
         i.putExtra("taskToUpdate", taskListIndex);
+        startActivity(i);
+    }
+
+    public void CompletedButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        TaskManagerApplication app = new TaskManagerApplication();
+        Task t;
+        //add current task to completed list and remove from current list
+        app.getCurrentTasks().get(taskListIndex).setIsCompleted(true);
+        t = app.getCurrentTasks().get(taskListIndex);
+        app.getCompletedTasks().add(t);
+        app.getCurrentTasks().remove(taskListIndex);
+
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.updateTask(t);
+        handler.close();
+
         startActivity(i);
     }
 

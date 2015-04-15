@@ -81,10 +81,20 @@
             android:onClick="DeleteButtonOnClick"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/deletetaskbutton"
             android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Completed"
+            android:id="@+id/completeButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:nestedScrollingEnabled="false"
+            android:onClick="CompletedButtonOnClick" />
     </LinearLayout>
 
     <LinearLayout

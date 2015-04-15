@@ -13,9 +13,10 @@ public class Project {
     private Vector<User> memberList;
     private Vector<User> adminList;
     //private List<Task> taskList;
+    private boolean isCompleted;
 
     public Project(int project_key, String title, String project_id, String description, com.cse120.ontask.task_attributes.Date deadline,
-                   Urgency urgency){
+                   Urgency urgency, boolean isCompleted){
         this.project_key = project_key;
         this.project_id = project_id;
         this.title = title;
@@ -26,6 +27,7 @@ public class Project {
         memberList = new Vector<User>();
         adminList = new Vector<User>();
         //this.taskList = taskList;
+        this.isCompleted = isCompleted;
     }
 
     /*public Project(){
@@ -68,6 +70,9 @@ public class Project {
     public String getProject_id(){
         return project_id;
     }
+    public boolean getIsCompleted(){
+        return isCompleted;
+    }
     /*public Vector<Task> getTaskList(){
         return (Vector<Task>) taskList;
     }*/
@@ -100,6 +105,9 @@ public class Project {
     }
     public void setProject_id(String project_id){
         this.project_id = project_id;
+    }
+    public void setIsCompleted(boolean isCompleted){
+        this.isCompleted = isCompleted;
     }
     /*public void SetTaskList(Vector<Task> taskList){
         this.taskList = taskList;

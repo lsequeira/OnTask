@@ -226,8 +226,11 @@ public class AddTaskActivity extends FragmentActivity
             //taskProject_id = ProjectObject().getProject_id();
         }
 
+        //Added activities default to !isComplete
+        boolean isComplete = false;
+
         //Create the Task Object
-        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency, forProject, taskProject_id);
+        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency, forProject, taskProject_id, isComplete);
 
         return t;
     }
@@ -264,8 +267,11 @@ public class AddTaskActivity extends FragmentActivity
             projectKey = getTaskManagerApplication().taskMaxKey;
         }
 
+        //Added project is defaulted to !isComplete
+        boolean isComplete = false;
+
         //Create the Task Object
-        Project p = new Project(projectKey, projectName, projectName, projectDescription, deadline, urgency);
+        Project p = new Project(projectKey, projectName, projectName, projectDescription, deadline, urgency, isComplete);
 
         return p;
     }
