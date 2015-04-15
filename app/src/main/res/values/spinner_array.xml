@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="spinner_array">
-        <item>All Tasks</item>
-        <item>All Projects</item>
-        <item>My Tasks</item>
+        <item>Current Tasks</item>
+        <item>Current Projects</item>
+        <item>Completed Tasks</item>
+        <item>Completed Projects</item>
         <item>Yolo</item>
     </string-array>
 </resources>

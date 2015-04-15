@@ -77,6 +77,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
+
         mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
     }
 
@@ -160,6 +161,21 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     //Filter the Task List here
     public void taskListView(int filter) {
         System.out.println("Pos: " + filter);
+        switch (filter){
+            case 0:
+                mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
+                break;
+            case 1:
+                mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.currentProjects);
+                break;
+            case 2:
+                mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.completedTasks);
+                break;
+            case 3:
+                mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.completedProjects);
+                break;
+        }
+        mListView.setAdapter(mAdapter);
         //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 

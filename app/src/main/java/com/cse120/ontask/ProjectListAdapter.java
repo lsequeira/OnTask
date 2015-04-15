@@ -9,16 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.*;
 
-import com.cse120.ontask.task_attributes.Task;
-
-import org.w3c.dom.Text;
+import com.cse120.ontask.task_attributes.Project;
 
 
-public class TaskListAdapter extends ArrayAdapter{
+
+public class ProjectListAdapter extends ArrayAdapter{
 
     public static final String LOWEST_URGENCY_COLOR = "#12dbf9";
     public static final String LOW_URGENCY_COLOR = "#61f007";
@@ -27,8 +25,8 @@ public class TaskListAdapter extends ArrayAdapter{
     public static final String HIGHEST_URGENCY_COLOR = "#fb1010";
 
 
-    public TaskListAdapter(Context context, List<Task> currentTasks) {
-        super(context, R.layout.task_list_view, currentTasks);
+    public ProjectListAdapter(Context context, List<Project> currentProjects) {
+        super(context, R.layout.task_list_view, currentProjects);
     }
 
     @Override
@@ -36,13 +34,13 @@ public class TaskListAdapter extends ArrayAdapter{
         LayoutInflater taskListInflater = LayoutInflater.from(getContext());
         View taskListView = taskListInflater.inflate(R.layout.task_list_view, parent, false);
 
-        Task taskSelected = (Task) getItem(position);
+        Project projectSelected = (Project) getItem(position);
         TextView taskTitle = (TextView) taskListView.findViewById(R.id.taskTitle);
         TextView taskDeadline = (TextView) taskListView.findViewById(R.id.taskDeadline);
         TextView taskUrgency = (TextView) taskListView.findViewById(R.id.urgencyColor);
 
         //set urgency color based on task's urgency value
-        switch (taskSelected.getUrgency()){
+        switch (projectSelected.getUrgency()){
             case LOWEST:
                 taskUrgency.setBackgroundColor(Color.parseColor(LOWEST_URGENCY_COLOR));
                 break;
@@ -63,14 +61,14 @@ public class TaskListAdapter extends ArrayAdapter{
         }
 
         //set task title text
-        taskTitle.setText(taskSelected.getTitle());
+        taskTitle.setText(projectSelected.getTitle());
 
         //set task deadline text
         taskDeadline.setText(
-                Integer.toString(taskSelected.getDeadline().getMonth()) + "/" +
-                        Integer.toString(taskSelected.getDeadline().getDay()) + "/" +
-                        Integer.toString(taskSelected.getDeadline().getYear()) +
-                        "\t\t\t\t"+ convertTime(taskSelected.getDeadline().getHour(), taskSelected.getDeadline().getMinute())
+                Integer.toString(projectSelected.getDeadline().getMonth()) + "/" +
+                        Integer.toString(projectSelected.getDeadline().getDay()) + "/" +
+                        Integer.toString(projectSelected.getDeadline().getYear()) +
+                        "\t\t\t\t"+ convertTime(projectSelected.getDeadline().getHour(), projectSelected.getDeadline().getMinute())
         );
         return  taskListView;
     }

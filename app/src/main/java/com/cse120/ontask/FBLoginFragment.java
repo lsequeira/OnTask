@@ -71,6 +71,12 @@ public class FBLoginFragment extends Fragment {
         mProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                if(newProfile != null){
+                   // mListener.switchActivity();
+                }
+                else{
+
+                }
             }
         };
 

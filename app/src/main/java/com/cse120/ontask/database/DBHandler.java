@@ -31,6 +31,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_TASK_URGENCY = "urgency";
     public static final String COLUMN_TASK_FOR_PROJECT = "for_project";
     public static final String COLUMN_TASK_PROJECT_ID = "project_id";
+    public static final String COLUMN_TASK_IS_COMPLETE = "is_complete";
 
     //Project
     public static final String COLUMN_PROJECT_KEY = "project_key";
@@ -39,6 +40,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_PROJECT_DESCRIPTION = "description";
     public static final String COLUMN_PROJECT_DEADLINE = "deadline";
     public static final String COLUMN_PROJECT_URGENCY = "urgency";
+    public static final String COLUMN_PROJECT_IS_COMPLETE = "is_complete";
     /*-----------Table Columns END--------------*/
 
 
@@ -60,7 +62,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_TASK_DEADLINE + " TEXT," +
                 COLUMN_TASK_URGENCY + " INTEGER, " +
                 COLUMN_TASK_FOR_PROJECT + " BOOLEAN, " +
-                COLUMN_TASK_PROJECT_ID + " INTEGER" +
+                COLUMN_TASK_PROJECT_ID + " INTEGER, " +
+                COLUMN_TASK_IS_COMPLETE + " BOOLEAN " +
                 ")";
         db.execSQL(CREATE_TASK_TABLE);
 
@@ -70,7 +73,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_PROJECT_ID + " TEXT, " +
                 COLUMN_PROJECT_DESCRIPTION + " TEXT," +
                 COLUMN_PROJECT_DEADLINE + " TEXT," +
-                COLUMN_PROJECT_URGENCY + " INTEGER " +
+                COLUMN_PROJECT_URGENCY + " INTEGER, " +
+                COLUMN_PROJECT_IS_COMPLETE + " BOOLEAN " +
                 ")";
         db.execSQL(CREATE_PROJECT_TABLE);
     }
@@ -91,6 +95,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TASK_URGENCY, urgencyToIntegerConvert(task.getUrgency()));
         values.put(COLUMN_TASK_FOR_PROJECT, task.getForProject());
         values.put(COLUMN_TASK_PROJECT_ID, task.getTaskProject_id());
+        values.put(COLUMN_TASK_IS_COMPLETE, task.getIsCompleted());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -108,6 +113,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PROJECT_DESCRIPTION, project.getDescription());
         values.put(COLUMN_PROJECT_DEADLINE, dateToStringConvert(project.getDeadline()));
         values.put(COLUMN_PROJECT_URGENCY, urgencyToIntegerConvert(project.getUrgency()));
+        values.put(COLUMN_PROJECT_IS_COMPLETE, project.getIsCompleted());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -122,6 +128,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TASK_FREQUENCY, frequencyToStringConvert(task));
         values.put(COLUMN_TASK_DEADLINE, dateToStringConvert(task.getDeadline()));
         values.put(COLUMN_TASK_URGENCY, urgencyToIntegerConvert(task.getUrgency()));
+        values.put(COLUMN_TASK_IS_COMPLETE, task.getIsCompleted());
 
         String whereClause = COLUMN_TASK_KEY + "=" + task.getTask_id();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -143,7 +150,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Task> loadTasks() {
+    public ArrayList<Task> loadTasks(boolean loadCompletedTasks) {
         ArrayList<Task> DBTasks = new ArrayList<Task>();
         String query = "SELECT * FROM " + TASK_TABLE;
 
@@ -168,8 +175,26 @@ public class DBHandler extends SQLiteOpenHelper {
             }
 
             int taskProject_id = Integer.parseInt(cursor.getString(7));
-            Task currentTask = new Task(key, title, description, frequency, deadline, urgency, forProject, taskProject_id);
-            DBTasks.add(currentTask);
+
+            //check if the task being loaded is complete
+            int isCompleteCheck = Integer.parseInt(cursor.getString(8));
+            boolean isComplete;
+            Task currentTask;
+            if(isCompleteCheck == 1) {
+                isComplete = true;
+            }
+            else{
+                isComplete = false;
+            }
+
+            //add task to correct list
+            currentTask = new Task(key, title, description, frequency, deadline, urgency, forProject, taskProject_id, isComplete);
+            if(loadCompletedTasks && isComplete){
+                DBTasks.add(currentTask);
+            }
+            else if(!loadCompletedTasks && !isComplete){
+                DBTasks.add(currentTask);
+            }
             cursor.moveToNext();
         }
         cursor.close();
@@ -182,6 +207,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return DBTasks;
     }
 
+    //TODO:implement load complete projects just like tasks
     public ArrayList<Project> loadProjects() {
         ArrayList<Project> DBProjects = new ArrayList<Project>();
         String query = "SELECT * FROM " + PROJECT_TABLE;
@@ -199,8 +225,17 @@ public class DBHandler extends SQLiteOpenHelper {
             //Frequency frequency = stringToFrequencyConvert(cursor.getString(4));
             Date deadline = stringToDateConvert(cursor.getString(4));
             Urgency urgency = integerToUrgencyConvert(Integer.parseInt(cursor.getString(5)));
-            Project currentProject = new Project(key, title, id, description, deadline, urgency);
-            DBProjects.add(currentProject);
+
+            //check if the task being loaded is complete
+            int isCompleteCheck = Integer.parseInt(cursor.getString(6));
+            boolean isComplete = false;
+            if(isCompleteCheck == 1) {
+                isComplete = true;
+            }
+            else{
+                Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete);
+                DBProjects.add(currentProject);
+            }
             cursor.moveToNext();
         }
         cursor.close();

@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cse120.ontask.TaskDetailsActivity"
-    android:background="@color/light_gray">
+    tools:context="com.cse120.ontask.TaskDetailsActivity">
 
     <TextView
         android:layout_width="fill_parent"
@@ -81,27 +80,38 @@
             android:onClick="DeleteButtonOnClick"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/deletetaskbutton"
             android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="38dp"
+            android:id="@+id/completeButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/completedbutton"
+            android:nestedScrollingEnabled="false"
+            android:onClick="CompletedButtonOnClick" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
+        android:background="@color/light_blue"
         android:id="@+id/topActionBar"
         android:layout_alignParentTop="true">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:text="Back"
+            android:background="@drawable/backbutton"
             android:id="@+id/backButton"
             android:onClick="BackButtonOnClick"
-            android:layout_marginLeft="20dp" />
+            android:layout_margin="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -109,7 +119,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Task Details"
             android:id="@+id/topActionBarTitle"
-            android:layout_marginLeft="40dp" />
+            android:layout_marginLeft="85dp"
+            android:paddingTop="10dp" />
 
     </LinearLayout>
 
