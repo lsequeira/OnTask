@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.cse120.ontask.com.cse120.ontask.task.Task;
-import com.cse120.ontask.dummy.DummyContent;
-import com.cse120.ontask.dummy.DummyItem;
+import com.cse120.ontask.task_attributes.Task;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -77,6 +77,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
+
         mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
     }
 
@@ -84,6 +85,12 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item, container, false);
+
+        TopActionBarFragment childFrag = new TopActionBarFragment();
+        childFrag.setArguments(getArguments());
+
+        this.getChildFragmentManager().beginTransaction().add(R.id.content_parent,childFrag).commit();
+
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -149,6 +156,23 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(int taskListIndex);
+    }
+
+    //Filter the Task List here
+    public void taskListView(int filter) {
+        System.out.println("Pos: " + filter);
+        switch (filter){
+            case 0:
+                mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
+                System.out.println("chk all tasks");
+                break;
+            case 1:
+                mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.currentProjects);
+                System.out.println("chk project");
+                break;
+        }
+        mListView.setAdapter(mAdapter);
+        //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 
 }

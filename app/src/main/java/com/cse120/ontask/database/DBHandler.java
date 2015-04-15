@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.cse120.ontask.com.cse120.ontask.task.Date;
-import com.cse120.ontask.com.cse120.ontask.task.Frequency;
-import com.cse120.ontask.com.cse120.ontask.task.Project;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
-import com.cse120.ontask.com.cse120.ontask.task.Urgency;
+import com.cse120.ontask.task_attributes.Date;
+import com.cse120.ontask.task_attributes.Frequency;
+import com.cse120.ontask.task_attributes.Project;
+import com.cse120.ontask.task_attributes.Task;
+import com.cse120.ontask.task_attributes.Urgency;
 
 import java.util.ArrayList;
 
@@ -46,6 +46,7 @@ public class DBHandler extends SQLiteOpenHelper {
                      SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
 
+        //Delete Database with line below
         //context.deleteDatabase(DATABASE_NAME);
     }
 

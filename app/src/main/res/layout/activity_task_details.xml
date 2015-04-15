@@ -71,35 +71,27 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/topActionBar">
+        android:layout_alignStart="@+id/topActionBar"
+        android:id="@+id/linearLayout2">
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Update Task"
-            android:id="@+id/updateButton"
-            android:onClick="UpdateButtonOnClick"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Task"
+            android:layout_width="100dp"
+            android:layout_height="38dp"
             android:id="@+id/deleteButton"
             android:onClick="DeleteButtonOnClick"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/deletetaskbutton"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue"
+        android:background="@color/light_gray"
         android:id="@+id/topActionBar"
         android:layout_alignParentTop="true">
 
@@ -139,5 +131,17 @@
         android:layout_below="@+id/topActionBar"
         android:layout_alignStart="@+id/taskTitle"
         android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="38dp"
+        android:id="@+id/updateButton"
+        android:onClick="UpdateButtonOnClick"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/updatetaskbutton"
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

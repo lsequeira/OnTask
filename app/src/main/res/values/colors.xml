@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="light_blue">#9fe8ee</color>
+    <!--Task Application Colors-->
+    <color name="light_blue">#1ca0c7</color>
     <color name="light_gray">#c3c3c3</color>
     <color name="input_gray">#e1e1e1</color>
+    <color name="task_list">#ffffff</color>
+    <color name="add_button_green">#69ba2d</color>
+    
+    <!--Navigation Drawer Colors-->
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#7f1ca0c7</color>
+    <color name="list_background_transparent">#7f0b3c4b</color>
+    <color name="list_background_pressed">#7f69ba2d</color>
+    <color name="list_divider">#a42d2d2d</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
 </resources>

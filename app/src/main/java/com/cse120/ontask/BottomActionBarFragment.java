@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cse120.ontask.R;
+
 public class BottomActionBarFragment extends Fragment{
 
     public BottomActionBarFragment() {

@@ -9,13 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.*;
 
-import com.cse120.ontask.com.cse120.ontask.task.Task;
-
-import org.w3c.dom.Text;
+import com.cse120.ontask.task_attributes.Task;
 
 
 public class TaskListAdapter extends ArrayAdapter{

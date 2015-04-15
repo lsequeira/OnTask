@@ -1,4 +1,5 @@
-package com.cse120.ontask.com.cse120.ontask.task;
+package com.cse120.ontask.task_attributes;
+
 import java.io.Serializable;
 
 public class Task implements  Serializable{

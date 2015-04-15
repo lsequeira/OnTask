@@ -1,10 +1,10 @@
 package com.cse120.ontask;
 
-import com.cse120.ontask.com.cse120.ontask.task.Frequency;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
-import com.cse120.ontask.com.cse120.ontask.task.Project;
-import com.cse120.ontask.com.cse120.ontask.task.Date;
-import com.cse120.ontask.com.cse120.ontask.task.Urgency;
+import com.cse120.ontask.task_attributes.Frequency;
+import com.cse120.ontask.task_attributes.Task;
+import com.cse120.ontask.task_attributes.Project;
+import com.cse120.ontask.task_attributes.Date;
+import com.cse120.ontask.task_attributes.Urgency;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -84,6 +84,7 @@ public class AddTaskActivity extends FragmentActivity
             InitializeUpdate(extraData);
         }
         else if(extraData.getBoolean("isProject")){
+            initializeDateTime();
             InitializeAddProject();
         }
 

@@ -1,13 +1,14 @@
 package com.cse120.ontask;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 
-public class ChooseTaskOrProject extends ActionBarActivity {
+
+public class ChooseTaskOrProject extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

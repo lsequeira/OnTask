@@ -1,7 +1,7 @@
 package com.cse120.ontask;
 
-import com.cse120.ontask.com.cse120.ontask.task.Project;
-import com.cse120.ontask.com.cse120.ontask.task.Task;
+import com.cse120.ontask.task_attributes.Project;
+import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.database.DBHandler;
 
 import java.util.*;
@@ -13,6 +13,8 @@ public class TaskManagerApplication extends Application {
     public static List<Project> currentProjects;
     public int taskMaxKey;
     public int projectMaxKey;
+    public String user_id;
+    public String fullname;
 
     @Override
     public void onCreate() {
@@ -50,6 +52,10 @@ public class TaskManagerApplication extends Application {
 
     public List<Task> getCurrentTasks() {
         return currentTasks;
+    }
+
+    public List<Project> getCurrentProjects() {
+        return currentProjects;
     }
 
     public void addTask(Task task) {
