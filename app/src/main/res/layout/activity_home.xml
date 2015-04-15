@@ -26,20 +26,7 @@
             android:divider="@color/list_divider"
             android:dividerHeight="1dp"
             android:listSelector="@drawable/list_selector"
-            android:background="@color/list_background"/>
+            android:background="@color/list_background_transparent"/>
     </android.support.v4.widget.DrawerLayout>
-    <!--android:layout_above="@+id/bottomActionBarFragment"-->
-
-    <!--
-    <fragment
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:name="com.cse120.ontask.BottomActionBarFragment"
-        android:id="@+id/bottomActionBarFragment"
-        tools:layout="@layout/fragment_bottom_action_bar"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="false" />
-     -->
 
 </RelativeLayout>

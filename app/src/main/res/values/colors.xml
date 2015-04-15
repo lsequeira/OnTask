@@ -9,9 +9,10 @@
     
     <!--Navigation Drawer Colors-->
     <color name="list_item_title">#fff</color>
-    <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#992416</color>
-    <color name="list_divider">#272727</color>
+    <color name="list_background">#7f1ca0c7</color>
+    <color name="list_background_transparent">#7f0b3c4b</color>
+    <color name="list_background_pressed">#7f69ba2d</color>
+    <color name="list_divider">#a42d2d2d</color>
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
 </resources>

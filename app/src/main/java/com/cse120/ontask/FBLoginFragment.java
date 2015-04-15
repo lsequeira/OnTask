@@ -1,5 +1,6 @@
 package com.cse120.ontask;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,25 +28,28 @@ public class FBLoginFragment extends Fragment {
     private static AccessTokenTracker mTokenTracker;
     private static ProfileTracker mProfileTracker;
 
-    private static TextView name_text;
-    private static TextView id_text;
+    private static OnFragmentInteractionListener mListener;
+
 
     private FacebookCallback<LoginResult> mCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
+            System.out.println("CHECK: success");
+
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-            displayProfile(profile);
+
+            mListener.switchActivity();
         }
 
         @Override
         public void onCancel() {
-
+            System.out.println("CHECK: cancel");
         }
 
         @Override
         public void onError(FacebookException e) {
-
+            System.out.println("CHECK: error");
         }
     };
 
@@ -67,7 +71,6 @@ public class FBLoginFragment extends Fragment {
         mProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                displayProfile(newProfile);
             }
         };
 
@@ -90,16 +93,19 @@ public class FBLoginFragment extends Fragment {
         loginButton.setReadPermissions("user_friends");
         loginButton.setFragment(this);
         loginButton.registerCallback(mCallbackManager, mCallback);
+    }
 
-        name_text = (TextView) view.findViewById(R.id.name_text);
-        id_text = (TextView) view.findViewById(R.id.id_text);
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        mListener = (OnFragmentInteractionListener) activity;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Profile profile = Profile.getCurrentProfile();
-        displayProfile(profile);
     }
 
     @Override
@@ -115,14 +121,7 @@ public class FBLoginFragment extends Fragment {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void displayProfile(Profile profile) {
-        if (profile != null) {
-            name_text.setText("Name: " + profile.getName());
-            id_text.setText("ID: " + profile.getId());
-        }
-        else {
-            name_text.setText("Name: ");
-            id_text.setText("ID: ");
-        }
+    interface OnFragmentInteractionListener {
+        public void switchActivity();
     }
 }

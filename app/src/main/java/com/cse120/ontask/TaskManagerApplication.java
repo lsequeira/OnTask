@@ -13,6 +13,8 @@ public class TaskManagerApplication extends Application {
     public static List<Project> currentProjects;
     public int taskMaxKey;
     public int projectMaxKey;
+    public String user_id;
+    public String fullname;
 
     @Override
     public void onCreate() {

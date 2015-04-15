@@ -11,6 +11,11 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.cse120.ontask.task_attributes.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -66,7 +71,6 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.out.println("Child Created!!");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -80,6 +84,11 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item, container, false);
+
+        TopActionBarFragment childFrag = new TopActionBarFragment();
+        childFrag.setArguments(getArguments());
+
+        this.getChildFragmentManager().beginTransaction().add(R.id.content_parent,childFrag).commit();
 
 
         // Set the adapter
@@ -146,6 +155,12 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(int taskListIndex);
+    }
+
+    //Filter the Task List here
+    public void taskListView(int filter) {
+        System.out.println("Pos: " + filter);
+        //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 
 }

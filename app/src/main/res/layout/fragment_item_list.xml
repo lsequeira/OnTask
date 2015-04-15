@@ -4,10 +4,19 @@
     android:layout_height="match_parent" tools:context="com.cse120.ontask.TaskListFragment">
 
     <ListView android:id="@android:id/list" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:background="@color/task_list" android:layout_centerInParent="true"
+        android:layout_height="517dp" android:background="@color/task_list" android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal|bottom"
         />
 
     <TextView android:id="@android:id/empty" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:gravity="center" android:layout_centerInParent="true"/>
+        android:layout_height="517dp" android:gravity="center" android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal|bottom" />
+
+    <FrameLayout
+        android:id="@+id/content_parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_horizontal|top" />
 
 </FrameLayout>

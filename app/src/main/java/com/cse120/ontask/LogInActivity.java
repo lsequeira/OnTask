@@ -1,17 +1,13 @@
 package com.cse120.ontask;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.widget.EditText;
 
-import com.cse120.ontask.HomeActivity;
-import com.cse120.ontask.R;
-
-public class LogInActivity extends ActionBarActivity {
+public class LogInActivity extends FragmentActivity implements FBLoginFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +18,15 @@ public class LogInActivity extends ActionBarActivity {
          */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        //Need to check when user is already logged in..
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
     }
 
     //Check input from user and login
     public void LogInButtonOnClick(View view){
         Intent i = new Intent(this, HomeActivity.class);
-
-        //retrieve input
-        EditText email = (EditText) findViewById(R.id.emailLogin);
-        EditText password = (EditText) findViewById(R.id.passwordLogin);
 
         //check input with registered users (need to implement)
 
@@ -58,5 +54,13 @@ public class LogInActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void switchActivity() {
+        System.out.println("CHECK: login1");
+        Intent i = new Intent(this, HomeActivity.class);
+        System.out.println("CHECK: login2");
+        startActivity(i);
+        System.out.println("CHECK: login3");
     }
 }
