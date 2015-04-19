@@ -1,6 +1,5 @@
 package com.cse120.ontask;
 
-import com.cse120.ontask.task_attributes.Frequency;
 import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Date;
@@ -44,9 +43,7 @@ public class AddTaskActivity extends FragmentActivity
     ArrayList<Integer> arrayList_rd = new ArrayList<Integer>();
     int[] array_rd = {3, 23};
 
-    String[] monthsArray = {"January", "February", "March", "April"
-            , "May", "June", "July", "August", "September"
-            , "October", "November", "December"};
+    String[] monthsArray = getResources().getStringArray(R.array.months_array);
 
     //Used only for updating tasks
     boolean isUpdating;
@@ -130,7 +127,6 @@ public class AddTaskActivity extends FragmentActivity
                 break;
             case R.id.radio_medium:
                 if (checked) {
-                    System.out.print("chk1");
                     urgency = urgency.MEDIUM;
                 }
                 break;
@@ -169,8 +165,12 @@ public class AddTaskActivity extends FragmentActivity
         else if(isProject){
             Project p = createProjectObject();
             getTaskManagerApplication().addProject(p);
-            //TODO:link to project list view
+
             i = new Intent(this, HomeActivity.class);
+            Bundle bundle = new Bundle();
+            //Project
+            bundle.putInt("SpinnerView", 1);
+            i.putExtras(bundle);
         }
         else{
             //Add Task Object to the List
@@ -179,6 +179,10 @@ public class AddTaskActivity extends FragmentActivity
 
             //Go to home screen after adding task
             i = new Intent(this, HomeActivity.class);
+            Bundle bundle = new Bundle();
+            //Task
+            bundle.putInt("SpinnerView", 0);
+            i.putExtras(bundle);
         }
         startActivity(i);
     }
@@ -186,7 +190,6 @@ public class AddTaskActivity extends FragmentActivity
 
     protected Task createTaskObject() {
         String taskName, taskDescription;
-        int taskID;
 
         //Task Name
         EditText titleInput = (EditText)findViewById(R.id.taskTitle);
@@ -207,17 +210,6 @@ public class AddTaskActivity extends FragmentActivity
         //Task Deadline
         Date deadline = new Date(year, month, day, hour, minute);
 
-        //Task Frequency
-        Frequency taskFreq = Frequency.ONCE;
-
-        //Task ID
-        if (isUpdating) {
-            taskID = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
-        }
-        else {
-            taskID = getTaskManagerApplication().taskMaxKey;
-        }
-
         //Set taskProject_id if it is part of a project
         int taskProject_id = -1;
         if(forProject){
@@ -230,7 +222,7 @@ public class AddTaskActivity extends FragmentActivity
         boolean isComplete = false;
 
         //Create the Task Object
-        Task t = new Task(taskID, taskName, taskDescription, taskFreq, deadline, urgency, forProject, taskProject_id, isComplete);
+        Task t = new Task(taskName, taskDescription, deadline, urgency, forProject, taskProject_id, isComplete);
 
         return t;
     }

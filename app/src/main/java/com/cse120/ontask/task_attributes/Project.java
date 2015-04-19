@@ -7,7 +7,6 @@ public class Project {
     private int project_key;
     private String title;
     private String description;
-    private Frequency frequency;
     private Urgency urgency;
     private com.cse120.ontask.task_attributes.Date deadline;
     private Vector<User> memberList;
@@ -30,10 +29,6 @@ public class Project {
         this.isCompleted = isCompleted;
     }
 
-    /*public Project(){
-        this("Blank Project", "Empty", Frequency.ONCE, Urgency.LOW, new Date(), new List<Task> );
-    }*/
-
     public void EditProject(Project project){
 
     }
@@ -48,9 +43,6 @@ public class Project {
     }
     public String getDescription(){
         return description;
-    }
-    public Frequency getFrequency(){
-        return frequency;
     }
     public Urgency getUrgency(){
         return urgency;
@@ -84,9 +76,6 @@ public class Project {
     }
     public void setDescription(String description){
         this.description = description;
-    }
-    public void setFrequency(Frequency frequency){
-        this.frequency = frequency;
     }
     public void setUrgency(Urgency urgency){
         this.urgency = urgency;

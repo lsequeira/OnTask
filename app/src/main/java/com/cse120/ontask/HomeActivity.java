@@ -1,6 +1,5 @@
 package com.cse120.ontask;
 
-import android.app.FragmentManager;
 import android.content.res.TypedArray;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -22,8 +21,7 @@ import java.util.ArrayList;
 
 
 public class HomeActivity extends FragmentActivity
-        implements BottomActionBarFragment.BottomActionBarListener,
-                   TopActionBarFragment.TopActionBarListener,
+        implements TopActionBarFragment.TopActionBarListener,
                    TaskListFragment.OnFragmentInteractionListener,
                    AdapterView.OnItemSelectedListener,
                    TopActionBarFragment.Callback {
@@ -43,11 +41,24 @@ public class HomeActivity extends FragmentActivity
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
+    private int spinnerPos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //currentListDisplayed.setText("@string/allTaskList");
+
         setContentView(R.layout.activity_home);
+
+        //Get Data from Bundle (if any)
+        Intent intentExtras = getIntent();
+        Bundle extras = intentExtras.getExtras();
+        if(extras != null)
+        {
+            spinnerPos = extras.getInt("SpinnerView");
+        }
+        else {
+            spinnerPos = 0;
+        }
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -108,6 +119,16 @@ public class HomeActivity extends FragmentActivity
         switch (position) {
             case 0:
                 fragment = new TaskListFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("SpinnerView", spinnerPos);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_container, fragment, "TaskListFragment");
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.addToBackStack("");
+                transaction.commit();
+
                 break;
             case 1:
                 System.out.println("Choose 1st position");
@@ -126,16 +147,11 @@ public class HomeActivity extends FragmentActivity
         }
 
         if (fragment != null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, fragment, "TaskListFragment");
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            transaction.addToBackStack("");
-            transaction.commit();
-
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             mDrawerLayout.closeDrawer(mDrawerList);
+
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
@@ -196,8 +212,8 @@ public class HomeActivity extends FragmentActivity
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         //Get our dynamically created fragment by tag
         TaskListFragment fragment = (TaskListFragment) getSupportFragmentManager().findFragmentByTag("TaskListFragment");
-        //Pass in either the position or filter the list here...
         fragment.taskListView(pos);
+
     }
 
     @Override

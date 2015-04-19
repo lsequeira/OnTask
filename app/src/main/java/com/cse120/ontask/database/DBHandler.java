@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cse120.ontask.task_attributes.Date;
-import com.cse120.ontask.task_attributes.Frequency;
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.task_attributes.Urgency;
@@ -26,7 +25,6 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_TASK_KEY = "task_key";
     public static final String COLUMN_TASK_TITLE = "title";
     public static final String COLUMN_TASK_DESCRIPTION = "description";
-    public static final String COLUMN_TASK_FREQUENCY = "frequency";
     public static final String COLUMN_TASK_DEADLINE = "deadline";
     public static final String COLUMN_TASK_URGENCY = "urgency";
     public static final String COLUMN_TASK_FOR_PROJECT = "for_project";
@@ -58,7 +56,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_TASK_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_TASK_TITLE + " TEXT," +
                 COLUMN_TASK_DESCRIPTION + " TEXT," +
-                COLUMN_TASK_FREQUENCY + " TEXT," +
                 COLUMN_TASK_DEADLINE + " TEXT," +
                 COLUMN_TASK_URGENCY + " INTEGER, " +
                 COLUMN_TASK_FOR_PROJECT + " BOOLEAN, " +
@@ -86,11 +83,11 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /* Database Handler Functions */
+
     public void addTask(Task task) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TASK_TITLE, task.getTitle());
         values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
-        values.put(COLUMN_TASK_FREQUENCY, frequencyToStringConvert(task));
         values.put(COLUMN_TASK_DEADLINE, dateToStringConvert(task.getDeadline()));
         values.put(COLUMN_TASK_URGENCY, urgencyToIntegerConvert(task.getUrgency()));
         values.put(COLUMN_TASK_FOR_PROJECT, task.getForProject());
@@ -101,6 +98,22 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.insert(TASK_TABLE, null, values);
         db.close();
+
+        //Get the last record's index (which is the task just added) and set the task id here
+        int maxDBIndex = 0;
+        String query = "SELECT * FROM " + TASK_TABLE;
+        db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            int key = Integer.parseInt(cursor.getString(0));
+            maxDBIndex = key;
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+
+        task.setTask_id(maxDBIndex);
     }
 
     public void addProject(Project project) {
@@ -125,7 +138,6 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TASK_TITLE, task.getTitle());
         values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
-        values.put(COLUMN_TASK_FREQUENCY, frequencyToStringConvert(task));
         values.put(COLUMN_TASK_DEADLINE, dateToStringConvert(task.getDeadline()));
         values.put(COLUMN_TASK_URGENCY, urgencyToIntegerConvert(task.getUrgency()));
         values.put(COLUMN_TASK_IS_COMPLETE, task.getIsCompleted());
@@ -163,21 +175,20 @@ public class DBHandler extends SQLiteOpenHelper {
             int key = Integer.parseInt(cursor.getString(0));
             String title = cursor.getString(1);
             String description = cursor.getString(2);
-            Frequency frequency = stringToFrequencyConvert(cursor.getString(3));
-            Date deadline = stringToDateConvert(cursor.getString(4));
-            Urgency urgency = integerToUrgencyConvert(Integer.parseInt(cursor.getString(5)));
+            Date deadline = stringToDateConvert(cursor.getString(3));
+            Urgency urgency = integerToUrgencyConvert(Integer.parseInt(cursor.getString(4)));
 
             //booleans are stored as int 0 == false, 1 == true
-            int forProjectCheck = Integer.parseInt(cursor.getString(6));
+            int forProjectCheck = Integer.parseInt(cursor.getString(5));
             boolean forProject = false;
             if(forProjectCheck == 1){
                 forProject = true;
             }
 
-            int taskProject_id = Integer.parseInt(cursor.getString(7));
+            int taskProject_id = Integer.parseInt(cursor.getString(6));
 
             //check if the task being loaded is complete
-            int isCompleteCheck = Integer.parseInt(cursor.getString(8));
+            int isCompleteCheck = Integer.parseInt(cursor.getString(7));
             boolean isComplete;
             Task currentTask;
             if(isCompleteCheck == 1) {
@@ -188,7 +199,7 @@ public class DBHandler extends SQLiteOpenHelper {
             }
 
             //add task to correct list
-            currentTask = new Task(key, title, description, frequency, deadline, urgency, forProject, taskProject_id, isComplete);
+            currentTask = new Task(key, title, description, deadline, urgency, forProject, taskProject_id, isComplete);
             if(loadCompletedTasks && isComplete){
                 DBTasks.add(currentTask);
             }
@@ -222,7 +233,6 @@ public class DBHandler extends SQLiteOpenHelper {
             String title = cursor.getString(1);
             String id = cursor.getString(2);
             String description = cursor.getString(3);
-            //Frequency frequency = stringToFrequencyConvert(cursor.getString(4));
             Date deadline = stringToDateConvert(cursor.getString(4));
             Urgency urgency = integerToUrgencyConvert(Integer.parseInt(cursor.getString(5)));
 
@@ -247,14 +257,12 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return DBProjects;
     }
-    /* End Database Handler Functions */
 
     public boolean deleteTask(Task task) {
         boolean result = false;
         Task DBTask = new Task();
 
         String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_KEY + " = " + task.getTask_id();
-
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
@@ -266,69 +274,13 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.close();
             result = true;
         }
+        cursor.close();
         db.close();
 
         return result;
     }
 
-    private String frequencyToStringConvert(Task task) {
-        String frequency;
-
-        switch (task.getFrequency())
-        {
-            case ONCE:
-                frequency = "Once";
-                break;
-            case DAILY:
-                frequency = "Daily";
-                break;
-            case WEEKLY:
-                frequency = "Weekly";
-                break;
-            case MONTHLY:
-                frequency = "Monthly";
-                break;
-            case ANNUALLY:
-                frequency = "Annually";
-                break;
-            case NEVER:
-                frequency = "Never";
-                break;
-            default:
-                frequency = "Never";
-                break;
-        }
-
-        return frequency;
-    }
-
-    private Frequency stringToFrequencyConvert(String frequency) {
-        Frequency DBFrequency;
-        switch (frequency) {
-            case "Once":
-                DBFrequency = Frequency.ONCE;
-                break;
-            case "Daily":
-                DBFrequency = Frequency.DAILY;
-                break;
-            case "Weekly":
-                DBFrequency = Frequency.WEEKLY;
-                break;
-            case "Monthly":
-                DBFrequency = Frequency.MONTHLY;
-                break;
-            case "Annually":
-                DBFrequency = Frequency.ANNUALLY;
-                break;
-            case "Never":
-                DBFrequency = Frequency.NEVER;
-                break;
-            default:
-                DBFrequency = Frequency.NEVER;
-                break;
-        }
-        return DBFrequency;
-    }
+    /* End Database Handler Functions */
 
     private int urgencyToIntegerConvert(Urgency urgency) {
         int urg;
@@ -384,7 +336,6 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     private String dateToStringConvert(Date deadline) {
-        int minute, hour, day, month, year;
         String date;
 
         //Build the date as YYYYMMDD HH:MM:SS 24-hr format

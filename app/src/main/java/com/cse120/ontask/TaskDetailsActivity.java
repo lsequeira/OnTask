@@ -126,6 +126,7 @@ public class TaskDetailsActivity extends FragmentActivity {
 
     public void DeleteButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
+        System.out.println("DELETE BUTTON CLICK - TASK INDEX: " + taskListIndex);
         getTaskManagerApplication().deleteTask(taskDisplayed, taskListIndex);
         startActivity(i);
     }
