@@ -159,10 +159,11 @@ public class HomeActivity extends FragmentActivity
     }
 
     //Method for TaskListFragment interaction
-    public void onFragmentInteraction(int taskListIndex){
+    public void onFragmentInteraction(int taskListIndex, int listID){
         //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
-        Intent i = new Intent(this, TaskDetailsActivity.class);
+        Intent i = new Intent(this, ItemDetailsActivity.class);
         i.putExtra("taskSelected", taskListIndex);
+        i.putExtra("listID", listID);
 
         startActivity(i);
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();

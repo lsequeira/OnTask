@@ -1,14 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cse120.ontask.TaskDetailsActivity">
+    tools:context="com.cse120.ontask.ItemDetailsActivity">
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/taskDescription"
+        android:id="@+id/itemDescription"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/staticDescription"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/taskDeadline"
+        android:id="@+id/itemDeadline"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_below="@+id/staticDeadline"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/taskUrgency"
+        android:id="@+id/itemUrgency"
         android:layout_marginLeft="10dp"
         android:layout_below="@+id/staticUrgency"
         android:layout_alignParentStart="true" />
@@ -41,8 +41,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Description:"
         android:id="@+id/staticDescription"
-        android:layout_below="@+id/taskTitle"
-        android:layout_alignStart="@+id/taskDescription"
+        android:layout_below="@+id/itemTitle"
+        android:layout_alignStart="@+id/itemDescription"
         android:layout_marginTop="20dp" />
 
     <TextView
@@ -51,8 +51,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Deadline:"
         android:id="@+id/staticDeadline"
-        android:layout_below="@+id/taskDescription"
-        android:layout_alignStart="@+id/taskDescription"
+        android:layout_below="@+id/itemDescription"
+        android:layout_alignStart="@+id/itemDescription"
         android:layout_marginTop="20dp" />
 
     <TextView
@@ -61,8 +61,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Urgency:"
         android:id="@+id/staticUrgency"
-        android:layout_below="@+id/taskDeadline"
-        android:layout_alignStart="@+id/taskDeadline"
+        android:layout_below="@+id/itemDeadline"
+        android:layout_alignStart="@+id/itemDeadline"
         android:layout_marginTop="20dp" />
 
     <LinearLayout
@@ -129,7 +129,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/taskTitle"
+        android:id="@+id/itemTitle"
         android:layout_below="@+id/staticTitle"
         android:layout_alignStart="@+id/staticDescription" />
 
@@ -139,9 +139,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Title:"
         android:id="@+id/staticTitle"
+        android:layout_marginTop="9dp"
         android:layout_below="@+id/topActionBar"
-        android:layout_alignStart="@+id/taskTitle"
-        android:layout_marginTop="10dp" />
+        android:layout_alignStart="@+id/itemTitle" />
 
     <Button
         android:layout_width="100dp"

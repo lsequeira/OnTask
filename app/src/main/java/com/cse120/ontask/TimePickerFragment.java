@@ -6,8 +6,6 @@ import android.app.TimePickerDialog;
 import android.support.v4.app.DialogFragment;
 import android.widget.TimePicker;
 
-import com.cse120.ontask.AddTaskActivity;
-
 import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment
@@ -20,13 +18,13 @@ public class TimePickerFragment extends DialogFragment
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), (AddTaskActivity)getActivity(), hour, minute, false);
+        return new TimePickerDialog(getActivity(), (AddItemActivity)getActivity(), hour, minute, false);
 
     }
-    //Function to retrieve the user set times which will be used in AddTaskActivity
+    //Function to retrieve the user set times which will be used in AddItemActivity
     @Override
     public void onTimeSet(TimePicker view, int hour, int minute) {
-        //Overwritten By AddTaskActivity...
+        //Overwritten By AddItemActivity...
     }
 
 

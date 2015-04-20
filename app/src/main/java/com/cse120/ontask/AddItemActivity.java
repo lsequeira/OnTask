@@ -25,7 +25,7 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddTaskActivity extends FragmentActivity
+public class AddItemActivity extends FragmentActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private int day, month, year, hour, minute;
@@ -43,7 +43,9 @@ public class AddTaskActivity extends FragmentActivity
     ArrayList<Integer> arrayList_rd = new ArrayList<Integer>();
     int[] array_rd = {3, 23};
 
-    String[] monthsArray = getResources().getStringArray(R.array.months_array);
+
+    String[] monthsArray = { "January","February","March","April","May",
+                "June","July","August","September","October","November","December" };
 
     //Used only for updating tasks
     boolean isUpdating;
@@ -154,7 +156,7 @@ public class AddTaskActivity extends FragmentActivity
     public void addTaskButtonOnClick(View v) {
         Intent i;
         if(isUpdating){
-            i = new Intent(this, TaskDetailsActivity.class);
+            i = new Intent(this, ItemDetailsActivity.class);
 
             Task t = createTaskObject();
 

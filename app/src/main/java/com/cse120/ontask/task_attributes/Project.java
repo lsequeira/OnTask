@@ -2,19 +2,19 @@ package com.cse120.ontask.task_attributes;
 
 import java.util.Vector;
 
-public class Project {
+public class Project extends Task {
     private String project_id;
     private int project_key;
     private String title;
     private String description;
     private Urgency urgency;
-    private com.cse120.ontask.task_attributes.Date deadline;
+    private Date deadline;
     private Vector<User> memberList;
     private Vector<User> adminList;
     //private List<Task> taskList;
     private boolean isCompleted;
 
-    public Project(int project_key, String title, String project_id, String description, com.cse120.ontask.task_attributes.Date deadline,
+    public Project(int project_key, String title, String project_id, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
         this.project_key = project_key;
         this.project_id = project_id;
@@ -47,7 +47,7 @@ public class Project {
     public Urgency getUrgency(){
         return urgency;
     }
-    public com.cse120.ontask.task_attributes.Date getDeadline(){
+    public Date getDeadline(){
         return deadline;
     }
     public Vector<User> getMemberList(){
@@ -80,7 +80,7 @@ public class Project {
     public void setUrgency(Urgency urgency){
         this.urgency = urgency;
     }
-    public void setDeadline(com.cse120.ontask.task_attributes.Date deadline){
+    public void setDeadline(Date deadline){
         this.deadline = deadline;
     }
     public void setMemberList(Vector<User> memberList){
