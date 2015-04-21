@@ -45,12 +45,12 @@ public class ChooseTaskOrProject extends FragmentActivity {
     }
 
     public void chooseTaskButtonOnClick(View v){
-        Intent i = new Intent(this, AddTaskActivity.class);
+        Intent i = new Intent(this, AddItemActivity.class);
         startActivity(i);
     }
 
     public void chooseProjectButtonOnClick(View v){
-        Intent i = new Intent(this, AddTaskActivity.class);
+        Intent i = new Intent(this, AddItemActivity.class);
         i.putExtra("isProject", true);
         startActivity(i);
     }

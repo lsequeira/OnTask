@@ -32,11 +32,11 @@
             android:label="@string/title_activity_choose_task_or_project" >
         </activity>
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".AddItemActivity"
             android:label="@string/title_activity_add_task" >
         </activity>
         <activity
-            android:name=".TaskDetailsActivity"
+            android:name=".ItemDetailsActivity"
             android:label="@string/title_activity_task_details" >
         </activity>
         <activity

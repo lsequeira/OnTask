@@ -8,16 +8,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/light_gray"
+        android:background="@color/light_blue"
         android:layout_alignParentEnd="true"
         android:id="@+id/linearLayout">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/chooseActivityBackButton"
             android:onClick="chooseActivityBackButtonOnClick"
-            android:layout_marginLeft="20dp" />
+            android:background="@drawable/backbutton"
+            android:layout_margin="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +27,8 @@
             android:id="@+id/chooseTextView"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,8 +47,9 @@
             android:onClick="chooseTaskButtonOnClick"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
-            android:background="@drawable/taskbutton" />
+            android:background="@drawable/taskbutton"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="15dp" />
 
         <Button
             android:layout_width="145dp"
@@ -56,8 +58,9 @@
             android:onClick="chooseProjectButtonOnClick"
             android:layout_alignTop="@+id/chooseTaskButton"
             android:layout_toEndOf="@+id/chooseTaskButton"
-            android:layout_margin="20dp"
-            android:background="@drawable/projectbutton" />
+            android:background="@drawable/projectbutton"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp" />
 
     </LinearLayout>
 

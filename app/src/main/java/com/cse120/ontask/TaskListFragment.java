@@ -32,9 +32,16 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final int CURR_TASK = 0;
+    private static final int CURR_PROJ = 1;
+    private static final int COMP_TASK = 2;
+    private static final int COMP_PROJ = 3;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private int listID;
 
     private OnFragmentInteractionListener mListener;
 
@@ -79,6 +86,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
 
         mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
+        listID = CURR_TASK;
     }
 
     @Override
@@ -125,7 +133,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(position);
+            mListener.onFragmentInteraction(position,listID);
             //System.out.println(DummyContent.ITEMS.get(position).id);
         }
     }
@@ -155,7 +163,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(int taskListIndex);
+        public void onFragmentInteraction(int taskListIndex, int listID);
     }
 
     //Filter the Task List here
@@ -164,15 +172,19 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         switch (filter){
             case 0:
                 mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
+                listID = CURR_TASK;
                 break;
             case 1:
                 mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.currentProjects);
+                listID = CURR_PROJ;
                 break;
             case 2:
                 mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.completedTasks);
+                listID = COMP_TASK;
                 break;
             case 3:
                 mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.completedProjects);
+                listID = COMP_PROJ;
                 break;
         }
         mListView.setAdapter(mAdapter);

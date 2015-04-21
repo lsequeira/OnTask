@@ -7,32 +7,41 @@ public class Task implements  Serializable{
     private static final long serialVersionUID = 6879876854546843515L;
 
     private int task_id;
-    private String description;
-    private String title;
-    private Frequency frequency;
-    private Urgency urgency;
-    private Date deadline;
+    protected String description;
+    protected String title;
+    protected Urgency urgency;
+    protected Date deadline;
     private UserId user_id;
     private boolean forProject;
     private int taskProject_id;
-    private boolean isComplete;
+    protected boolean isComplete;
 
     //For Debugging Purposes
     public Task(String title, String description, Date deadline, Urgency urgency) {
         this.title = title;
         this.description = description;
-        frequency = Frequency.ONCE;
         this.urgency = urgency;
         this.deadline = deadline;
         user_id = new User().GetId();
     }
 
-    public Task(int task_id, String title, String description, Frequency frequency, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
+    public Task(String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
+    {
+        this.title = title;
+        this.description = description;
+        this.urgency = urgency;
+        this.deadline = deadline;
+        user_id = new User().GetId();
+        this.forProject = forProject;
+        this.taskProject_id = taskProject_id;
+        this.isComplete = isComplete;
+    }
+
+    public Task(int task_id, String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
     {
         this.task_id = task_id;
         this.title = title;
         this.description = description;
-        this.frequency = Frequency.NEVER;
         this.urgency = urgency;
         this.deadline = deadline;
         user_id = new User().GetId();
@@ -47,19 +56,18 @@ public class Task implements  Serializable{
         return title;
     }
 
-    public Task(String title, String description, Frequency frequency,
+    public Task(String title, String description,
                 Urgency urgency, Date deadline, User user){
 
         this.description = description;
         this.title = title;
-        this.frequency = frequency;
         this.urgency = urgency;
         this.deadline = deadline;
         this.user_id = user.GetId();
     }
 
     public Task(){
-        this("Blank Task", "Empty", Frequency.ONCE, Urgency.LOW, new Date(), new User());
+        this("Blank Task", "Empty", Urgency.LOW, new Date(), new User());
     }
 
     /*
@@ -77,9 +85,6 @@ public class Task implements  Serializable{
     }
     public String getDescription(){
         return description;
-    }
-    public Frequency getFrequency(){
-        return frequency;
     }
     public Urgency getUrgency(){
         return urgency;
@@ -110,9 +115,6 @@ public class Task implements  Serializable{
     }
     public void setDescription(String description){
         this.description = description;
-    }
-    public void setFrequency(Frequency frequency){
-        this.frequency = frequency;
     }
     public void setUrgency(Urgency urgency){
         this.urgency = urgency;

@@ -57,6 +57,12 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        int spinnerPos = 0;
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            spinnerPos = bundle.getInt("SpinnerView");
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_top_action_bar, container, false);
 
@@ -70,6 +76,7 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+        spinner.setSelection(spinnerPos);
 
         return view;
     }

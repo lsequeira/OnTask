@@ -72,7 +72,7 @@ public class FBLoginFragment extends Fragment {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
                 if(newProfile != null){
-                    mListener.switchActivity();
+                   // mListener.switchActivity();
                 }
                 else{
 

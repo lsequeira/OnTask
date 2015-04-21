@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
-import com.cse120.ontask.AddTaskActivity;
-
 import java.util.Calendar;
 
 
@@ -24,12 +22,12 @@ public class DatePickerFragment extends DialogFragment
         int year = calendar.get(Calendar.YEAR);
 
         //Return the new Date Picker
-        return new DatePickerDialog(getActivity(), (AddTaskActivity)getActivity(), year, month, day);
+        return new DatePickerDialog(getActivity(), (AddItemActivity)getActivity(), year, month, day);
     }
 
-    //Function to retrieve the user set date which will be used in AddTaskActivity
+    //Function to retrieve the user set date which will be used in AddItemActivity
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-       //Overwritten By AddTaskActivity...
+       //Overwritten By AddItemActivity...
     }
 }

@@ -1,6 +1,5 @@
 package com.cse120.ontask;
 
-import android.app.FragmentManager;
 import android.content.res.TypedArray;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -22,8 +21,7 @@ import java.util.ArrayList;
 
 
 public class HomeActivity extends FragmentActivity
-        implements BottomActionBarFragment.BottomActionBarListener,
-                   TopActionBarFragment.TopActionBarListener,
+        implements TopActionBarFragment.TopActionBarListener,
                    TaskListFragment.OnFragmentInteractionListener,
                    AdapterView.OnItemSelectedListener,
                    TopActionBarFragment.Callback {
@@ -43,11 +41,24 @@ public class HomeActivity extends FragmentActivity
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
+    private int spinnerPos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //currentListDisplayed.setText("@string/allTaskList");
+
         setContentView(R.layout.activity_home);
+
+        //Get Data from Bundle (if any)
+        Intent intentExtras = getIntent();
+        Bundle extras = intentExtras.getExtras();
+        if(extras != null)
+        {
+            spinnerPos = extras.getInt("SpinnerView");
+        }
+        else {
+            spinnerPos = 0;
+        }
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -63,16 +74,14 @@ public class HomeActivity extends FragmentActivity
         // adding nav drawer items to array
         // Home
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
+        // Friends
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Photos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-        // Pages
+        // Requests
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), true, "100"));
+        // Settings
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+        // Sign Out
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
 
 
         // Recycle the typed array
@@ -110,6 +119,16 @@ public class HomeActivity extends FragmentActivity
         switch (position) {
             case 0:
                 fragment = new TaskListFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("SpinnerView", spinnerPos);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_container, fragment, "TaskListFragment");
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.addToBackStack("");
+                transaction.commit();
+
                 break;
             case 1:
                 System.out.println("Choose 1st position");
@@ -123,24 +142,16 @@ public class HomeActivity extends FragmentActivity
             case 4:
                 System.out.println("Choose 4th position");
                 break;
-            case 5:
-                System.out.println("Choose 5th position");
-                break;
             default:
                 break;
         }
 
         if (fragment != null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, fragment, "TaskListFragment");
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            transaction.addToBackStack("");
-            transaction.commit();
-
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             mDrawerLayout.closeDrawer(mDrawerList);
+
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
@@ -148,10 +159,11 @@ public class HomeActivity extends FragmentActivity
     }
 
     //Method for TaskListFragment interaction
-    public void onFragmentInteraction(int taskListIndex){
+    public void onFragmentInteraction(int taskListIndex, int listID){
         //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
-        Intent i = new Intent(this, TaskDetailsActivity.class);
+        Intent i = new Intent(this, ItemDetailsActivity.class);
         i.putExtra("taskSelected", taskListIndex);
+        i.putExtra("listID", listID);
 
         startActivity(i);
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
@@ -201,8 +213,8 @@ public class HomeActivity extends FragmentActivity
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         //Get our dynamically created fragment by tag
         TaskListFragment fragment = (TaskListFragment) getSupportFragmentManager().findFragmentByTag("TaskListFragment");
-        //Pass in either the position or filter the list here...
         fragment.taskListView(pos);
+
     }
 
     @Override
