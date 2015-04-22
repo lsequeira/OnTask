@@ -121,6 +121,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PROJECT_TITLE, project.getTitle());
 
         //TODO:check id in database and make no project is created with same id
+        //note that project_key, rather than project_id, refers to the auto increment key
         values.put(COLUMN_PROJECT_ID, project.getProject_id());
 
         values.put(COLUMN_PROJECT_DESCRIPTION, project.getDescription());
@@ -131,7 +132,22 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.insert(PROJECT_TABLE, null, values);
+
+        //Get the last record's index
+        int maxDBIndex = 0;
+        String query = "SELECT * FROM " + PROJECT_TABLE;
+        db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            int key = Integer.parseInt(cursor.getString(0));
+            maxDBIndex = key;
+            cursor.moveToNext();
+        }
+        cursor.close();
         db.close();
+
+        project.setProject_key(maxDBIndex);
     }
 
     public void updateTask(Task task){
@@ -155,8 +171,9 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PROJECT_DESCRIPTION, project.getDescription());
         values.put(COLUMN_PROJECT_DEADLINE, dateToStringConvert(project.getDeadline()));
         values.put(COLUMN_PROJECT_URGENCY, urgencyToIntegerConvert(project.getUrgency()));
+        values.put(COLUMN_TASK_IS_COMPLETE, project.getIsCompleted());
 
-        String whereClause = COLUMN_PROJECT_KEY + "=" + project.getProject_id();
+        String whereClause = COLUMN_PROJECT_KEY + "=" + project.getProject_key();
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PROJECT_TABLE, values, whereClause, null);
         db.close();
@@ -219,7 +236,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     //TODO:implement load complete projects just like tasks
-    public ArrayList<Project> loadProjects() {
+    public ArrayList<Project> loadProjects(boolean loadCompletedProjects) {
         ArrayList<Project> DBProjects = new ArrayList<Project>();
         String query = "SELECT * FROM " + PROJECT_TABLE;
 
@@ -238,16 +255,25 @@ public class DBHandler extends SQLiteOpenHelper {
 
             //check if the task being loaded is complete
             int isCompleteCheck = Integer.parseInt(cursor.getString(6));
-            boolean isComplete = false;
+            boolean isComplete;
             if(isCompleteCheck == 1) {
                 isComplete = true;
             }
             else{
-                Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete);
+                isComplete = false;
+            }
+
+            Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete);
+            if(loadCompletedProjects && isComplete){
                 DBProjects.add(currentProject);
             }
+            else if(!loadCompletedProjects && !isComplete){
+                DBProjects.add(currentProject);
+            }
+
             cursor.moveToNext();
         }
+
         cursor.close();
         db.close();
 
@@ -255,6 +281,7 @@ public class DBHandler extends SQLiteOpenHelper {
         {
             DBProjects = null;
         }
+
         return DBProjects;
     }
 

@@ -62,7 +62,7 @@ public class AddItemActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_task);
+        setContentView(R.layout.activity_add_item);
 
         initializeDateSuffixLists();
 
@@ -255,7 +255,7 @@ public class AddItemActivity extends FragmentActivity
 
         //ID
         if (isUpdating) {
-            projectKey = TaskManagerApplication.currentTasks.get(taskListIndex).getTask_id();
+            projectKey = TaskManagerApplication.currentProjects.get(taskListIndex).getTask_id();
         }
         else {
             projectKey = getTaskManagerApplication().taskMaxKey;

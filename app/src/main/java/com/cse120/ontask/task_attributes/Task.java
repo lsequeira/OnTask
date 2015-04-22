@@ -7,14 +7,14 @@ public class Task implements  Serializable{
     private static final long serialVersionUID = 6879876854546843515L;
 
     private int task_id;
-    private String description;
-    private String title;
-    private Urgency urgency;
-    private Date deadline;
+    protected String description;
+    protected String title;
+    protected Urgency urgency;
+    protected Date deadline;
     private UserId user_id;
     private boolean forProject;
     private int taskProject_id;
-    private boolean isComplete;
+    protected boolean isComplete;
 
     //For Debugging Purposes
     public Task(String title, String description, Date deadline, Urgency urgency) {
@@ -51,7 +51,7 @@ public class Task implements  Serializable{
     }
 
 
-        @Override
+    @Override
     public String toString() {
         return title;
     }
@@ -69,12 +69,6 @@ public class Task implements  Serializable{
     public Task(){
         this("Blank Task", "Empty", Urgency.LOW, new Date(), new User());
     }
-
-    /*
-	public void EditTask(Task task){
-
-	}
-    */
 
     //Getters
     public int getTask_id() {

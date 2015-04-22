@@ -52,13 +52,23 @@ public class TaskManagerApplication extends Application {
         //TODO:if completed tasks work do same for completed projects
         /*--------------Load Projects--------------*/
         if (currentProjects == null) {
-            currentProjects = handler.loadProjects();
+            currentProjects = handler.loadProjects(false);
             if (currentProjects != null) {
                 projectMaxKey = currentProjects.get(currentProjects.size()-1).getProject_key();
             }
             else {
                 currentProjects = new ArrayList<Project>();
                 taskMaxKey = -1;
+            }
+        }
+        if (completedProjects == null) {
+            completedProjects = handler.loadProjects(true);
+            if (completedProjects != null) {
+                //taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
+            }
+            else {
+                completedProjects = new ArrayList<Project>();
+                //taskMaxKey = -1;
             }
         }
         handler.close();
@@ -72,8 +82,16 @@ public class TaskManagerApplication extends Application {
         return currentTasks;
     }
 
+    public List<Project> getCurrentProjects() {
+        return currentProjects;
+    }
+
     public List<Task> getCompletedTasks() {
         return completedTasks;
+    }
+
+    public List<Project> getCompletedProjects() {
+        return completedProjects;
     }
 
     public void addTask(Task task) {

@@ -10,21 +10,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 
 public class ItemDetailsActivity extends FragmentActivity {
 
-    private Task taskDisplayed;
-    private Project projectDisplayed;
-    private int taskListIndex;
+    private Task itemDisplayed;
+    private int listIndex;
     private int listID;
     private boolean isTask;
 
-    private TextView taskTitle;
-    private TextView taskDescription;
-    private TextView taskDeadline;
-    private TextView taskUrgency;
+    private TextView itemTitle;
+    private TextView itemDescription;
+    private TextView itemDeadline;
+    private TextView itemUrgency;
+
+    private Button itemUpdate;
+    private Button itemDelete;
+    private Button itemComplete;
 
 
     @Override
@@ -33,46 +37,47 @@ public class ItemDetailsActivity extends FragmentActivity {
         setContentView(R.layout.activity_item_details);
 
         //Set Text Views
-        taskTitle = (TextView) findViewById(R.id.itemTitle);
-        taskDescription = (TextView) findViewById(R.id.itemDescription);
-        taskDeadline = (TextView) findViewById(R.id.itemDeadline);
-        taskUrgency = (TextView) findViewById(R.id.itemUrgency);
+        itemTitle = (TextView) findViewById(R.id.itemTitle);
+        itemDescription = (TextView) findViewById(R.id.itemDescription);
+        itemDeadline = (TextView) findViewById(R.id.itemDeadline);
+        itemUrgency = (TextView) findViewById(R.id.itemUrgency);
+
+        itemUpdate = (Button) findViewById(R.id.updateButton);
+        itemDelete = (Button) findViewById(R.id.deleteButton);
+        itemComplete = (Button) findViewById(R.id.completeButton);
 
         Bundle taskData = getIntent().getExtras();
         if(taskData == null) {
             return;
         }
 
-        taskListIndex = taskData.getInt("taskSelected");
+        listIndex = taskData.getInt("taskSelected");
         listID = taskData.getInt("listID");
         isTask = false;
 
         //Get Corresponding List
         switch (listID) {
             case 0:
-                taskDisplayed = TaskManagerApplication.currentTasks.get(taskListIndex);
+                itemDisplayed = TaskManagerApplication.currentTasks.get(listIndex);
                 isTask = true;
                 break;
             case 1:
-                projectDisplayed = TaskManagerApplication.currentProjects.get(taskListIndex);
+                itemDisplayed = TaskManagerApplication.currentProjects.get(listIndex);
                 break;
             case 2:
-                taskDisplayed = TaskManagerApplication.completedTasks.get(taskListIndex);
+                itemDisplayed = TaskManagerApplication.completedTasks.get(listIndex);
+                hideItemButtons();
                 isTask = true;
                 break;
             case 3:
-                projectDisplayed = TaskManagerApplication.completedProjects.get(taskListIndex);
+                itemDisplayed = TaskManagerApplication.completedProjects.get(listIndex);
+                hideItemButtons();
                 break;
             default:
                 break;
         }
 
-        if(isTask) {
-            taskSetView();
-        }
-        else {
-            setProjectView();
-        }
+        setView();
     }
 
 
@@ -102,43 +107,47 @@ public class ItemDetailsActivity extends FragmentActivity {
         Intent i = new Intent(this, AddItemActivity.class);
         boolean isUpdating = true;
         i.putExtra("isUpdating", isUpdating);
-        //TODO:Refactor the update
-        i.putExtra("taskToUpdate", taskListIndex);
+        i.putExtra("taskToUpdate", listIndex);
         startActivity(i);
     }
 
     public void CompletedButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
-        TaskManagerApplication app = new TaskManagerApplication();
-        Task t;
         //add current task to completed list and remove from current list
-        app.getCurrentTasks().get(taskListIndex).setIsCompleted(true);
-        t = app.getCurrentTasks().get(taskListIndex);
-        app.getCompletedTasks().add(t);
-        app.getCurrentTasks().remove(taskListIndex);
-
-        DBHandler handler = new DBHandler(this, null, null, 1);
-        handler.updateTask(t);
-        handler.close();
-
+        if(isTask) {
+            Task t;
+            getTaskManagerApplication().getCurrentTasks().get(listIndex).setIsCompleted(true);
+            t = getTaskManagerApplication().getCurrentTasks().get(listIndex);
+            getTaskManagerApplication().getCompletedTasks().add(t);
+            getTaskManagerApplication().getCurrentTasks().remove(listIndex);
+            getTaskManagerApplication().updateTask(t, listIndex);
+        }
+        else {
+            Project p;
+            getTaskManagerApplication().getCurrentProjects().get(listIndex).setIsCompleted(true);
+            p = getTaskManagerApplication().getCurrentProjects().get(listIndex);
+            getTaskManagerApplication().getCompletedProjects().add(p);
+            getTaskManagerApplication().getCurrentProjects().remove(listIndex);
+            //getTaskManagerApplication().updateProject(p, listIndex);
+        }
         startActivity(i);
     }
 
     public void BackButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
-        //TODO:Change list view on back button
+        Bundle bundle = new Bundle();
+        bundle.putInt("SpinnerView", listID);
+        i.putExtras(bundle);
         startActivity(i);
     }
 
     public void DeleteButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
-        //TODO:Create a template to switch between task and project list - change variable names too
         if (isTask) {
-            getTaskManagerApplication().deleteTask(taskDisplayed, taskListIndex);
+            getTaskManagerApplication().deleteTask(itemDisplayed, listIndex);
         }
         else {
-        //TODO:Delete Projects from database
-            //getTaskManagerApplication().deleteTask(projectDisplayed, taskListIndex);
+            //getTaskManagerApplication().deleteTask(projectDisplayed, listIndex);
         }
         startActivity(i);
     }
@@ -179,12 +188,12 @@ public class ItemDetailsActivity extends FragmentActivity {
             return "0" + String.valueOf(min);
     }
 
-    public void taskSetView() {
-        taskTitle.setText(taskDisplayed.getTitle());
-        taskDescription.setText(taskDisplayed.getDescription());
+    public void setView() {
+        itemTitle.setText(itemDisplayed.getTitle());
+        itemDescription.setText(itemDisplayed.getDescription());
 
         String urgency = "no urgency specified";
-        switch (taskDisplayed.getUrgency()) {
+        switch (itemDisplayed.getUrgency()) {
             case LOWEST:
                 urgency = "Very Low";
                 break;
@@ -204,46 +213,18 @@ public class ItemDetailsActivity extends FragmentActivity {
                 break;
         }
 
-        taskUrgency.setText(urgency);
-        taskDeadline.setText(
-                Integer.toString(taskDisplayed.getDeadline().getMonth()) + "/" +
-                        Integer.toString(taskDisplayed.getDeadline().getDay()) + "/" +
-                        Integer.toString(taskDisplayed.getDeadline().getYear()) +
-                        "\t\t\t\t" + convertTime(taskDisplayed.getDeadline().getHour(), taskDisplayed.getDeadline().getMinute())
+        itemUrgency.setText(urgency);
+        itemDeadline.setText(
+                Integer.toString(itemDisplayed.getDeadline().getMonth()) + "/" +
+                        Integer.toString(itemDisplayed.getDeadline().getDay()) + "/" +
+                        Integer.toString(itemDisplayed.getDeadline().getYear()) +
+                        "\t\t\t\t" + convertTime(itemDisplayed.getDeadline().getHour(), itemDisplayed.getDeadline().getMinute())
         );
     }
 
-    public void setProjectView() {
-        taskTitle.setText(projectDisplayed.getTitle());
-        taskDescription.setText(projectDisplayed.getDescription());
-
-        String urgency = "no urgency specified";
-        switch (projectDisplayed.getUrgency()) {
-            case LOWEST:
-                urgency = "Very Low";
-                break;
-            case LOW:
-                urgency = "Low";
-                break;
-            case MEDIUM:
-                urgency = "Moderate";
-                break;
-            case HIGH:
-                urgency = "High";
-                break;
-            case HIGHEST:
-                urgency = "Very High";
-                break;
-            default:
-                break;
-        }
-
-        taskUrgency.setText(urgency);
-        taskDeadline.setText(
-                Integer.toString(projectDisplayed.getDeadline().getMonth()) + "/" +
-                        Integer.toString(projectDisplayed.getDeadline().getDay()) + "/" +
-                        Integer.toString(projectDisplayed.getDeadline().getYear()) +
-                        "\t\t\t\t" + convertTime(projectDisplayed.getDeadline().getHour(), projectDisplayed.getDeadline().getMinute())
-        );
+    public void hideItemButtons() {
+        itemUpdate.setVisibility(View.GONE);
+        itemDelete.setVisibility(View.GONE);
+        itemComplete.setVisibility(View.GONE);
     }
 }

@@ -5,15 +5,15 @@ import java.util.Vector;
 public class Project extends Task {
     private String project_id;
     private int project_key;
-    private String title;
+   /* private String title;
     private String description;
     private Urgency urgency;
     private Date deadline;
     private Vector<User> memberList;
     private Vector<User> adminList;
     //private List<Task> taskList;
-    private boolean isCompleted;
-
+    private boolean isComplete;
+*/
     public Project(int project_key, String title, String project_id, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
         this.project_key = project_key;
@@ -23,10 +23,14 @@ public class Project extends Task {
         //this.frequency = frequency;
         this.urgency = urgency;
         this.deadline = deadline;
-        memberList = new Vector<User>();
-        adminList = new Vector<User>();
+        //memberList = new Vector<User>();
+        //adminList = new Vector<User>();
         //this.taskList = taskList;
-        this.isCompleted = isCompleted;
+        this.isComplete = isCompleted;
+    }
+
+    public Project(){
+
     }
 
     public void EditProject(Project project){
@@ -38,7 +42,7 @@ public class Project extends Task {
     }
 
     //Getters
-    public String getTitle(){
+    /*public String getTitle(){
         return title;
     }
     public String getDescription(){
@@ -55,23 +59,23 @@ public class Project extends Task {
     }
     public Vector<User> getAdminList(){
         return (Vector<User>) adminList;
-    }
+    }*/
     public int getProject_key(){
         return project_key;
     }
     public String getProject_id(){
         return project_id;
     }
-    public boolean getIsCompleted(){
+    /*public boolean getIsCompleted(){
         return isCompleted;
     }
-    /*public Vector<Task> getTaskList(){
+    public Vector<Task> getTaskList(){
         return (Vector<Task>) taskList;
     }*/
     //End Getters
 
     //Setters
-    public void setTitle(String title){
+    /*public void setTitle(String title){
         this.title = title;
     }
     public void setDescription(String description){
@@ -89,17 +93,20 @@ public class Project extends Task {
     public void setAdminList(Vector<User> adminList){
         this.adminList = adminList;
     }
+    */
     public void setProject_key(int project_key){
         this.project_key = project_key;
     }
     public void setProject_id(String project_id){
         this.project_id = project_id;
     }
+    /*
     public void setIsCompleted(boolean isCompleted){
         this.isCompleted = isCompleted;
     }
-    /*public void SetTaskList(Vector<Task> taskList){
+    public void SetTaskList(Vector<Task> taskList){
         this.taskList = taskList;
-    }*/
+    }
+    */
     //End Setters
 }
