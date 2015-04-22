@@ -142,5 +142,12 @@ public class TaskManagerApplication extends Application {
         handler.deleteTask(t);
         handler.close();
     }
+
+    public void deleteProject(Project p, int listIndex){
+        currentProjects.remove(listIndex);
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.deleteProject(p);
+        handler.close();
+    }
     //TODO:Delete projects from database
 }

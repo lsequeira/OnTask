@@ -307,6 +307,28 @@ public class DBHandler extends SQLiteOpenHelper {
         return result;
     }
 
+    public boolean deleteProject(Project project){
+        boolean result = false;
+        Project DBProject = new Project();
+
+        String query = "SELECT * FROM " + PROJECT_TABLE + " WHERE " + COLUMN_PROJECT_KEY + " = " + project.getProject_key();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            DBProject.setProject_key(Integer.parseInt(cursor.getString(0)));
+            db.delete(PROJECT_TABLE, COLUMN_PROJECT_KEY + " = ?",
+                    new String[] { String.valueOf(DBProject.getProject_key()) });
+            cursor.close();
+            result = true;
+        }
+        cursor.close();
+        db.close();
+
+        return result;
+    }
+
     /* End Database Handler Functions */
 
     private int urgencyToIntegerConvert(Urgency urgency) {

@@ -143,7 +143,7 @@ public class ItemDetailsActivity extends FragmentActivity {
         }
         else {
         //TODO:Delete Projects from database
-            //getTaskManagerApplication().deleteTask(projectDisplayed, listIndex);
+            getTaskManagerApplication().deleteProject((Project)itemDisplayed, listIndex);
         }
         startActivity(i);
     }
