@@ -15,9 +15,6 @@ public class TaskManagerApplication extends Application {
     public static List<Project> currentProjects;
     public static List<Project> completedProjects;
 
-    public int taskMaxKey;
-    public int projectMaxKey;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -25,52 +22,27 @@ public class TaskManagerApplication extends Application {
         DBHandler handler = new DBHandler(this, null, null, 1);
 
         /*--------------Load Tasks--------------*/
-        //load current tasks from database to current task list
+        currentTasks = handler.loadTasks(false);
         if (currentTasks == null) {
-            currentTasks = handler.loadTasks(false);
-            if (currentTasks != null) {
-                taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
-                System.out.println("DATABASE MAX KEY: " + taskMaxKey);
-            }
-            else {
-                currentTasks = new ArrayList<Task>();
-                taskMaxKey = -1;
-            }
-        }
-        //load completed tasks
-        if (completedTasks == null) {
-            completedTasks = handler.loadTasks(true);
-            if (completedTasks != null) {
-                //taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
-            }
-            else {
-                completedTasks = new ArrayList<Task>();
-                //taskMaxKey = -1;
-            }
+            currentTasks = new ArrayList<Task>();
         }
 
-        //TODO:if completed tasks work do same for completed projects
+        completedTasks = handler.loadTasks(true);
+        if (completedTasks == null) {
+                completedTasks = new ArrayList<Task>();
+        }
+
         /*--------------Load Projects--------------*/
+        currentProjects = handler.loadProjects(false);
         if (currentProjects == null) {
-            currentProjects = handler.loadProjects(false);
-            if (currentProjects != null) {
-                projectMaxKey = currentProjects.get(currentProjects.size()-1).getProject_key();
-            }
-            else {
-                currentProjects = new ArrayList<Project>();
-                taskMaxKey = -1;
-            }
+            currentProjects = new ArrayList<Project>();
         }
+
+        completedProjects = handler.loadProjects(true);
         if (completedProjects == null) {
-            completedProjects = handler.loadProjects(true);
-            if (completedProjects != null) {
-                //taskMaxKey = currentTasks.get(currentTasks.size()-1).getTask_id();
-            }
-            else {
-                completedProjects = new ArrayList<Project>();
-                //taskMaxKey = -1;
-            }
+            completedProjects = new ArrayList<Project>();
         }
+
         handler.close();
     }
 
@@ -114,8 +86,13 @@ public class TaskManagerApplication extends Application {
     public void addProject(Project project) {
         DBHandler handler = new DBHandler(this, null, null, 1);
 
-        //Add to List
-        currentProjects.add(project);
+        //Add to correct List
+        if (project.getIsCompleted()) {
+            completedProjects.add(project);
+        }
+        else {
+            currentProjects.add(project);
+        }
 
         //Add To Database
         handler.addProject(project);
@@ -132,7 +109,20 @@ public class TaskManagerApplication extends Application {
         currentTasks.get(taskListIndex).setIsCompleted(t.getIsCompleted());
 
         DBHandler handler = new DBHandler(this, null, null, 1);
-        handler.updateTask(t);
+        handler.updateTask(currentTasks.get(taskListIndex));
+        handler.close();
+    }
+
+    public void updateProject(Project p, int listIndex){
+        //Update task information
+        currentProjects.get(listIndex).setTitle(p.getTitle());
+        currentProjects.get(listIndex).setDescription(p.getDescription());
+        currentProjects.get(listIndex).setUrgency(p.getUrgency());
+        currentProjects.get(listIndex).setDeadline(p.getDeadline());
+        currentProjects.get(listIndex).setIsCompleted(p.getIsCompleted());
+
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.updateProject(currentProjects.get(listIndex));
         handler.close();
     }
 
@@ -140,6 +130,13 @@ public class TaskManagerApplication extends Application {
         currentTasks.remove(taskListIndex);
         DBHandler handler = new DBHandler(this, null, null, 1);
         handler.deleteTask(t);
+        handler.close();
+    }
+
+    public void deleteProject(Project p, int listIndex){
+        currentProjects.remove(listIndex);
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.deleteProject(p);
         handler.close();
     }
     //TODO:Delete projects from database

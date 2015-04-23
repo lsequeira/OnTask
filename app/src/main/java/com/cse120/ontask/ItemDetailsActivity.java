@@ -1,7 +1,5 @@
 package com.cse120.ontask;
 
-
-import com.cse120.ontask.database.DBHandler;
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
 
@@ -30,7 +28,6 @@ public class ItemDetailsActivity extends FragmentActivity {
     private Button itemDelete;
     private Button itemComplete;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,13 +43,13 @@ public class ItemDetailsActivity extends FragmentActivity {
         itemDelete = (Button) findViewById(R.id.deleteButton);
         itemComplete = (Button) findViewById(R.id.completeButton);
 
-        Bundle taskData = getIntent().getExtras();
-        if(taskData == null) {
+        Bundle itemData = getIntent().getExtras();
+        if(itemData == null) {
             return;
         }
 
-        listIndex = taskData.getInt("taskSelected");
-        listID = taskData.getInt("listID");
+        listIndex = itemData.getInt("taskSelected");
+        listID = itemData.getInt("listID");
         isTask = false;
 
         //Get Corresponding List
@@ -62,6 +59,7 @@ public class ItemDetailsActivity extends FragmentActivity {
                 isTask = true;
                 break;
             case 1:
+                itemDisplayed = new Project();
                 itemDisplayed = TaskManagerApplication.currentProjects.get(listIndex);
                 break;
             case 2:
@@ -107,29 +105,37 @@ public class ItemDetailsActivity extends FragmentActivity {
         Intent i = new Intent(this, AddItemActivity.class);
         boolean isUpdating = true;
         i.putExtra("isUpdating", isUpdating);
+        //TODO:Refactor the update
         i.putExtra("taskToUpdate", listIndex);
+        i.putExtra("listID", listID);
+        if(!isTask){
+            System.out.println("Yes this is a project");
+            i.putExtra("isProject", true);
+        }
         startActivity(i);
     }
 
     public void CompletedButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
+
         //add current task to completed list and remove from current list
         if(isTask) {
             Task t;
             getTaskManagerApplication().getCurrentTasks().get(listIndex).setIsCompleted(true);
             t = getTaskManagerApplication().getCurrentTasks().get(listIndex);
             getTaskManagerApplication().getCompletedTasks().add(t);
-            getTaskManagerApplication().getCurrentTasks().remove(listIndex);
             getTaskManagerApplication().updateTask(t, listIndex);
+            getTaskManagerApplication().getCurrentTasks().remove(listIndex);
         }
         else {
             Project p;
             getTaskManagerApplication().getCurrentProjects().get(listIndex).setIsCompleted(true);
             p = getTaskManagerApplication().getCurrentProjects().get(listIndex);
             getTaskManagerApplication().getCompletedProjects().add(p);
+            getTaskManagerApplication().updateProject(p, listIndex);
             getTaskManagerApplication().getCurrentProjects().remove(listIndex);
-            //getTaskManagerApplication().updateProject(p, listIndex);
         }
+
         startActivity(i);
     }
 
@@ -147,7 +153,7 @@ public class ItemDetailsActivity extends FragmentActivity {
             getTaskManagerApplication().deleteTask(itemDisplayed, listIndex);
         }
         else {
-            //getTaskManagerApplication().deleteTask(projectDisplayed, listIndex);
+            getTaskManagerApplication().deleteProject((Project)itemDisplayed, listIndex);
         }
         startActivity(i);
     }

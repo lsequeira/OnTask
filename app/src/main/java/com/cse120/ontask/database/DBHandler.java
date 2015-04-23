@@ -83,7 +83,6 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /* Database Handler Functions */
-
     public void addTask(Task task) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_TASK_TITLE, task.getTitle());
@@ -113,7 +112,7 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        task.setTask_id(maxDBIndex);
+        task.setTaskAutoIncKey(maxDBIndex);
     }
 
     public void addProject(Project project) {
@@ -147,7 +146,7 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        project.setProject_key(maxDBIndex);
+        project.setProjectAutoIncKey(maxDBIndex);
     }
 
     public void updateTask(Task task){
@@ -158,7 +157,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TASK_URGENCY, urgencyToIntegerConvert(task.getUrgency()));
         values.put(COLUMN_TASK_IS_COMPLETE, task.getIsCompleted());
 
-        String whereClause = COLUMN_TASK_KEY + "=" + task.getTask_id();
+        String whereClause = COLUMN_TASK_KEY + "=" + task.getTaskAutoIncKey();
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TASK_TABLE, values, whereClause, null);
         db.close();
@@ -173,7 +172,8 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PROJECT_URGENCY, urgencyToIntegerConvert(project.getUrgency()));
         values.put(COLUMN_TASK_IS_COMPLETE, project.getIsCompleted());
 
-        String whereClause = COLUMN_PROJECT_KEY + "=" + project.getProject_key();
+        System.out.println("chk proj key: " + project.getProjectAutoIncKey());
+        String whereClause = COLUMN_PROJECT_KEY + "=" + project.getProjectAutoIncKey();
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PROJECT_TABLE, values, whereClause, null);
         db.close();
@@ -215,7 +215,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 isComplete = false;
             }
 
-            //add task to correct list
             currentTask = new Task(key, title, description, deadline, urgency, forProject, taskProject_id, isComplete);
             if(loadCompletedTasks && isComplete){
                 DBTasks.add(currentTask);
@@ -235,7 +234,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return DBTasks;
     }
 
-    //TODO:implement load complete projects just like tasks
     public ArrayList<Project> loadProjects(boolean loadCompletedProjects) {
         ArrayList<Project> DBProjects = new ArrayList<Project>();
         String query = "SELECT * FROM " + PROJECT_TABLE;
@@ -289,15 +287,37 @@ public class DBHandler extends SQLiteOpenHelper {
         boolean result = false;
         Task DBTask = new Task();
 
-        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_KEY + " = " + task.getTask_id();
+        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_KEY + " = " + task.getTaskAutoIncKey();
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            DBTask.setTask_id(Integer.parseInt(cursor.getString(0)));
+            DBTask.setTaskAutoIncKey(Integer.parseInt(cursor.getString(0)));
             db.delete(TASK_TABLE, COLUMN_TASK_KEY + " = ?",
-                    new String[] { String.valueOf(DBTask.getTask_id()) });
+                    new String[] { String.valueOf(DBTask.getTaskAutoIncKey()) });
+            cursor.close();
+            result = true;
+        }
+        cursor.close();
+        db.close();
+
+        return result;
+    }
+
+    public boolean deleteProject(Project project){
+        boolean result = false;
+        Project DBProject = new Project();
+
+        String query = "SELECT * FROM " + PROJECT_TABLE + " WHERE " + COLUMN_PROJECT_KEY + " = " + project.getProjectAutoIncKey();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            DBProject.setProjectAutoIncKey(Integer.parseInt(cursor.getString(0)));
+            db.delete(PROJECT_TABLE, COLUMN_PROJECT_KEY + " = ?",
+                    new String[] { String.valueOf(DBProject.getProjectAutoIncKey()) });
             cursor.close();
             result = true;
         }

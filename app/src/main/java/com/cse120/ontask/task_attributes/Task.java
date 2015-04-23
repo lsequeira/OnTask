@@ -6,7 +6,7 @@ public class Task implements  Serializable{
 
     private static final long serialVersionUID = 6879876854546843515L;
 
-    private int task_id;
+    private int taskAutoIncKey;
     protected String description;
     protected String title;
     protected Urgency urgency;
@@ -37,9 +37,9 @@ public class Task implements  Serializable{
         this.isComplete = isComplete;
     }
 
-    public Task(int task_id, String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
+    public Task(int taskAutoIncKey, String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
     {
-        this.task_id = task_id;
+        this.taskAutoIncKey = taskAutoIncKey;
         this.title = title;
         this.description = description;
         this.urgency = urgency;
@@ -51,7 +51,7 @@ public class Task implements  Serializable{
     }
 
 
-    @Override
+        @Override
     public String toString() {
         return title;
     }
@@ -70,9 +70,15 @@ public class Task implements  Serializable{
         this("Blank Task", "Empty", Urgency.LOW, new Date(), new User());
     }
 
+    /*
+	public void EditTask(Task task){
+
+	}
+    */
+
     //Getters
-    public int getTask_id() {
-        return task_id;
+    public int getTaskAutoIncKey() {
+        return taskAutoIncKey;
     }
     public String getTitle(){
         return title;
@@ -101,8 +107,8 @@ public class Task implements  Serializable{
     //End Getters
 
     //Setters
-    public void setTask_id(int task_id) {
-        this.task_id = task_id;
+    public void setTaskAutoIncKey(int taskAutoIncKey) {
+        this.taskAutoIncKey = taskAutoIncKey;
     }
     public void setTitle(String title){
         this.title = title;
