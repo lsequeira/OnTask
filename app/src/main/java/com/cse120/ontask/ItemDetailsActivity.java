@@ -99,6 +99,10 @@ public class ItemDetailsActivity extends FragmentActivity {
         i.putExtra("isUpdating", isUpdating);
         //TODO:Refactor the update
         i.putExtra("taskToUpdate", listIndex);
+        i.putExtra("listID", listID);
+        if(!isTask){
+            i.putExtra("isProject", true);
+        }
         startActivity(i);
     }
 

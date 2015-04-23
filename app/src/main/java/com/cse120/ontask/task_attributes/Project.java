@@ -1,10 +1,8 @@
 package com.cse120.ontask.task_attributes;
 
-import java.util.Vector;
-
 public class Project extends Task {
     private String project_id;
-    private int project_key;
+    private int projectAutoIncKey;
    /* private String title;
     private String description;
     private Urgency urgency;
@@ -14,9 +12,24 @@ public class Project extends Task {
     //private List<Task> taskList;
     private boolean isComplete;
 */
+    public Project(String title, String project_id, String description, Date deadline,
+                   Urgency urgency, boolean isCompleted){
+        //this.projectAutoIncKey = project_key;
+        this.project_id = project_id;
+        this.title = title;
+        this.description = description;
+        //this.frequency = frequency;
+        this.urgency = urgency;
+        this.deadline = deadline;
+        //memberList = new Vector<User>();
+        //adminList = new Vector<User>();
+        //this.taskList = taskList;
+        this.isComplete = isCompleted;
+    }
+
     public Project(int project_key, String title, String project_id, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
-        this.project_key = project_key;
+        this.projectAutoIncKey = project_key;
         this.project_id = project_id;
         this.title = title;
         this.description = description;
@@ -60,8 +73,8 @@ public class Project extends Task {
     public Vector<User> getAdminList(){
         return (Vector<User>) adminList;
     }*/
-    public int getProject_key(){
-        return project_key;
+    public int getProjectAutoIncKey(){
+        return projectAutoIncKey;
     }
     public String getProject_id(){
         return project_id;
@@ -94,8 +107,8 @@ public class Project extends Task {
         this.adminList = adminList;
     }
     */
-    public void setProject_key(int project_key){
-        this.project_key = project_key;
+    public void setProjectAutoIncKey(int project_key){
+        this.projectAutoIncKey = project_key;
     }
     public void setProject_id(String project_id){
         this.project_id = project_id;

@@ -32,7 +32,6 @@ public class AddItemActivity extends FragmentActivity
 
     TextView displayDate;
     TextView displayTime;
-
     Urgency urgency;
 
     //    the suffix arrays and array lists
@@ -59,6 +58,9 @@ public class AddItemActivity extends FragmentActivity
     //Used only for adding project tasks
     boolean forProject;
 
+    //Used to determine which list to update
+    int listID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,7 @@ public class AddItemActivity extends FragmentActivity
             //set all of the fields to the current task's information
             InitializeUpdate(extraData);
         }
-        else if(extraData.getBoolean("isProject")){
+        else if(extraData.getBoolean("isProject") && !extraData.getBoolean("isUpdating")){
             initializeDateTime();
             InitializeAddProject();
         }
@@ -157,14 +159,20 @@ public class AddItemActivity extends FragmentActivity
         Intent i;
         if(isUpdating){
             i = new Intent(this, ItemDetailsActivity.class);
-
-            Task t = createTaskObject();
-
-            getTaskManagerApplication().updateTask(t, taskListIndex);
+            Task t;
+            if(isProject){
+                t = createProjectObject();
+                getTaskManagerApplication().updateProject((Project) t, taskListIndex);
+                System.out.println("chk proj update");
+            }
+            else {
+                t = createTaskObject();
+                getTaskManagerApplication().updateTask(t, taskListIndex);
+            }
 
             i.putExtra("taskSelected", taskListIndex);
         }
-        else if(isProject){
+        else if(isProject && !isUpdating){
             Project p = createProjectObject();
             getTaskManagerApplication().addProject(p);
 
@@ -186,6 +194,7 @@ public class AddItemActivity extends FragmentActivity
             bundle.putInt("SpinnerView", 0);
             i.putExtras(bundle);
         }
+        i.putExtra("listID", listID);
         startActivity(i);
     }
     /* End On-Click Functions */
@@ -255,7 +264,7 @@ public class AddItemActivity extends FragmentActivity
 
         //ID
         if (isUpdating) {
-            projectKey = TaskManagerApplication.currentProjects.get(taskListIndex).getTask_id();
+            projectKey = TaskManagerApplication.currentProjects.get(taskListIndex).getTaskAutoIncKey();
         }
         else {
             projectKey = getTaskManagerApplication().taskMaxKey;
@@ -265,7 +274,7 @@ public class AddItemActivity extends FragmentActivity
         boolean isComplete = false;
 
         //Create the Task Object
-        Project p = new Project(projectKey, projectName, projectName, projectDescription, deadline, urgency, isComplete);
+        Project p = new Project(projectName, projectName, projectDescription, deadline, urgency, isComplete);
 
         return p;
     }
@@ -416,7 +425,15 @@ public class AddItemActivity extends FragmentActivity
     private void InitializeUpdate(Bundle updateData){
         isUpdating = updateData.getBoolean("isUpdating");
         taskListIndex = updateData.getInt("taskToUpdate");
-        Task taskToUpdate = TaskManagerApplication.currentTasks.get(taskListIndex);
+        isProject = updateData.getBoolean("isProject");
+        listID = updateData.getInt("listID");
+        Task taskToUpdate;
+        if(listID == 0) {
+            taskToUpdate = TaskManagerApplication.currentTasks.get(taskListIndex);
+        }
+        else{
+            taskToUpdate = TaskManagerApplication.currentProjects.get(taskListIndex);
+        }
 
         TextView staticUpdateText = (TextView) findViewById(R.id.addTaskText);
         staticUpdateText.setText("Update Task");
