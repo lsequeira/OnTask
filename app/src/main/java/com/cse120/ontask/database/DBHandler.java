@@ -12,6 +12,7 @@ import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.task_attributes.Urgency;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -41,6 +42,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_PROJECT_IS_COMPLETE = "is_complete";
     /*-----------Table Columns END--------------*/
 
+    Random genProjID;
 
     public DBHandler(Context context, String name,
                      SQLiteDatabase.CursorFactory factory, int version) {
@@ -48,6 +50,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         //Delete Database with line below
         //context.deleteDatabase(DATABASE_NAME);
+
+        genProjID = new Random();
     }
 
     @Override
@@ -67,7 +71,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String CREATE_PROJECT_TABLE = "CREATE TABLE " + PROJECT_TABLE + "("+
                 COLUMN_PROJECT_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_TASK_TITLE + " TEXT," +
-                COLUMN_PROJECT_ID + " TEXT, " +
+                COLUMN_PROJECT_ID + " INTEGER, " +
                 COLUMN_PROJECT_DESCRIPTION + " TEXT," +
                 COLUMN_PROJECT_DEADLINE + " TEXT," +
                 COLUMN_PROJECT_URGENCY + " INTEGER, " +
@@ -84,6 +88,22 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /* Database Handler Functions */
     public void addTask(Task task) {
+        int prevRowID = 0;
+
+        String query = "SELECT * FROM " + TASK_TABLE + " ORDER BY " + COLUMN_TASK_KEY
+                + " DESC LIMIT 1";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            prevRowID = Integer.parseInt(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+
+        task.setTaskAutoIncKey(prevRowID+1);
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_TASK_TITLE, task.getTitle());
         values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
@@ -93,60 +113,48 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TASK_PROJECT_ID, task.getTaskProject_id());
         values.put(COLUMN_TASK_IS_COMPLETE, task.getIsCompleted());
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
 
         db.insert(TASK_TABLE, null, values);
         db.close();
+    }
 
-        //Get the last record's index (which is the task just added) and set the task id here
-        int maxDBIndex = 0;
-        String query = "SELECT * FROM " + TASK_TABLE;
-        db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+    public void addProject(Project project) {
+        int prevRowID = 0;
+
+        //Get the previous max autoincremented row key
+        String query = "SELECT * FROM " + PROJECT_TABLE + " ORDER BY " + COLUMN_PROJECT_KEY
+                + " DESC LIMIT 1";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            int key = Integer.parseInt(cursor.getString(0));
-            maxDBIndex = key;
+            prevRowID = Integer.parseInt(cursor.getString(0));
             cursor.moveToNext();
         }
         cursor.close();
         db.close();
 
-        task.setTaskAutoIncKey(maxDBIndex);
-    }
+        //Set what will be the next auto incremented key
+        project.setProjectAutoIncKey(prevRowID+1);
 
-    public void addProject(Project project) {
+        //Range from 0 to 2^30
+        project.setProject_id(genProjID.nextInt(1073741824));
+
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_PROJECT_TITLE, project.getTitle());
 
-        //TODO:check id in database and make no project is created with same id
         //note that project_key, rather than project_id, refers to the auto increment key
         values.put(COLUMN_PROJECT_ID, project.getProject_id());
-
         values.put(COLUMN_PROJECT_DESCRIPTION, project.getDescription());
         values.put(COLUMN_PROJECT_DEADLINE, dateToStringConvert(project.getDeadline()));
         values.put(COLUMN_PROJECT_URGENCY, urgencyToIntegerConvert(project.getUrgency()));
         values.put(COLUMN_PROJECT_IS_COMPLETE, project.getIsCompleted());
 
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        db.insert(PROJECT_TABLE, null, values);
-
-        //Get the last record's index
-        int maxDBIndex = 0;
-        String query = "SELECT * FROM " + PROJECT_TABLE;
         db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
-            int key = Integer.parseInt(cursor.getString(0));
-            maxDBIndex = key;
-            cursor.moveToNext();
-        }
-        cursor.close();
+        db.insert(PROJECT_TABLE, null, values);
         db.close();
-
-        project.setProjectAutoIncKey(maxDBIndex);
     }
 
     public void updateTask(Task task){
@@ -181,7 +189,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public ArrayList<Task> loadTasks(boolean loadCompletedTasks) {
         ArrayList<Task> DBTasks = new ArrayList<Task>();
-        String query = "SELECT * FROM " + TASK_TABLE;
+        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_PROJECT_ID + " = -1";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -246,7 +254,7 @@ public class DBHandler extends SQLiteOpenHelper {
         while (cursor.isAfterLast() == false) {
             int key = Integer.parseInt(cursor.getString(0));
             String title = cursor.getString(1);
-            String id = cursor.getString(2);
+            int id = Integer.parseInt(cursor.getString(2));
             String description = cursor.getString(3);
             Date deadline = stringToDateConvert(cursor.getString(4));
             Urgency urgency = integerToUrgencyConvert(Integer.parseInt(cursor.getString(5)));

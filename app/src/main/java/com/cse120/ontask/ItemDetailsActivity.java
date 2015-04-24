@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
 
@@ -23,6 +24,7 @@ public class ItemDetailsActivity extends FragmentActivity {
     private TextView itemDescription;
     private TextView itemDeadline;
     private TextView itemUrgency;
+    private TextView itemTopBar;
 
     private Button itemUpdate;
     private Button itemDelete;
@@ -38,6 +40,7 @@ public class ItemDetailsActivity extends FragmentActivity {
         itemDescription = (TextView) findViewById(R.id.itemDescription);
         itemDeadline = (TextView) findViewById(R.id.itemDeadline);
         itemUrgency = (TextView) findViewById(R.id.itemUrgency);
+        itemTopBar = (TextView) findViewById(R.id.topActionBarTitle);
 
         itemUpdate = (Button) findViewById(R.id.updateButton);
         itemDelete = (Button) findViewById(R.id.deleteButton);
@@ -195,6 +198,12 @@ public class ItemDetailsActivity extends FragmentActivity {
     }
 
     public void setView() {
+        if (!isTask) {
+            itemTopBar.setText("Project Details");
+        }
+        else {
+            itemTopBar.setText("Task Details");
+        }
         itemTitle.setText(itemDisplayed.getTitle());
         itemDescription.setText(itemDisplayed.getDescription());
 

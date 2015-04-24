@@ -139,5 +139,4 @@ public class TaskManagerApplication extends Application {
         handler.deleteProject(p);
         handler.close();
     }
-    //TODO:Delete projects from database
 }

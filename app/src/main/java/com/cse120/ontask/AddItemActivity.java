@@ -240,7 +240,6 @@ public class AddItemActivity extends FragmentActivity
 
     protected Project createProjectObject(){
         String projectName, projectDescription;
-        int projectKey;
 
         //Name
         EditText titleInput = (EditText)findViewById(R.id.taskTitle);
@@ -261,20 +260,11 @@ public class AddItemActivity extends FragmentActivity
         //Deadline
         Date deadline = new Date(year, month, day, hour, minute);
 
-
-        //TODO: Figure out what will be the project id for created projects
-        if (isUpdating) {
-            projectKey = TaskManagerApplication.currentProjects.get(taskListIndex).getTaskAutoIncKey();
-        }
-        else {
-            projectKey = 1;
-        }
-
         //Added project is defaulted to !isComplete
         boolean isComplete = false;
 
         //Create the Task Object
-        Project p = new Project(projectName, projectName, projectDescription, deadline, urgency, isComplete);
+        Project p = new Project(projectName, projectDescription, deadline, urgency, isComplete);
 
         return p;
     }

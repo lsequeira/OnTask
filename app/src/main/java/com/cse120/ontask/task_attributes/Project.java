@@ -1,7 +1,7 @@
 package com.cse120.ontask.task_attributes;
 
 public class Project extends Task {
-    private String project_id;
+    private int project_id;
     private int projectAutoIncKey;
    /* private String title;
     private String description;
@@ -12,10 +12,9 @@ public class Project extends Task {
     //private List<Task> taskList;
     private boolean isComplete;
 */
-    public Project(String title, String project_id, String description, Date deadline,
+    public Project(String title, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
         //this.projectAutoIncKey = project_key;
-        this.project_id = project_id;
         this.title = title;
         this.description = description;
         //this.frequency = frequency;
@@ -27,11 +26,11 @@ public class Project extends Task {
         this.isComplete = isCompleted;
     }
 
-    public Project(int project_key, String title, String project_id, String description, Date deadline,
+    public Project(int project_key, String title, int project_id, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
         this.projectAutoIncKey = project_key;
-        this.project_id = project_id;
         this.title = title;
+        this.project_id = project_id;
         this.description = description;
         //this.frequency = frequency;
         this.urgency = urgency;
@@ -76,7 +75,7 @@ public class Project extends Task {
     public int getProjectAutoIncKey(){
         return projectAutoIncKey;
     }
-    public String getProject_id(){
+    public int getProject_id(){
         return project_id;
     }
     /*public boolean getIsCompleted(){
@@ -110,7 +109,7 @@ public class Project extends Task {
     public void setProjectAutoIncKey(int project_key){
         this.projectAutoIncKey = project_key;
     }
-    public void setProject_id(String project_id){
+    public void setProject_id(int project_id){
         this.project_id = project_id;
     }
     /*

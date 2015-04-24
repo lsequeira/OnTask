@@ -161,6 +161,7 @@ public class HomeActivity extends FragmentActivity
     //Method for TaskListFragment interaction
     public void onFragmentInteraction(int taskListIndex, int listID){
         //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
+        System.out.println("TaskListIndex: " + taskListIndex + "ListID: " + listID);
         Intent i = new Intent(this, ItemDetailsActivity.class);
         i.putExtra("taskSelected", taskListIndex);
         i.putExtra("listID", listID);
