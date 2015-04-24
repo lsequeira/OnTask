@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
 
 import java.util.ArrayList;
@@ -191,4 +192,19 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 
+    //Load project task list view
+    public void projectTaskListView(int listIndex, int listID){
+        Project p;
+        switch (listID){
+            case 1:
+                p = TaskManagerApplication.currentProjects.get(listIndex);
+                mAdapter = new TaskListAdapter(getActivity(), p.getTaskList());
+                break;
+            case 3:
+                p = TaskManagerApplication.completedProjects.get(listIndex);
+                mAdapter = new TaskListAdapter(getActivity(), p.getTaskList());
+                break;
+        }
+        mListView.setAdapter(mAdapter);
+    }
 }

@@ -96,13 +96,14 @@
             android:onClick="CompletedButtonOnClick" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_blue"
         android:id="@+id/topActionBar"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:weightSum="1">
 
         <ImageButton
             android:layout_width="40dp"
@@ -120,9 +121,25 @@
             android:text="Task Details"
             android:id="@+id/topActionBarTitle"
             android:layout_marginLeft="85dp"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-    </LinearLayout>
+        <Button
+            android:layout_width="52dp"
+            android:layout_height="23dp"
+            android:id="@+id/updateButton"
+            android:onClick="UpdateButtonOnClick"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/updatetaskbutton"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0.15"
+            android:layout_gravity="center_vertical"
+            android:layout_alignBottom="@+id/topActionBarTitle"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -142,17 +159,5 @@
         android:layout_marginTop="9dp"
         android:layout_below="@+id/topActionBar"
         android:layout_alignStart="@+id/itemTitle" />
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="38dp"
-        android:id="@+id/updateButton"
-        android:onClick="UpdateButtonOnClick"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/updatetaskbutton"
-        android:layout_gravity="center_horizontal"
-        android:layout_above="@+id/linearLayout2"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

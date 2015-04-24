@@ -1,21 +1,24 @@
 package com.cse120.ontask.task_attributes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Project extends Task {
-    private String project_id;
+    private int project_id;
     private int projectAutoIncKey;
+    private List<Task> taskList;
    /* private String title;
     private String description;
     private Urgency urgency;
     private Date deadline;
     private Vector<User> memberList;
     private Vector<User> adminList;
-    //private List<Task> taskList;
+
     private boolean isComplete;
 */
-    public Project(String title, String project_id, String description, Date deadline,
+    public Project(String title, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
         //this.projectAutoIncKey = project_key;
-        this.project_id = project_id;
         this.title = title;
         this.description = description;
         //this.frequency = frequency;
@@ -25,13 +28,14 @@ public class Project extends Task {
         //adminList = new Vector<User>();
         //this.taskList = taskList;
         this.isComplete = isCompleted;
+        taskList = new ArrayList<Task>();
     }
 
-    public Project(int project_key, String title, String project_id, String description, Date deadline,
+    public Project(int project_key, String title, int project_id, String description, Date deadline,
                    Urgency urgency, boolean isCompleted){
         this.projectAutoIncKey = project_key;
-        this.project_id = project_id;
         this.title = title;
+        this.project_id = project_id;
         this.description = description;
         //this.frequency = frequency;
         this.urgency = urgency;
@@ -76,15 +80,16 @@ public class Project extends Task {
     public int getProjectAutoIncKey(){
         return projectAutoIncKey;
     }
-    public String getProject_id(){
+    public int getProject_id(){
         return project_id;
     }
     /*public boolean getIsCompleted(){
         return isCompleted;
     }
-    public Vector<Task> getTaskList(){
-        return (Vector<Task>) taskList;
-    }*/
+    */
+    public List<Task> getTaskList(){
+        return taskList;
+    }
     //End Getters
 
     //Setters
@@ -110,16 +115,17 @@ public class Project extends Task {
     public void setProjectAutoIncKey(int project_key){
         this.projectAutoIncKey = project_key;
     }
-    public void setProject_id(String project_id){
+    public void setProject_id(int project_id){
         this.project_id = project_id;
     }
     /*
     public void setIsCompleted(boolean isCompleted){
         this.isCompleted = isCompleted;
     }
-    public void SetTaskList(Vector<Task> taskList){
+    */
+    public void setTaskList(List<Task> taskList){
         this.taskList = taskList;
     }
-    */
+
     //End Setters
 }

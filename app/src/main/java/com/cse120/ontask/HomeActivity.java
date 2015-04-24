@@ -11,7 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cse120.ontask.sliding_menu.NavDrawerItem;
@@ -42,6 +45,9 @@ public class HomeActivity extends FragmentActivity
     private NavDrawerListAdapter adapter;
 
     private int spinnerPos;
+
+    //Checks if Home view or Project view
+    boolean isHomeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,7 @@ public class HomeActivity extends FragmentActivity
 
         if (savedInstanceState == null) {
             // Display Home Screen Initially
+            isHomeView = true;
             displayView(0);
         }
     }
@@ -160,12 +167,28 @@ public class HomeActivity extends FragmentActivity
 
     //Method for TaskListFragment interaction
     public void onFragmentInteraction(int taskListIndex, int listID){
-        //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
-        Intent i = new Intent(this, ItemDetailsActivity.class);
-        i.putExtra("taskSelected", taskListIndex);
-        i.putExtra("listID", listID);
+        Intent i;
+        if(listID == 0 || listID == 2) {
+            i = new Intent(this, ItemDetailsActivity.class);
+            i.putExtra("taskSelected", taskListIndex);
+            i.putExtra("listID", listID);
 
-        startActivity(i);
+            startActivity(i);
+        }
+        else{
+            TaskListFragment taskListFrag = (TaskListFragment) getSupportFragmentManager().findFragmentByTag("TaskListFragment");
+            taskListFrag.projectTaskListView(taskListIndex, listID);
+
+            Bundle bundle = new Bundle();
+            isHomeView = false;
+            bundle.putBoolean("isHomeView", isHomeView);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_container, taskListFrag, "TaskListFragment");
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            transaction.addToBackStack("");
+            transaction.commit();
+        }
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
@@ -203,6 +226,10 @@ public class HomeActivity extends FragmentActivity
         startActivity(i);
     }
 
+    public void projectBackButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
 
     public void navButtonOnClick(View v) {
         mDrawerLayout.openDrawer(mDrawerList);
@@ -221,4 +248,5 @@ public class HomeActivity extends FragmentActivity
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }
