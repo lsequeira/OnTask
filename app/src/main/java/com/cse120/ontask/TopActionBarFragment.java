@@ -66,9 +66,12 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             spinnerPos = bundle.getInt("SpinnerView");
-            if(!bundle.getBoolean("isHomeView"))
-                isHomeView = bundle.getBoolean("isHomeView");
+            System.out.println("Spinner pos bundle: " + spinnerPos);
+            isHomeView = bundle.getBoolean("isHomeView");
+            System.out.println("Home view bundle: " + isHomeView);
         }
+        else
+            System.out.println("This is null");
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_top_action_bar, container, false);

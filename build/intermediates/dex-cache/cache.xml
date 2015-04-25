@@ -6,42 +6,42 @@
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-3b2063e9a062493d9786d7d0eef778f7e175faee.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-3b2063e9a062493d9786d7d0eef778f7e175faee.jar" />
+    </item>
+    <item
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\classes-d12be15b01a03a78cd709d928aa3f1ee3d1b6dd6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.0.0\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0f254ec13d6671680482d2218f01ecf14dfa93e6">
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\classes-5408fd7e566ca58b82f2b1f20dc999e66a5c645a.jar" />
     </item>
     <item
         jar="C:\Users\Spencer Hirasawa\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-android\1.1.4\129874135e6081269ace2312092031558865de12\bolts-android-1.1.4.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="129874135e6081269ace2312092031558865de12">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.4-e69df244198f2531a0f8f60466574d34042c58f8.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.4-e69df244198f2531a0f8f60466574d34042c58f8.jar" />
     </item>
     <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\classes-1d8afbd759206959cc9be467fbda212a17c2206e.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\classes-e40309231b8750434655dd365543bb654ade1129.jar" />
     </item>
     <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jar="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d47a34bea209afdc21d608f594d1b160c4635b56.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.0.0\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0f254ec13d6671680482d2218f01ecf14dfa93e6">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\classes-b8f2e710e7fff80b77ef50bdce63b4677c707c5e.jar" />
-    </item>
-    <item
-        jar="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Spencer Hirasawa\Documents\Software Engineering\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\classes-b438526c15824443616a71cb4c62c6d71f209d04.jar" />
+        <dex dex="C:\Users\Spencer Hirasawa\Desktop\OnTask-CarlosTrunk\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-013bc8fa9f8c39aee42011872ff3721a65cafd77.jar" />
     </item>
 
 </items>

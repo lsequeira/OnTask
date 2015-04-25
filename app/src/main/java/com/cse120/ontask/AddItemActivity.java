@@ -61,6 +61,9 @@ public class AddItemActivity extends FragmentActivity
     //Used to determine which list to update
     int listID;
 
+    //Used only for adding tasks for a project
+    int listIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +77,12 @@ public class AddItemActivity extends FragmentActivity
         isUpdating = false;
         //if isUpdating then updating a task
         //else adding a task
-        if(extraData == null){
+        if(extraData == null || extraData.getBoolean("isProjectTask")){
             //Set the Date and Time TextViews to the current date/time
+            if(extraData.getBoolean("isProjectTask")){
+                forProject = true;
+                listIndex = extraData.getInt("listIndex");
+            }
             initializeDateTime();
             //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
@@ -157,9 +164,9 @@ public class AddItemActivity extends FragmentActivity
 
     public void addTaskButtonOnClick(View v) {
         Intent i;
+        Task t;
         if(isUpdating){
             i = new Intent(this, ItemDetailsActivity.class);
-            Task t;
             if(isProject){
                 t = createProjectObject();
                 getTaskManagerApplication().updateProject((Project) t, taskListIndex);
@@ -169,7 +176,6 @@ public class AddItemActivity extends FragmentActivity
                 t = createTaskObject();
                 getTaskManagerApplication().updateTask(t, taskListIndex);
             }
-
             i.putExtra("taskSelected", taskListIndex);
         }
         else if(isProject && !isUpdating){
@@ -182,9 +188,15 @@ public class AddItemActivity extends FragmentActivity
             bundle.putInt("SpinnerView", 1);
             i.putExtras(bundle);
         }
+        else if(forProject){
+            t = createTaskObject();
+            getTaskManagerApplication().getCurrentProjects().get(listIndex).getTaskList().add(t);
+            i = new Intent(this, HomeActivity.class);
+            //TODO: pass extras to lett home activity know that it should load the project task list view
+        }
         else{
             //Add Task Object to the List
-            Task t = createTaskObject();
+            t = createTaskObject();
             getTaskManagerApplication().addTask(t);
 
             //Go to home screen after adding task

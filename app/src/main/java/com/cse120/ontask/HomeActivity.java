@@ -29,6 +29,12 @@ public class HomeActivity extends FragmentActivity
                    AdapterView.OnItemSelectedListener,
                    TopActionBarFragment.Callback {
 
+    //list IDs
+    private static final int CURR_TASK = 0;
+    private static final int CURR_PROJ = 1;
+    private static final int COMP_TASK = 2;
+    private static final int COMP_PROJ = 3;
+
     //changes as the bottom action bar buttons are pressed
     //reflects which list is currently displayed
     private TextView currentListDisplayed;
@@ -48,6 +54,8 @@ public class HomeActivity extends FragmentActivity
 
     //Checks if Home view or Project view
     boolean isHomeView;
+
+    int listIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +110,7 @@ public class HomeActivity extends FragmentActivity
         if (savedInstanceState == null) {
             // Display Home Screen Initially
             isHomeView = true;
-            displayView(0);
+            displayView(0, -1);
         }
     }
 
@@ -113,21 +121,23 @@ public class HomeActivity extends FragmentActivity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // display view for selected nav drawer item
-            displayView(position);
+            displayView(position, -1);
         }
     }
 
     /**
      * Displaying fragment view for selected nav drawer list item
      * */
-    private void displayView(int position) {
+    private void displayView(int position, int taskListIndex) {
         // update the main content by replacing fragments
         TaskListFragment fragment = null;
         switch (position) {
             case 0:
                 fragment = new TaskListFragment();
                 Bundle bundle = new Bundle();
+                bundle.putInt("taskListIndex", taskListIndex);
                 bundle.putInt("SpinnerView", spinnerPos);
+                bundle.putBoolean("isHomeView", isHomeView);
                 fragment.setArguments(bundle);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -165,10 +175,11 @@ public class HomeActivity extends FragmentActivity
         }
     }
 
+    //TODO: Handle selecting tasks of projects
     //Method for TaskListFragment interaction
     public void onFragmentInteraction(int taskListIndex, int listID){
         Intent i;
-        if(listID == 0 || listID == 2) {
+        if(listID == CURR_TASK || listID == COMP_TASK) {
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("taskSelected", taskListIndex);
             i.putExtra("listID", listID);
@@ -176,18 +187,9 @@ public class HomeActivity extends FragmentActivity
             startActivity(i);
         }
         else{
-            TaskListFragment taskListFrag = (TaskListFragment) getSupportFragmentManager().findFragmentByTag("TaskListFragment");
-            taskListFrag.projectTaskListView(taskListIndex, listID);
-
-            Bundle bundle = new Bundle();
             isHomeView = false;
-            bundle.putBoolean("isHomeView", isHomeView);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, taskListFrag, "TaskListFragment");
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            transaction.addToBackStack("");
-            transaction.commit();
+            listIndex = taskListIndex;
+            displayView(0, taskListIndex);
         }
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
@@ -222,13 +224,21 @@ public class HomeActivity extends FragmentActivity
     }
 
     public void addButtonOnClick(View v){
-        Intent i = new Intent(this, ChooseTaskOrProject.class);
+        Intent i;
+        if(isHomeView) {
+            i = new Intent(this, ChooseTaskOrProject.class);
+        }
+        else{
+            i = new Intent(this, AddItemActivity.class);
+            i.putExtra("isProjectTask", true);
+            i.putExtra("listIndex", listIndex);
+        }
         startActivity(i);
     }
 
     public void projectBackButtonOnClick(View v){
-        Intent i = new Intent(this, HomeActivity.class);
-        startActivity(i);
+        isHomeView = true;
+        displayView(0, -1);
     }
 
     public void navButtonOnClick(View v) {
@@ -239,6 +249,7 @@ public class HomeActivity extends FragmentActivity
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         //Get our dynamically created fragment by tag
+        spinnerPos = pos;
         TaskListFragment fragment = (TaskListFragment) getSupportFragmentManager().findFragmentByTag("TaskListFragment");
         fragment.taskListView(pos);
 

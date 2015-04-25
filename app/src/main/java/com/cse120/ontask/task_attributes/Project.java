@@ -44,10 +44,11 @@ public class Project extends Task {
         //adminList = new Vector<User>();
         //this.taskList = taskList;
         this.isComplete = isCompleted;
+        taskList = new ArrayList<Task>();
     }
 
     public Project(){
-
+        taskList = new ArrayList<Task>();
     }
 
     public void EditProject(Project project){

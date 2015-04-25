@@ -62,7 +62,6 @@ public class ItemDetailsActivity extends FragmentActivity {
                 isTask = true;
                 break;
             case 1:
-                itemDisplayed = new Project();
                 itemDisplayed = TaskManagerApplication.currentProjects.get(listIndex);
                 break;
             case 2:
