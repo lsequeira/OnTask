@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
 
 import java.util.ArrayList;
@@ -94,15 +95,33 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item, container, false);
 
-        TopActionBarFragment childFrag = new TopActionBarFragment();
-        childFrag.setArguments(getArguments());
+        //Initialize in case bundle is null
+        int taskListIndex = -1;
+        int spinnerPos = 0;
+        boolean isHomeView = true;
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            taskListIndex = bundle.getInt("taskListIndex");
+            spinnerPos = bundle.getInt("SpinnerView");
+            isHomeView = bundle.getBoolean("isHomeView");
+        }
+
+        TopActionBarFragment childFrag = new TopActionBarFragment();
+        Bundle childBundle = new Bundle();
+        childBundle.putInt("SpinnerView", spinnerPos);
+        childBundle.putBoolean("isHomeView", isHomeView);
+        childFrag.setArguments(childBundle);
         this.getChildFragmentManager().beginTransaction().add(R.id.content_parent,childFrag).commit();
 
-
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        mListView.setAdapter(mAdapter);
+        if (taskListIndex == -1) {
+            mListView = (AbsListView) view.findViewById(android.R.id.list);
+            mListView.setAdapter(mAdapter);
+        }
+        else {
+            projectTaskListView(taskListIndex,spinnerPos);
+        }
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
@@ -168,7 +187,6 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
 
     //Filter the Task List here
     public void taskListView(int filter) {
-        System.out.println("Pos: " + filter);
         switch (filter){
             case 0:
                 mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
@@ -191,4 +209,25 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 
+    //Load project task list view
+    public void projectTaskListView(int listIndex, int spinnerID){
+        //test
+        System.out.println("TaskListIndex :" + listIndex);
+        System.out.println("Spinner Position: " + spinnerID);
+        Project p;
+        switch (spinnerID){
+            case 1:
+                p = TaskManagerApplication.currentProjects.get(listIndex);
+                System.out.println("CASE 1");
+                mAdapter = new TaskListAdapter(getActivity(), p.getTaskList());
+                break;
+            case 3:
+                p = TaskManagerApplication.completedProjects.get(listIndex);
+                mAdapter = new TaskListAdapter(getActivity(), p.getTaskList());
+                break;
+            default:
+                break;
+        }
+        mListView.setAdapter(mAdapter);
+    }
 }

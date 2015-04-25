@@ -11,7 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cse120.ontask.sliding_menu.NavDrawerItem;
@@ -42,6 +45,9 @@ public class HomeActivity extends FragmentActivity
     private NavDrawerListAdapter adapter;
 
     private int spinnerPos;
+
+    //Checks if Home view or Project view
+    boolean isHomeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +101,8 @@ public class HomeActivity extends FragmentActivity
 
         if (savedInstanceState == null) {
             // Display Home Screen Initially
-            displayView(0);
+            isHomeView = true;
+            displayView(0, -1);
         }
     }
 
@@ -106,21 +113,23 @@ public class HomeActivity extends FragmentActivity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // display view for selected nav drawer item
-            displayView(position);
+            displayView(position, -1);
         }
     }
 
     /**
      * Displaying fragment view for selected nav drawer list item
      * */
-    private void displayView(int position) {
+    private void displayView(int position, int taskListIndex) {
         // update the main content by replacing fragments
         TaskListFragment fragment = null;
         switch (position) {
             case 0:
                 fragment = new TaskListFragment();
                 Bundle bundle = new Bundle();
+                bundle.putInt("taskListIndex", taskListIndex);
                 bundle.putInt("SpinnerView", spinnerPos);
+                bundle.putBoolean("isHomeView", isHomeView);
                 fragment.setArguments(bundle);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -160,13 +169,18 @@ public class HomeActivity extends FragmentActivity
 
     //Method for TaskListFragment interaction
     public void onFragmentInteraction(int taskListIndex, int listID){
-        //Task task = new Task(taskSelected.getTitle(),taskSelected.getDescription(),taskSelected.getDeadline());
-        System.out.println("TaskListIndex: " + taskListIndex + "ListID: " + listID);
-        Intent i = new Intent(this, ItemDetailsActivity.class);
-        i.putExtra("taskSelected", taskListIndex);
-        i.putExtra("listID", listID);
+        Intent i;
+        if(listID == 0 || listID == 2) {
+            i = new Intent(this, ItemDetailsActivity.class);
+            i.putExtra("taskSelected", taskListIndex);
+            i.putExtra("listID", listID);
 
-        startActivity(i);
+            startActivity(i);
+        }
+        else{
+            isHomeView = false;
+            displayView(0, taskListIndex);
+        }
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
@@ -204,6 +218,10 @@ public class HomeActivity extends FragmentActivity
         startActivity(i);
     }
 
+    public void projectBackButtonOnClick(View v){
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+    }
 
     public void navButtonOnClick(View v) {
         mDrawerLayout.openDrawer(mDrawerList);
@@ -213,6 +231,7 @@ public class HomeActivity extends FragmentActivity
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         //Get our dynamically created fragment by tag
+        spinnerPos = pos;
         TaskListFragment fragment = (TaskListFragment) getSupportFragmentManager().findFragmentByTag("TaskListFragment");
         fragment.taskListView(pos);
 
@@ -222,4 +241,5 @@ public class HomeActivity extends FragmentActivity
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }

@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +21,8 @@ import android.widget.Spinner;
  * create an instance of this fragment.
  */
 public class TopActionBarFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+
+    View view;
 
     public interface Callback {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id);
@@ -58,26 +62,39 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         int spinnerPos = 0;
+        boolean isHomeView = true;
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             spinnerPos = bundle.getInt("SpinnerView");
+            System.out.println("Spinner pos bundle: " + spinnerPos);
+            isHomeView = bundle.getBoolean("isHomeView");
+            System.out.println("Home view bundle: " + isHomeView);
         }
+        else
+            System.out.println("This is null");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_top_action_bar, container, false);
+        view = inflater.inflate(R.layout.fragment_top_action_bar, container, false);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.sortListSpinner);
-        spinner.setOnItemSelectedListener(this);
-        //spinner.setOnItemClickListener(this);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.spinner_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setSelection(spinnerPos);
-
+        if(isHomeView) {
+            Spinner spinner = (Spinner) view.findViewById(R.id.sortListSpinner);
+            spinner.setOnItemSelectedListener(this);
+            //spinner.setOnItemClickListener(this);
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                    R.array.spinner_array, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+            spinner.setSelection(spinnerPos);
+            hideProjectWidgets();
+            System.out.println("chk hiding project widgets");
+        }
+        else{
+            hideHomeWidgets();
+            System.out.println("chk hiding home widgets");
+        }
         return view;
     }
 
@@ -92,5 +109,21 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         //Another interface callback
+    }
+
+    public void hideProjectWidgets() {
+        ImageButton backButton = (ImageButton) view.findViewById(R.id.projectBackButton);
+        backButton.setVisibility(View.GONE);
+
+        TextView projTitle = (TextView) view.findViewById(R.id.projectTitle);
+        projTitle.setVisibility(View.GONE);
+    }
+
+    public void hideHomeWidgets(){
+        Spinner spinner = (Spinner) view.findViewById(R.id.sortListSpinner);
+        spinner.setVisibility(View.GONE);
+
+        ImageButton navButton = (ImageButton) view.findViewById(R.id.navButton) ;
+        navButton.setVisibility(View.GONE);
     }
 }
