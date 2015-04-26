@@ -23,6 +23,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /*-----------Table Columns--------------*/
     //Task
+    //TODO: ADD TASK UNIQUE ID AND USER ID
+    //TODO: LOAD TASKS INTO CORRESPONDING PROJECTS BASED ON UNIQUE PROJECT ID
     public static final String COLUMN_TASK_KEY = "task_key";
     public static final String COLUMN_TASK_TITLE = "title";
     public static final String COLUMN_TASK_DESCRIPTION = "description";
