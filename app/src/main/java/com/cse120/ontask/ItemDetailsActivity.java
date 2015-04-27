@@ -19,6 +19,8 @@ public class ItemDetailsActivity extends FragmentActivity {
     private int listIndex;
     private int listID;
     private boolean isTask;
+    private boolean isProjTaskList;
+    private int parentProjectIndex;
 
     private TextView itemTitle;
     private TextView itemDescription;
@@ -51,9 +53,14 @@ public class ItemDetailsActivity extends FragmentActivity {
             return;
         }
 
-        listIndex = itemData.getInt("taskSelected");
+        listIndex = itemData.getInt("itemSelected");
         listID = itemData.getInt("listID");
+        isProjTaskList = itemData.getBoolean("isProjTaskList");
+        parentProjectIndex = itemData.getInt("parentProjectIndex");
         isTask = false;
+
+        System.out.println("itemListIndex: " + listIndex + " listID: " + listID + " isProjTaskList " + isProjTaskList + " parentProjectIndex " + parentProjectIndex);
+
 
         //Get Corresponding List
         switch (listID) {
@@ -62,7 +69,12 @@ public class ItemDetailsActivity extends FragmentActivity {
                 isTask = true;
                 break;
             case 1:
-                itemDisplayed = TaskManagerApplication.currentProjects.get(listIndex);
+                if (isProjTaskList) {
+                    itemDisplayed = TaskManagerApplication.currentProjects.get(parentProjectIndex).getTaskList().get(listIndex);
+                }
+                else {
+                    itemDisplayed = TaskManagerApplication.currentProjects.get(listIndex);
+                }
                 break;
             case 2:
                 itemDisplayed = TaskManagerApplication.completedTasks.get(listIndex);
@@ -107,9 +119,18 @@ public class ItemDetailsActivity extends FragmentActivity {
         Intent i = new Intent(this, AddItemActivity.class);
         boolean isUpdating = true;
         i.putExtra("isUpdating", isUpdating);
-        //TODO:Refactor the update
         i.putExtra("taskToUpdate", listIndex);
         i.putExtra("listID", listID);
+
+        //extras for tasks of projects
+        if(isProjTaskList){
+            i.putExtra("parentProject", parentProjectIndex);
+            i.putExtra("isProjectTask", true);
+        }
+        else{
+            i.putExtra("isProjectTask", false);
+        }
+
         if(!isTask){
             System.out.println("Yes this is a project");
             i.putExtra("isProject", true);

@@ -23,6 +23,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /*-----------Table Columns--------------*/
     //Task
+    //TODO: ADD TASK UNIQUE ID AND USER ID
+    //TODO: LOAD TASKS INTO CORRESPONDING PROJECTS BASED ON UNIQUE PROJECT ID
     public static final String COLUMN_TASK_KEY = "task_key";
     public static final String COLUMN_TASK_TITLE = "title";
     public static final String COLUMN_TASK_DESCRIPTION = "description";
@@ -180,16 +182,15 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_PROJECT_URGENCY, urgencyToIntegerConvert(project.getUrgency()));
         values.put(COLUMN_TASK_IS_COMPLETE, project.getIsCompleted());
 
-        System.out.println("chk proj key: " + project.getProjectAutoIncKey());
         String whereClause = COLUMN_PROJECT_KEY + "=" + project.getProjectAutoIncKey();
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PROJECT_TABLE, values, whereClause, null);
         db.close();
     }
 
-    public ArrayList<Task> loadTasks(boolean loadCompletedTasks) {
+    public ArrayList<Task> loadTasks(boolean loadCompletedTasks, boolean loadProjectTasks, int project_id) {
         ArrayList<Task> DBTasks = new ArrayList<Task>();
-        String query = "SELECT * FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_PROJECT_ID + " = -1";
+        String query = "SELECT * FROM " + TASK_TABLE;//" WHERE " + COLUMN_TASK_PROJECT_ID + " = -1";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -212,6 +213,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
             int taskProject_id = Integer.parseInt(cursor.getString(6));
 
+            boolean isForProject = true;
+            if(taskProject_id == -1){
+                isForProject = false;
+            }
             //check if the task being loaded is complete
             int isCompleteCheck = Integer.parseInt(cursor.getString(7));
             boolean isComplete;
@@ -224,10 +229,13 @@ public class DBHandler extends SQLiteOpenHelper {
             }
 
             currentTask = new Task(key, title, description, deadline, urgency, forProject, taskProject_id, isComplete);
-            if(loadCompletedTasks && isComplete){
+            if(loadCompletedTasks && isComplete && !isForProject && !loadProjectTasks){
                 DBTasks.add(currentTask);
             }
-            else if(!loadCompletedTasks && !isComplete){
+            else if(!loadCompletedTasks && !isComplete && !isForProject && !loadProjectTasks){
+                DBTasks.add(currentTask);
+            }
+            else if(loadProjectTasks && taskProject_id == project_id && isForProject){
                 DBTasks.add(currentTask);
             }
             cursor.moveToNext();
@@ -270,13 +278,15 @@ public class DBHandler extends SQLiteOpenHelper {
             }
 
             Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete);
+
+            currentProject.setTaskList(loadTasks(false, true, currentProject.getProject_id()));
+
             if(loadCompletedProjects && isComplete){
                 DBProjects.add(currentProject);
             }
             else if(!loadCompletedProjects && !isComplete){
                 DBProjects.add(currentProject);
             }
-
             cursor.moveToNext();
         }
 

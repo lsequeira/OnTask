@@ -1,5 +1,6 @@
 package com.cse120.ontask;
 
+import android.content.ClipData;
 import android.content.res.TypedArray;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -34,6 +35,7 @@ public class HomeActivity extends FragmentActivity
     private static final int CURR_PROJ = 1;
     private static final int COMP_TASK = 2;
     private static final int COMP_PROJ = 3;
+    private static final int NO_PROJECT_LIST_INDEX = -1;
 
     //changes as the bottom action bar buttons are pressed
     //reflects which list is currently displayed
@@ -55,7 +57,8 @@ public class HomeActivity extends FragmentActivity
     //Checks if Home view or Project view
     boolean isHomeView;
 
-    int listIndex;
+    private int projectListIndex;
+    private int parentProjIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +113,7 @@ public class HomeActivity extends FragmentActivity
         if (savedInstanceState == null) {
             // Display Home Screen Initially
             isHomeView = true;
-            displayView(0, -1);
+            displayView(0, NO_PROJECT_LIST_INDEX);
         }
     }
 
@@ -121,21 +124,21 @@ public class HomeActivity extends FragmentActivity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // display view for selected nav drawer item
-            displayView(position, -1);
+            displayView(position, NO_PROJECT_LIST_INDEX);
         }
     }
 
     /**
      * Displaying fragment view for selected nav drawer list item
      * */
-    private void displayView(int position, int taskListIndex) {
+    private void displayView(int position, int projectListIndex) {
         // update the main content by replacing fragments
         TaskListFragment fragment = null;
         switch (position) {
             case 0:
                 fragment = new TaskListFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("taskListIndex", taskListIndex);
+                bundle.putInt("projectListIndex", projectListIndex);
                 bundle.putInt("SpinnerView", spinnerPos);
                 bundle.putBoolean("isHomeView", isHomeView);
                 fragment.setArguments(bundle);
@@ -175,21 +178,35 @@ public class HomeActivity extends FragmentActivity
         }
     }
 
-    //TODO: Handle selecting tasks of projects
     //Method for TaskListFragment interaction
-    public void onFragmentInteraction(int taskListIndex, int listID){
+    public void onFragmentInteraction(int itemListIndex, int listID, boolean isProjTaskList, int parentProjectIndex){
+        System.out.println("itemListIndex: " + itemListIndex + " listID: " + listID + " isProjTaskList " + isProjTaskList + " parentProjectIndex " + parentProjectIndex);
+
         Intent i;
         if(listID == CURR_TASK || listID == COMP_TASK) {
             i = new Intent(this, ItemDetailsActivity.class);
-            i.putExtra("taskSelected", taskListIndex);
+            i.putExtra("itemSelected", itemListIndex);
             i.putExtra("listID", listID);
+            i.putExtra("isProjTaskList", isProjTaskList);
+            i.putExtra("parentProjectIndex", parentProjectIndex);
 
+            startActivity(i);
+        }
+        else if (listID == CURR_PROJ && isProjTaskList) {
+            parentProjIndex = itemListIndex;
+            i = new Intent(this, ItemDetailsActivity.class);
+            i.putExtra("itemSelected", itemListIndex);
+            i.putExtra("listID", listID);
+            i.putExtra("isProjTaskList", isProjTaskList);
+            i.putExtra("parentProjectIndex", parentProjectIndex);
+
+            System.out.println("Task inside project clicked!");
             startActivity(i);
         }
         else{
             isHomeView = false;
-            listIndex = taskListIndex;
-            displayView(0, taskListIndex);
+            projectListIndex = itemListIndex;
+            displayView(0, projectListIndex);
         }
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
@@ -231,14 +248,15 @@ public class HomeActivity extends FragmentActivity
         else{
             i = new Intent(this, AddItemActivity.class);
             i.putExtra("isProjectTask", true);
-            i.putExtra("listIndex", listIndex);
+            i.putExtra("projectListIndex", projectListIndex);
+            System.out.println("projectListIndex: " + projectListIndex + " parentProjectIndex: " + parentProjIndex);
         }
         startActivity(i);
     }
 
     public void projectBackButtonOnClick(View v){
         isHomeView = true;
-        displayView(0, -1);
+        displayView(0, NO_PROJECT_LIST_INDEX);
     }
 
     public void navButtonOnClick(View v) {

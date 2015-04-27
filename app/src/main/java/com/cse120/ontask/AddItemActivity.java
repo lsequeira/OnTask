@@ -62,7 +62,7 @@ public class AddItemActivity extends FragmentActivity
     int listID;
 
     //Used only for adding tasks for a project
-    int listIndex;
+    int projectListIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,22 +72,16 @@ public class AddItemActivity extends FragmentActivity
         initializeDateSuffixLists();
 
         Bundle extraData = getIntent().getExtras();
-        forProject = false;
+        forProject = extraData.getBoolean("isProjectTask");
         isProject = false;
-        isUpdating = false;
-        //if isUpdating then updating a task
-        //else adding a task
-        if(extraData == null || extraData.getBoolean("isProjectTask")){
-            //Set the Date and Time TextViews to the current date/time
-            if(extraData.getBoolean("isProjectTask")){
-                forProject = true;
-                listIndex = extraData.getInt("listIndex");
-            }
+        isUpdating = extraData.getBoolean("isUpdating");
+
+        if(extraData == null){
             initializeDateTime();
             //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
         }
-        else if(extraData.getBoolean("isUpdating")) {
+        else if(isUpdating) {
             //set all of the fields to the current task's information
             InitializeUpdate(extraData);
         }
@@ -95,7 +89,19 @@ public class AddItemActivity extends FragmentActivity
             initializeDateTime();
             InitializeAddProject();
         }
-
+        else if(forProject){
+            //forProject = true;
+            System.out.println("AddItemAct 95 isProjectTask");
+            projectListIndex = extraData.getInt("projectListIndex");
+            initializeDateTime();
+            //initialize urgency to LOWEST -- in case urgency buttons unchecked
+            urgency = Urgency.LOWEST;
+        }
+        else if(!extraData.getBoolean("isProjectTask")) {
+            initializeDateTime();
+            //initialize urgency to LOWEST -- in case urgency buttons unchecked
+            urgency = Urgency.LOWEST;
+        }
     }
 
     @Override
@@ -167,10 +173,15 @@ public class AddItemActivity extends FragmentActivity
         Task t;
         if(isUpdating){
             i = new Intent(this, ItemDetailsActivity.class);
-            if(isProject){
+            if(isProject && !forProject){
                 t = createProjectObject();
                 getTaskManagerApplication().updateProject((Project) t, taskListIndex);
-                System.out.println("chk proj update");
+            }
+            else if(forProject){
+                System.out.println("addItem 181 forproject");
+                Bundle extraData = getIntent().getExtras();
+                t = createTaskObject();
+                getTaskManagerApplication().updateProjectTask(t, taskListIndex, extraData.getInt("parentProject"));
             }
             else {
                 t = createTaskObject();
@@ -190,9 +201,11 @@ public class AddItemActivity extends FragmentActivity
         }
         else if(forProject){
             t = createTaskObject();
-            getTaskManagerApplication().getCurrentProjects().get(listIndex).getTaskList().add(t);
+            //TODO:Add project task to database along with corresponding project id
+            System.out.println("AddItemAct 199 t.projId: " + t.getTaskProject_id());
+            getTaskManagerApplication().getCurrentProjects().get(projectListIndex).getTaskList().add(t);
+            getTaskManagerApplication().addTask(t);
             i = new Intent(this, HomeActivity.class);
-            //TODO: pass extras to lett home activity know that it should load the project task list view
         }
         else{
             //Add Task Object to the List
@@ -234,11 +247,13 @@ public class AddItemActivity extends FragmentActivity
         Date deadline = new Date(year, month, day, hour, minute);
 
         //Set taskProject_id if it is part of a project
-        int taskProject_id = -1;
+        int taskProject_id;
         if(forProject){
-            //Get extra intent data for project object position in list
-            //then get the project id
-            //taskProject_id = ProjectObject().getProject_id();
+            taskProject_id = getTaskManagerApplication().getCurrentProjects().get(projectListIndex).getProject_id();
+            System.out.println("AddItemActivity 241 taskProjId: " + taskProject_id);
+        }
+        else{
+            taskProject_id = -1;
         }
 
         //Added activities default to !isComplete
@@ -433,8 +448,11 @@ public class AddItemActivity extends FragmentActivity
         if(listID == 0) {
             taskToUpdate = TaskManagerApplication.currentTasks.get(taskListIndex);
         }
-        else{
+        else if(listID == 1 && !forProject){
             taskToUpdate = TaskManagerApplication.currentProjects.get(taskListIndex);
+        }
+        else{ //if(forProject){
+            taskToUpdate = TaskManagerApplication.currentProjects.get(updateData.getInt("parentProject")).getTaskList().get(taskListIndex);
         }
 
         TextView staticUpdateText = (TextView) findViewById(R.id.addTaskText);
