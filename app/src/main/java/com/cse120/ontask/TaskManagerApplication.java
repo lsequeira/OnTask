@@ -7,6 +7,8 @@ import com.cse120.ontask.database.DBHandler;
 import java.util.*;
 import android.app.Application;
 
+import com.parse.Parse;
+
 //TODO: decide whether to have a separate list for completed/deleted tasks/projects
 public class TaskManagerApplication extends Application {
 
@@ -20,16 +22,18 @@ public class TaskManagerApplication extends Application {
         super.onCreate();
 
         DBHandler handler = new DBHandler(this, null, null, 1);
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "YVyu6WVhuXingBQmhIC1lWyAewxYwduGjUmqpjSO", "jpfyfJLhABH9AofKw14mktfqKSceHiBkEIcbEas1");
 
         /*--------------Load Tasks--------------*/
-        currentTasks = handler.loadTasks(false);
+        currentTasks = handler.loadTasks(false, false, -1);
         if (currentTasks == null) {
             currentTasks = new ArrayList<Task>();
         }
 
-        completedTasks = handler.loadTasks(true);
+        completedTasks = handler.loadTasks(true, false, -1);
         if (completedTasks == null) {
-                completedTasks = new ArrayList<Task>();
+            completedTasks = new ArrayList<Task>();
         }
 
         /*--------------Load Projects--------------*/
@@ -73,10 +77,11 @@ public class TaskManagerApplication extends Application {
         if(task.getIsCompleted()) {
             completedTasks.add(task);
         }
-        else{
+        else if(task.getTaskProject_id() == -1 && !task.getIsCompleted()){
             currentTasks.add(task);
         }
 
+        System.out.println("TaskManager 80 taskprojid: " +task.getTaskProject_id());
         //Add To Database
         handler.addTask(task);
 
@@ -123,6 +128,18 @@ public class TaskManagerApplication extends Application {
 
         DBHandler handler = new DBHandler(this, null, null, 1);
         handler.updateProject(currentProjects.get(listIndex));
+        handler.close();
+    }
+
+    public void updateProjectTask(Task t, int listIndex, int parentProjectIndex){
+        currentProjects.get(parentProjectIndex).getTaskList().get(listIndex).setTitle(t.getTitle());
+        currentProjects.get(parentProjectIndex).getTaskList().get(listIndex).setDescription(t.getDescription());
+        currentProjects.get(parentProjectIndex).getTaskList().get(listIndex).setUrgency(t.getUrgency());
+        currentProjects.get(parentProjectIndex).getTaskList().get(listIndex).setDeadline(t.getDeadline());
+        currentProjects.get(parentProjectIndex).getTaskList().get(listIndex).setIsCompleted(t.getIsCompleted());
+
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.updateTask(currentProjects.get(parentProjectIndex).getTaskList().get(listIndex));
         handler.close();
     }
 

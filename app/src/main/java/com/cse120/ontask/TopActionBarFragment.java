@@ -112,7 +112,7 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
     }
 
     public void hideProjectWidgets() {
-        ImageButton backButton = (ImageButton) view.findViewById(R.id.projectBackButton);
+        com.cse120.ontask.custom_shapes.CircleButton backButton = (com.cse120.ontask.custom_shapes.CircleButton) view.findViewById(R.id.projectBackButton);
         backButton.setVisibility(View.GONE);
 
         TextView projTitle = (TextView) view.findViewById(R.id.projectTitle);

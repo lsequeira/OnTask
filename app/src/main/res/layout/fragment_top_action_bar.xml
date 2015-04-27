@@ -26,7 +26,6 @@
         android:onClick="addButtonOnClick"
         android:src="@drawable/ic_action_plus"
         app:cb_color="@color/add_button_green"
-        android:layout_weight="0.07"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:padding="3dp" />
@@ -40,12 +39,12 @@
         android:layout_alignTop="@+id/navButton" />
 
     <Space
-        android:layout_width="60dp"
-        android:layout_height="20px"
-        android:layout_alignParentBottom="true"
+        android:layout_width="50dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/spaceJam"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/navButton"
-        android:id="@+id/spaceJam" />
+        android:layout_marginStart="11dp" />
 
     <Space
         android:layout_width="35dp"
@@ -55,15 +54,18 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true" />
 
-    <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <com.cse120.ontask.custom_shapes.CircleButton
         android:id="@+id/projectBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
         android:onClick="projectBackButtonOnClick"
-        android:background="@drawable/backbutton"
+        android:src="@drawable/ic_action_back"
+        app:cb_color="@color/add_button_green"
+        android:layout_weight="0.07"
+        android:padding="5dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/navButton"
-        android:layout_margin="5dp" />
+        android:layout_toStartOf="@+id/projectTitle"
+        android:layout_marginEnd="75dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,8 +73,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/projectTitle"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

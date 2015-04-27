@@ -21,6 +21,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.parse.ParseObject;
 
 public class FBLoginFragment extends Fragment {
 
@@ -72,7 +73,16 @@ public class FBLoginFragment extends Fragment {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
                 if(newProfile != null){
-                   // mListener.switchActivity();
+                    mListener.switchActivity();
+                    ParseObject users = new ParseObject("Users");
+
+                    users.put("firstName", newProfile.getFirstName());
+                    users.put("lastName", newProfile.getLastName());
+                    users.put("userId", newProfile.getId());
+                    users.put("userName", "username");
+
+                    users.pinInBackground();
+                    users.saveEventually();
                 }
                 else{
 

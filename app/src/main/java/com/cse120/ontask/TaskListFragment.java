@@ -88,7 +88,6 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
-
         mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
     }
 
@@ -120,6 +119,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         // Set the adapter
         if (projectListIndex == UNSPECIFIED) {
+            System.out.println("Fell in here");
             mListView.setAdapter(mAdapter);
         }
         else {
@@ -216,6 +216,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     //Load a project's task list
     public void projectTaskListView(int listIndex, int spinnerID){
         //test
+        //TODO: Breaks if app is re-loaded and a project with no tasks is selected
         System.out.println("Project List Index :" + listIndex);
         System.out.println("Spinner Position: " + spinnerID);
         Project p;

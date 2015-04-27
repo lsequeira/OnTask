@@ -3,6 +3,7 @@
     package="com.cse120.ontask" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".TaskManagerApplication"
@@ -38,10 +39,6 @@
         <activity
             android:name=".ItemDetailsActivity"
             android:label="@string/title_activity_task_details" >
-        </activity>
-        <activity
-            android:name=".Activities.UpdateTaskActivity"
-            android:label="@string/title_activity_update_task" >
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"

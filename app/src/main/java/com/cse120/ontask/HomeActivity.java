@@ -1,6 +1,5 @@
 package com.cse120.ontask;
 
-import android.content.ClipData;
 import android.content.res.TypedArray;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -12,10 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cse120.ontask.sliding_menu.NavDrawerItem;
@@ -66,12 +62,21 @@ public class HomeActivity extends FragmentActivity
 
         setContentView(R.layout.activity_home);
 
+        projectListIndex = NO_PROJECT_LIST_INDEX;
+        isHomeView = true;
+
         //Get Data from Bundle (if any)
         Intent intentExtras = getIntent();
         Bundle extras = intentExtras.getExtras();
         if(extras != null)
         {
             spinnerPos = extras.getInt("SpinnerView");
+            if (extras.containsKey("projectListIndex")) {
+                projectListIndex = extras.getInt("projectListIndex");
+            }
+            if (extras.containsKey("isHomeView")) {
+                isHomeView = extras.getBoolean("isHomeView");
+            }
         }
         else {
             spinnerPos = 0;
@@ -112,8 +117,7 @@ public class HomeActivity extends FragmentActivity
 
         if (savedInstanceState == null) {
             // Display Home Screen Initially
-            isHomeView = true;
-            displayView(0, NO_PROJECT_LIST_INDEX);
+            displayView(0, projectListIndex);
         }
     }
 
@@ -192,7 +196,7 @@ public class HomeActivity extends FragmentActivity
 
             startActivity(i);
         }
-        else if (listID == CURR_PROJ && isProjTaskList) {
+        else if ((listID == CURR_PROJ || listID == COMP_PROJ) && isProjTaskList) {
             parentProjIndex = itemListIndex;
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);

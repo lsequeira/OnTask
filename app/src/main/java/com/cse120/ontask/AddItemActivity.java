@@ -72,28 +72,38 @@ public class AddItemActivity extends FragmentActivity
         initializeDateSuffixLists();
 
         Bundle extraData = getIntent().getExtras();
-        forProject = false;
+        forProject = extraData.getBoolean("isProjectTask");
         isProject = false;
-        isUpdating = false;
-        //if isUpdating then updating a task
-        //else adding a task
-        if(extraData == null || extraData.getBoolean("isProjectTask")){
-            //Set the Date and Time TextViews to the current date/time
-            if(extraData.getBoolean("isProjectTask")){
-                forProject = true;
-                projectListIndex = extraData.getInt("projectListIndex");
-            }
+        isUpdating = extraData.getBoolean("isUpdating");
+
+        if(extraData == null){
             initializeDateTime();
             //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
         }
-        else if(extraData.getBoolean("isUpdating")) {
+        else if(isUpdating) {
             //set all of the fields to the current task's information
             InitializeUpdate(extraData);
         }
         else if(extraData.getBoolean("isProject") && !extraData.getBoolean("isUpdating")){
             initializeDateTime();
             InitializeAddProject();
+        }
+        else if(forProject){
+            //forProject = true;
+            System.out.println("AddItemAct 95 isProjectTask");
+            projectListIndex = extraData.getInt("projectListIndex");
+            initializeDateTime();
+            //initialize urgency to LOWEST -- in case urgency buttons unchecked
+            urgency = Urgency.LOWEST;
+        }
+        else if(!extraData.getBoolean("isProjectTask")) {
+            initializeDateTime();
+            //initialize urgency to LOWEST -- in case urgency buttons unchecked
+            urgency = Urgency.LOWEST;
+        }
+        else {
+            //Do nothing
         }
 
     }
@@ -163,14 +173,20 @@ public class AddItemActivity extends FragmentActivity
     }
 
     public void addTaskButtonOnClick(View v) {
+        //TODO: Once a task inside a project is added, make sure the correct task is displayed, currently loads project details
+        //TODO: Once a project is created, the tasks inside the first project is displayed instead of a blank task view
         Intent i;
         Task t;
         if(isUpdating){
             i = new Intent(this, ItemDetailsActivity.class);
-            if(isProject){
+            if(isProject && !forProject){
                 t = createProjectObject();
                 getTaskManagerApplication().updateProject((Project) t, taskListIndex);
-                System.out.println("chk proj update");
+            }
+            else if (forProject) {
+                Bundle extraData = getIntent().getExtras();
+                t = createTaskObject();
+                getTaskManagerApplication().updateProjectTask(t, taskListIndex, extraData.getInt("parentProject"));
             }
             else {
                 t = createTaskObject();
@@ -186,14 +202,21 @@ public class AddItemActivity extends FragmentActivity
             Bundle bundle = new Bundle();
             //Project
             bundle.putInt("SpinnerView", 1);
+            bundle.putInt("projectListIndex", projectListIndex);
+            bundle.putBoolean("isHomeView",false);
             i.putExtras(bundle);
         }
         else if(forProject){
             t = createTaskObject();
-            //TODO:Add project task to database along with corresponding project id
             getTaskManagerApplication().getCurrentProjects().get(projectListIndex).getTaskList().add(t);
+            getTaskManagerApplication().addTask(t);
+
             i = new Intent(this, HomeActivity.class);
-            //TODO: pass extras to lett home activity know that it should load the project task list view
+            Bundle bundle = new Bundle();
+            bundle.putInt("SpinnerView", 1);
+            bundle.putInt("projectListIndex", projectListIndex);
+            bundle.putBoolean("isHomeView",false);
+            i.putExtras(bundle);
         }
         else{
             //Add Task Object to the List
@@ -205,6 +228,8 @@ public class AddItemActivity extends FragmentActivity
             Bundle bundle = new Bundle();
             //Task
             bundle.putInt("SpinnerView", 0);
+            bundle.putInt("projectListIndex", -1);
+            bundle.putBoolean("isHomeView",true);
             i.putExtras(bundle);
         }
         i.putExtra("listID", listID);
@@ -234,10 +259,12 @@ public class AddItemActivity extends FragmentActivity
         //Task Deadline
         Date deadline = new Date(year, month, day, hour, minute);
 
-        //Set taskProject_id if it is part of a project
-        int taskProject_id = -1;
+        int taskProject_id;
         if(forProject){
             taskProject_id = getTaskManagerApplication().getCurrentProjects().get(projectListIndex).getProject_id();
+        }
+        else{
+            taskProject_id = -1;
         }
 
         //Added activities default to !isComplete
@@ -265,8 +292,9 @@ public class AddItemActivity extends FragmentActivity
         if (!isEmpty(descriptionInput)) {
             projectDescription = descriptionInput.getText().toString();
         }
-        else
+        else {
             projectDescription = "Blank Description";
+        }
 
         //Deadline
         Date deadline = new Date(year, month, day, hour, minute);
@@ -370,7 +398,6 @@ public class AddItemActivity extends FragmentActivity
             hour_ampm = 12;
         }
         else {
-
         }
         return String.valueOf(hour_ampm) + ":"+ pad(minute) + " " + am_pm;
     }
@@ -432,8 +459,11 @@ public class AddItemActivity extends FragmentActivity
         if(listID == 0) {
             taskToUpdate = TaskManagerApplication.currentTasks.get(taskListIndex);
         }
-        else{
+        else if(listID == 1 && !forProject){
             taskToUpdate = TaskManagerApplication.currentProjects.get(taskListIndex);
+        }
+        else{ //if(forProject){
+            taskToUpdate = TaskManagerApplication.currentProjects.get(updateData.getInt("parentProject")).getTaskList().get(taskListIndex);
         }
 
         TextView staticUpdateText = (TextView) findViewById(R.id.addTaskText);

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
@@ -28,7 +29,7 @@ public class ItemDetailsActivity extends FragmentActivity {
     private TextView itemUrgency;
     private TextView itemTopBar;
 
-    private Button itemUpdate;
+    private ImageButton itemUpdate;
     private Button itemDelete;
     private Button itemComplete;
 
@@ -44,7 +45,7 @@ public class ItemDetailsActivity extends FragmentActivity {
         itemUrgency = (TextView) findViewById(R.id.itemUrgency);
         itemTopBar = (TextView) findViewById(R.id.topActionBarTitle);
 
-        itemUpdate = (Button) findViewById(R.id.updateButton);
+        itemUpdate = (ImageButton) findViewById(R.id.updateButton);
         itemDelete = (Button) findViewById(R.id.deleteButton);
         itemComplete = (Button) findViewById(R.id.completeButton);
 
@@ -119,9 +120,16 @@ public class ItemDetailsActivity extends FragmentActivity {
         Intent i = new Intent(this, AddItemActivity.class);
         boolean isUpdating = true;
         i.putExtra("isUpdating", isUpdating);
-        //TODO:Refactor the update
         i.putExtra("taskToUpdate", listIndex);
         i.putExtra("listID", listID);
+        //extras for tasks of projects
+        if(isProjTaskList){
+            i.putExtra("parentProject", parentProjectIndex);
+            i.putExtra("isProjectTask", true);
+        }
+        else{
+            i.putExtra("isProjectTask", false);
+        }
         if(!isTask){
             System.out.println("Yes this is a project");
             i.putExtra("isProject", true);
@@ -149,11 +157,10 @@ public class ItemDetailsActivity extends FragmentActivity {
             getTaskManagerApplication().updateProject(p, listIndex);
             getTaskManagerApplication().getCurrentProjects().remove(listIndex);
         }
-
         startActivity(i);
     }
 
-    public void BackButtonOnClick(View v){
+    public void backButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("SpinnerView", listID);
@@ -161,7 +168,7 @@ public class ItemDetailsActivity extends FragmentActivity {
         startActivity(i);
     }
 
-    public void DeleteButtonOnClick(View v){
+    public void deleteButtonOnClick(View v){
         Intent i = new Intent(this, HomeActivity.class);
         if (isTask) {
             getTaskManagerApplication().deleteTask(itemDisplayed, listIndex);
