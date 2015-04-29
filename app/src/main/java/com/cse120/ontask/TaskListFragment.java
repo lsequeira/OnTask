@@ -210,13 +210,10 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
                 break;
         }
         mListView.setAdapter(mAdapter);
-        //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 
     //Load a project's task list
     public void projectTaskListView(int listIndex, int spinnerID){
-        //test
-        //TODO: Breaks if app is re-loaded and a project with no tasks is selected
         System.out.println("Project List Index :" + listIndex);
         System.out.println("Spinner Position: " + spinnerID);
         Project p;

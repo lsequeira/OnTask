@@ -173,8 +173,7 @@ public class AddItemActivity extends FragmentActivity
     }
 
     public void addTaskButtonOnClick(View v) {
-        //TODO: Once a task inside a project is added, make sure the correct task is displayed, currently loads project details
-        //TODO: Once a project is created, the tasks inside the first project is displayed instead of a blank task view
+        //TODO: Once a task inside a project is added, make sure the correct task is displayed, currently loads project details -- could not get this bug to occur again so still leaving this here for now
         Intent i;
         Task t;
         if(isUpdating){
@@ -197,6 +196,7 @@ public class AddItemActivity extends FragmentActivity
         else if(isProject && !isUpdating){
             Project p = createProjectObject();
             getTaskManagerApplication().addProject(p);
+            projectListIndex = getTaskManagerApplication().getCurrentProjects().size()-1;
 
             i = new Intent(this, HomeActivity.class);
             Bundle bundle = new Bundle();

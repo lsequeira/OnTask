@@ -57,7 +57,7 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
 
         //Delete Database with line below
-        context.deleteDatabase(DATABASE_NAME);
+        //context.deleteDatabase(DATABASE_NAME);
 
         genProjID = new Random();
     }
@@ -316,6 +316,10 @@ public class DBHandler extends SQLiteOpenHelper {
             Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete);
 
             currentProject.setTaskList(loadTasks(false, true, currentProject.getProject_id()));
+            if (currentProject.getTaskList() == null)
+            {
+                currentProject.setTaskList(new ArrayList<Task>());
+            }
 
             if(loadCompletedProjects && isComplete){
                 DBProjects.add(currentProject);

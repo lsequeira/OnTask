@@ -161,9 +161,12 @@ public class ItemDetailsActivity extends FragmentActivity {
     }
 
     public void backButtonOnClick(View v){
+        boolean isHomeView = !isProjTaskList;
         Intent i = new Intent(this, HomeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("SpinnerView", listID);
+        bundle.putInt("projectListIndex", parentProjectIndex);
+        bundle.putBoolean("isHomeView",isHomeView);
         i.putExtras(bundle);
         startActivity(i);
     }
