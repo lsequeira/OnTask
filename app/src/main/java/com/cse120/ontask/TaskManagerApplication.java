@@ -12,6 +12,10 @@ import com.parse.Parse;
 //TODO: decide whether to have a separate list for completed/deleted tasks/projects
 public class TaskManagerApplication extends Application {
 
+    public static String appUserId;
+    public static String appUserFirstName;
+    public static String appUserLastName;
+
     public static List<Task> currentTasks;
     public static List<Task> completedTasks;
     public static List<Project> currentProjects;
@@ -54,6 +58,30 @@ public class TaskManagerApplication extends Application {
         this.currentTasks = currentTasks;
     }
 
+    public void setAppUserId(String appUserId) {
+        TaskManagerApplication.appUserId = appUserId;
+    }
+
+    public void setAppUserFirstName(String firstName) {
+        TaskManagerApplication.appUserFirstName = firstName;
+    }
+
+    public void setAppUserLastName(String lastName) {
+        TaskManagerApplication.appUserLastName = lastName;
+    }
+
+    public String getAppUserId() {
+        return appUserId;
+    }
+
+    public String getAppUserFirstName() {
+        return appUserFirstName;
+    }
+
+    public String getAppUserLastName() {
+        return appUserLastName;
+    }
+
     public List<Task> getCurrentTasks() {
         return currentTasks;
     }
@@ -83,7 +111,7 @@ public class TaskManagerApplication extends Application {
 
         System.out.println("TaskManager 80 taskprojid: " +task.getTaskProject_id());
         //Add To Database
-        handler.addTask(task);
+        handler.addTask(this, task);
 
         handler.close();
     }
@@ -100,7 +128,7 @@ public class TaskManagerApplication extends Application {
         }
 
         //Add To Database
-        handler.addProject(project);
+        handler.addProject(this, project);
 
         handler.close();
     }
@@ -154,6 +182,14 @@ public class TaskManagerApplication extends Application {
         currentProjects.remove(listIndex);
         DBHandler handler = new DBHandler(this, null, null, 1);
         handler.deleteProject(p);
+        handler.close();
+    }
+
+    public void deleteProjectTask(Task t, int listIndex, int parentProjectIndex) {
+        currentProjects.get(parentProjectIndex).getTaskList().remove(listIndex);
+
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.deleteTask(t);
         handler.close();
     }
 }

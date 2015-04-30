@@ -177,6 +177,7 @@ public class AddItemActivity extends FragmentActivity
         Intent i;
         Task t;
         if(isUpdating){
+            Bundle bundle = new Bundle();
             i = new Intent(this, ItemDetailsActivity.class);
             if(isProject && !forProject){
                 t = createProjectObject();
@@ -186,12 +187,20 @@ public class AddItemActivity extends FragmentActivity
                 Bundle extraData = getIntent().getExtras();
                 t = createTaskObject();
                 getTaskManagerApplication().updateProjectTask(t, taskListIndex, extraData.getInt("parentProject"));
+                bundle.putInt("listID", 1);
+                bundle.putInt("parentProjectIndex",extraData.getInt("parentProject"));
+                bundle.putInt("itemSelected", taskListIndex);
+                bundle.putBoolean("isProjTaskList", forProject);
             }
             else {
                 t = createTaskObject();
                 getTaskManagerApplication().updateTask(t, taskListIndex);
+                bundle.putInt("listID", 0);
+                bundle.putInt("itemSelected", taskListIndex);
+                bundle.putBoolean("isProjTaskList", false);
             }
-            i.putExtra("taskSelected", taskListIndex);
+            i.putExtras(bundle);
+            //i.putExtra("taskSelected", taskListIndex);
         }
         else if(isProject && !isUpdating){
             Project p = createProjectObject();

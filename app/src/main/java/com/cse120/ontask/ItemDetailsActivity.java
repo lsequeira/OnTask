@@ -118,8 +118,7 @@ public class ItemDetailsActivity extends FragmentActivity {
 
     public void UpdateButtonOnClick(View v){
         Intent i = new Intent(this, AddItemActivity.class);
-        boolean isUpdating = true;
-        i.putExtra("isUpdating", isUpdating);
+        i.putExtra("isUpdating", true);
         i.putExtra("taskToUpdate", listIndex);
         i.putExtra("listID", listID);
         //extras for tasks of projects
@@ -166,19 +165,30 @@ public class ItemDetailsActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("SpinnerView", listID);
         bundle.putInt("projectListIndex", parentProjectIndex);
-        bundle.putBoolean("isHomeView",isHomeView);
+        bundle.putBoolean("isHomeView", isHomeView);
         i.putExtras(bundle);
         startActivity(i);
     }
 
     public void deleteButtonOnClick(View v){
+        boolean isHomeView = !isProjTaskList;
         Intent i = new Intent(this, HomeActivity.class);
         if (isTask) {
             getTaskManagerApplication().deleteTask(itemDisplayed, listIndex);
         }
+        else if(isProjTaskList) {
+            getTaskManagerApplication().deleteProjectTask(itemDisplayed,listIndex, parentProjectIndex);
+        }
         else {
             getTaskManagerApplication().deleteProject((Project)itemDisplayed, listIndex);
         }
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("SpinnerView", listID);
+        bundle.putInt("projectListIndex", parentProjectIndex);
+        bundle.putBoolean("isHomeView", isHomeView);
+        i.putExtras(bundle);
+
         startActivity(i);
     }
 

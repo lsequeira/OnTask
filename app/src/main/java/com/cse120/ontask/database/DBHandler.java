@@ -5,13 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.cse120.ontask.TaskManagerApplication;
 import com.cse120.ontask.task_attributes.Date;
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.task_attributes.Urgency;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.parse.FindCallback;
@@ -32,6 +35,8 @@ public class DBHandler extends SQLiteOpenHelper {
     //TODO: ADD TASK UNIQUE ID AND USER ID
     //TODO: LOAD TASKS INTO CORRESPONDING PROJECTS BASED ON UNIQUE PROJECT ID
     public static final String COLUMN_TASK_KEY = "task_key";
+    public static final String COLUMN_TASK_ID = "task_id";
+    public static final String COLUMN_TASK_USER_ID = "user_id";
     public static final String COLUMN_TASK_TITLE = "title";
     public static final String COLUMN_TASK_DESCRIPTION = "description";
     public static final String COLUMN_TASK_DEADLINE = "deadline";
@@ -43,6 +48,7 @@ public class DBHandler extends SQLiteOpenHelper {
     //Project
     public static final String COLUMN_PROJECT_KEY = "project_key";
     public static final String COLUMN_PROJECT_ID = "project_id";
+    public static final String COLUMN_PROJECT_USER_ID = "user_id";
     public static final String COLUMN_PROJECT_TITLE = "title";
     public static final String COLUMN_PROJECT_DESCRIPTION = "description";
     public static final String COLUMN_PROJECT_DEADLINE = "deadline";
@@ -50,7 +56,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_PROJECT_IS_COMPLETE = "is_complete";
     /*-----------Table Columns END--------------*/
 
-    Random genProjID;
+    Random genProjID, genTaskID;
 
     public DBHandler(Context context, String name,
                      SQLiteDatabase.CursorFactory factory, int version) {
@@ -59,6 +65,7 @@ public class DBHandler extends SQLiteOpenHelper {
         //Delete Database with line below
         //context.deleteDatabase(DATABASE_NAME);
 
+        genTaskID = new Random();
         genProjID = new Random();
     }
 
@@ -72,7 +79,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_TASK_URGENCY + " INTEGER, " +
                 COLUMN_TASK_FOR_PROJECT + " BOOLEAN, " +
                 COLUMN_TASK_PROJECT_ID + " INTEGER, " +
-                COLUMN_TASK_IS_COMPLETE + " BOOLEAN " +
+                COLUMN_TASK_IS_COMPLETE + " BOOLEAN, " +
+                COLUMN_TASK_ID + " INTEGER, " +
+                COLUMN_TASK_USER_ID + " INTEGER " +
                 ")";
         db.execSQL(CREATE_TASK_TABLE);
 
@@ -83,7 +92,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_PROJECT_DESCRIPTION + " TEXT," +
                 COLUMN_PROJECT_DEADLINE + " TEXT," +
                 COLUMN_PROJECT_URGENCY + " INTEGER, " +
-                COLUMN_PROJECT_IS_COMPLETE + " BOOLEAN " +
+                COLUMN_PROJECT_IS_COMPLETE + " BOOLEAN, " +
+                COLUMN_PROJECT_USER_ID + " INTEGER " +
                 ")";
         db.execSQL(CREATE_PROJECT_TABLE);
     }
@@ -95,7 +105,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     /* Database Handler Functions */
-    public void addTask(Task task) {
+    public void addTask(TaskManagerApplication app, Task task) {
         int prevRowID = 0;
 
         String query = "SELECT * FROM " + TASK_TABLE + " ORDER BY " + COLUMN_TASK_KEY
@@ -112,7 +122,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
         task.setTaskAutoIncKey(prevRowID+1);
 
+        task.setTask_id(genTaskID.nextInt(1073741824));
+
         ContentValues values = new ContentValues();
+        values.put(COLUMN_TASK_ID, task.getTask_id());
         values.put(COLUMN_TASK_TITLE, task.getTitle());
         values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
         values.put(COLUMN_TASK_DEADLINE, dateToStringConvert(task.getDeadline()));
@@ -120,6 +133,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TASK_FOR_PROJECT, task.getForProject());
         values.put(COLUMN_TASK_PROJECT_ID, task.getTaskProject_id());
         values.put(COLUMN_TASK_IS_COMPLETE, task.getIsCompleted());
+        values.put(COLUMN_TASK_USER_ID, app.getAppUserId());
 
         db = this.getWritableDatabase();
 
@@ -136,15 +150,14 @@ public class DBHandler extends SQLiteOpenHelper {
         pTask.put("for_project", task.getForProject());
         pTask.put("project_id", task.getTaskProject_id());
         pTask.put("is_complete", task.getIsCompleted());
-        pTask.put("task_key", task.getTaskAutoIncKey());
-        // task_id
-        // user_id
+        pTask.put("task_id", task.getTask_id());
+        pTask.put("user_id", app.getAppUserId());
 
         pTask.pinInBackground();
         pTask.saveEventually();
     }
 
-    public void addProject(Project project) {
+    public void addProject(TaskManagerApplication app, Project project) {
         int prevRowID = 0;
 
         //Get the previous max autoincremented row key
@@ -166,12 +179,13 @@ public class DBHandler extends SQLiteOpenHelper {
         //Range from 0 to 2^30
         project.setProject_id(genProjID.nextInt(1073741824));
 
-
+        // Add to the local database
         ContentValues values = new ContentValues();
         values.put(COLUMN_PROJECT_TITLE, project.getTitle());
 
         //note that project_key, rather than project_id, refers to the auto increment key
         values.put(COLUMN_PROJECT_ID, project.getProject_id());
+        values.put(COLUMN_PROJECT_USER_ID, app.getAppUserId());
         values.put(COLUMN_PROJECT_DESCRIPTION, project.getDescription());
         values.put(COLUMN_PROJECT_DEADLINE, dateToStringConvert(project.getDeadline()));
         values.put(COLUMN_PROJECT_URGENCY, urgencyToIntegerConvert(project.getUrgency()));
@@ -180,6 +194,8 @@ public class DBHandler extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
         db.insert(PROJECT_TABLE, null, values);
         db.close();
+
+        System.out.println("Added to local Database");
 
         // Add to the server database
         ParseObject pProject = new ParseObject("Project");
@@ -190,12 +206,16 @@ public class DBHandler extends SQLiteOpenHelper {
         pProject.put("deadline", dateToStringConvert(project.getDeadline()));
         pProject.put("urgency", urgencyToIntegerConvert(project.getUrgency()));
         pProject.put("is_complete", project.getIsCompleted());
+        pProject.put("user_id", app.getAppUserId());
 
         pProject.pinInBackground();
         pProject.saveEventually();
+
+        System.out.println("Added to server Database");
     }
 
-    public void updateTask(Task task){
+    public void updateTask(final Task task){
+        // Update the local database
         ContentValues values = new ContentValues();
         values.put(COLUMN_TASK_TITLE, task.getTitle());
         values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
@@ -207,9 +227,35 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TASK_TABLE, values, whereClause, null);
         db.close();
+
+        // Update the server database
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Task");
+
+        query.whereEqualTo("task_id", task.getTask_id());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> tasks, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < tasks.size(); i++)
+                    {
+                        tasks.get(i).put("title", task.getTitle());
+                        tasks.get(i).put("description", task.getDescription());
+                        tasks.get(i).put("deadline", dateToStringConvert(task.getDeadline()));
+                        tasks.get(i).put("urgency", urgencyToIntegerConvert(task.getUrgency()));
+                        tasks.get(i).put("is_complete", task.getIsCompleted());
+
+                        tasks.get(i).pinInBackground();
+                        tasks.get(i).saveEventually();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
-    public void updateProject(Project project) {
+    public void updateProject(final Project project) {
+        // Update the local database
         ContentValues values = new ContentValues();
         values.put(COLUMN_PROJECT_TITLE, project.getTitle());
         values.put(COLUMN_PROJECT_ID, project.getProject_id());
@@ -222,6 +268,31 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(PROJECT_TABLE, values, whereClause, null);
         db.close();
+
+        // Update the server database
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Project");
+
+        query.whereEqualTo("project_id", project.getTask_id());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> projects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < projects.size(); i++)
+                    {
+                        projects.get(i).put("title", project.getTitle());
+                        projects.get(i).put("description", project.getDescription());
+                        projects.get(i).put("deadline", dateToStringConvert(project.getDeadline()));
+                        projects.get(i).put("urgency", urgencyToIntegerConvert(project.getUrgency()));
+                        projects.get(i).put("is_complete", project.getIsCompleted());
+
+                        projects.get(i).pinInBackground();
+                        projects.get(i).saveEventually();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
     public ArrayList<Task> loadTasks(boolean loadCompletedTasks, boolean loadProjectTasks, int project_id) {
@@ -264,7 +335,10 @@ public class DBHandler extends SQLiteOpenHelper {
                 isComplete = false;
             }
 
-            currentTask = new Task(key, title, description, deadline, urgency, forProject, taskProject_id, isComplete);
+            int task_id = Integer.parseInt(cursor.getString(8));
+            String user_id = cursor.getString(9);
+
+            currentTask = new Task(key, title, description, deadline, urgency, forProject, taskProject_id, isComplete, task_id, user_id);
             if(loadCompletedTasks && isComplete && !isForProject && !loadProjectTasks){
                 DBTasks.add(currentTask);
             }
@@ -313,7 +387,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 isComplete = false;
             }
 
-            Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete);
+            String user_id = cursor.getString(7);
+
+            Project currentProject = new Project(key, title, id, description, deadline, urgency, isComplete, user_id);
 
             currentProject.setTaskList(loadTasks(false, true, currentProject.getProject_id()));
             if (currentProject.getTaskList() == null)

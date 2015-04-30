@@ -32,7 +32,7 @@ public class Project extends Task {
     }
 
     public Project(int project_key, String title, int project_id, String description, Date deadline,
-                   Urgency urgency, boolean isCompleted){
+                   Urgency urgency, boolean isCompleted, String user_id){
         this.projectAutoIncKey = project_key;
         this.title = title;
         this.project_id = project_id;
@@ -44,6 +44,7 @@ public class Project extends Task {
         //adminList = new Vector<User>();
         //this.taskList = taskList;
         this.isComplete = isCompleted;
+        this.user_id = user_id;
         taskList = new ArrayList<Task>();
     }
 

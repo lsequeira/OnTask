@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,12 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 public class FBLoginFragment extends Fragment {
 
@@ -38,9 +44,9 @@ public class FBLoginFragment extends Fragment {
             System.out.println("CHECK: success");
 
             AccessToken accessToken = loginResult.getAccessToken();
-            Profile profile = Profile.getCurrentProfile();
+            //Profile profile = Profile.getCurrentProfile();
 
-            mListener.switchActivity();
+            //mListener.switchActivity();
         }
 
         @Override
@@ -72,17 +78,36 @@ public class FBLoginFragment extends Fragment {
         mProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                if(newProfile != null){
-                    mListener.switchActivity();
-                    ParseObject users = new ParseObject("Users");
+                if(newProfile != null) {
+                    final String firstName = newProfile.getFirstName();
+                    final String lastName = newProfile.getLastName();
+                    final String id = newProfile.getId();
 
-                    users.put("firstName", newProfile.getFirstName());
-                    users.put("lastName", newProfile.getLastName());
-                    users.put("userId", newProfile.getId());
-                    users.put("userName", "username");
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
 
-                    users.pinInBackground();
-                    users.saveEventually();
+                    query.whereEqualTo("userId", id);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> queryUsers, ParseException e) {
+                            if (e == null) {
+                                if (queryUsers.size() == 0) {
+                                    ParseObject pUser = new ParseObject("Users");
+
+                                    pUser.put("firstName", firstName);
+                                    pUser.put("lastName", lastName);
+                                    pUser.put("userId", id);
+                                    pUser.put("userName", "username");
+
+                                    pUser.pinInBackground();
+                                    pUser.saveEventually();
+                                }
+
+                            } else {
+                                Log.d("score", "Error: " + e.getMessage());
+                            }
+                        }
+                    });
+
+                    mListener.switchActivity(id, firstName, lastName);
                 }
                 else{
 
@@ -138,6 +163,6 @@ public class FBLoginFragment extends Fragment {
     }
 
     interface OnFragmentInteractionListener {
-        public void switchActivity();
+        public void switchActivity(String appUserId, String appUserFirstName, String appUserLastName);
     }
 }

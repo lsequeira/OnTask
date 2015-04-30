@@ -19,8 +19,8 @@ public class LogInActivity extends FragmentActivity implements FBLoginFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        Intent i = new Intent(this, HomeActivity.class);
-        startActivity(i);
+        //Intent i = new Intent(this, HomeActivity.class);
+        //startActivity(i);
     }
 
     //Check input from user and login
@@ -55,11 +55,17 @@ public class LogInActivity extends FragmentActivity implements FBLoginFragment.O
         return super.onOptionsItemSelected(item);
     }
 
-    public void switchActivity() {
-        System.out.println("CHECK: login1");
+    public void switchActivity(String appUserId, String appUserFirstName, String appUserLastName) {
+        getTaskManagerApplication().setAppUserId(appUserId);
+        getTaskManagerApplication().setAppUserFirstName(appUserFirstName);
+        getTaskManagerApplication().setAppUserLastName(appUserLastName);
+
         Intent i = new Intent(this, HomeActivity.class);
-        System.out.println("CHECK: login2");
         startActivity(i);
-        System.out.println("CHECK: login3");
+    }
+
+    private TaskManagerApplication getTaskManagerApplication() {
+        TaskManagerApplication tma = (TaskManagerApplication) getApplication();
+        return tma;
     }
 }
