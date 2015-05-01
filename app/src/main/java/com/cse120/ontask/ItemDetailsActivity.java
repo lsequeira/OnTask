@@ -185,24 +185,32 @@ public class ItemDetailsActivity extends FragmentActivity {
     public void deleteButtonOnClick(View v){
         boolean isHomeView = !isProjTaskList;
         Intent i = new Intent(this, HomeActivity.class);
+        Bundle bundle = new Bundle();
         if (isTask) {
             getTaskManagerApplication().deleteTask(itemDisplayed, listIndex);
+            bundle.putInt("SpinnerView", listID);
+            //bundle.putInt("projectListIndex", parentProjectIndex);
+            bundle.putBoolean("isHomeView", isHomeView);
+            bundle.putString("projectTitle", projectTitle);
         }
         else if(isProjTaskList) {
             getTaskManagerApplication().deleteProjectTask(itemDisplayed,listIndex, parentProjectIndex);
+            bundle.putInt("SpinnerView", listID);
+            bundle.putInt("projectListIndex", parentProjectIndex);
+            bundle.putBoolean("isHomeView", isHomeView);
+            bundle.putString("projectTitle", projectTitle);
         }
         else {
             System.out.println("ItemDetailsAct 195 deleting project");
             getTaskManagerApplication().deleteProject((Project)itemDisplayed, listIndex);
             isHomeView = true;
             isProjTaskList = false;
+            bundle.putInt("SpinnerView", listID);
+            //bundle.putInt("projectListIndex", parentProjectIndex);
+            bundle.putBoolean("isHomeView", isHomeView);
+            bundle.putString("projectTitle", projectTitle);
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("SpinnerView", listID);
-        bundle.putInt("projectListIndex", parentProjectIndex);
-        bundle.putBoolean("isHomeView", isHomeView);
-        bundle.putString("projectTitle", projectTitle);
         i.putExtras(bundle);
 
         startActivity(i);
