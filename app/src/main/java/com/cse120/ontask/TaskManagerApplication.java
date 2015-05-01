@@ -186,7 +186,7 @@ public class TaskManagerApplication extends Application {
             taskToDelete = currentProjects.get(listIndex).getTaskList().get(taskListIndex);
             currentProjects.get(listIndex).getTaskList().remove(taskListIndex);
             handler.deleteTask(taskToDelete);
-            taskListIndex++;
+            //taskListIndex++;
         }
         currentProjects.remove(listIndex);
         handler.deleteProject(p);
