@@ -63,6 +63,7 @@ public class AddItemActivity extends FragmentActivity
 
     //Used only for adding tasks for a project
     int projectListIndex;
+    String projectTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +92,8 @@ public class AddItemActivity extends FragmentActivity
         }
         else if(forProject){
             //forProject = true;
-            System.out.println("AddItemAct 95 isProjectTask");
             projectListIndex = extraData.getInt("projectListIndex");
+            projectTitle = TaskManagerApplication.currentProjects.get(projectListIndex).getTitle();
             initializeDateTime();
             //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
@@ -102,6 +103,10 @@ public class AddItemActivity extends FragmentActivity
             //initialize urgency to LOWEST -- in case urgency buttons unchecked
             urgency = Urgency.LOWEST;
         }
+        else {
+            //Do nothing
+        }
+
     }
 
     @Override
@@ -169,43 +174,63 @@ public class AddItemActivity extends FragmentActivity
     }
 
     public void addTaskButtonOnClick(View v) {
+        //TODO: Once a task inside a project is added, make sure the correct task is displayed, currently loads project details -- could not get this bug to occur again so still leaving this here for now
         Intent i;
         Task t;
         if(isUpdating){
+            Bundle bundle = new Bundle();
             i = new Intent(this, ItemDetailsActivity.class);
             if(isProject && !forProject){
                 t = createProjectObject();
                 getTaskManagerApplication().updateProject((Project) t, taskListIndex);
+                bundle.putString("projectTitle", projectTitle);
+                i.putExtras(bundle);
             }
-            else if(forProject){
-                System.out.println("addItem 181 forproject");
+            else if (forProject) {
                 Bundle extraData = getIntent().getExtras();
                 t = createTaskObject();
                 getTaskManagerApplication().updateProjectTask(t, taskListIndex, extraData.getInt("parentProject"));
+                bundle.putInt("listID", 1);
+                bundle.putInt("parentProjectIndex",extraData.getInt("parentProject"));
+                bundle.putInt("itemSelected", taskListIndex);
+                bundle.putBoolean("isProjTaskList", forProject);
             }
             else {
                 t = createTaskObject();
                 getTaskManagerApplication().updateTask(t, taskListIndex);
+                bundle.putInt("listID", 0);
+                bundle.putInt("itemSelected", taskListIndex);
+                bundle.putBoolean("isProjTaskList", false);
             }
-            i.putExtra("taskSelected", taskListIndex);
+            i.putExtras(bundle);
+            //i.putExtra("taskSelected", taskListIndex);
         }
         else if(isProject && !isUpdating){
             Project p = createProjectObject();
             getTaskManagerApplication().addProject(p);
+            projectListIndex = getTaskManagerApplication().getCurrentProjects().size()-1;
 
             i = new Intent(this, HomeActivity.class);
             Bundle bundle = new Bundle();
             //Project
             bundle.putInt("SpinnerView", 1);
+            bundle.putInt("projectListIndex", projectListIndex);
+            bundle.putBoolean("isHomeView",false);
+            bundle.putString("projectTitle", projectTitle);
             i.putExtras(bundle);
         }
         else if(forProject){
             t = createTaskObject();
-            //TODO:Add project task to database along with corresponding project id
-            System.out.println("AddItemAct 199 t.projId: " + t.getTaskProject_id());
             getTaskManagerApplication().getCurrentProjects().get(projectListIndex).getTaskList().add(t);
             getTaskManagerApplication().addTask(t);
+
             i = new Intent(this, HomeActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("SpinnerView", 1);
+            bundle.putInt("projectListIndex", projectListIndex);
+            bundle.putBoolean("isHomeView",false);
+            bundle.putString("projectTitle", projectTitle);
+            i.putExtras(bundle);
         }
         else{
             //Add Task Object to the List
@@ -217,6 +242,8 @@ public class AddItemActivity extends FragmentActivity
             Bundle bundle = new Bundle();
             //Task
             bundle.putInt("SpinnerView", 0);
+            bundle.putInt("projectListIndex", -1);
+            bundle.putBoolean("isHomeView",true);
             i.putExtras(bundle);
         }
         i.putExtra("listID", listID);
@@ -246,11 +273,9 @@ public class AddItemActivity extends FragmentActivity
         //Task Deadline
         Date deadline = new Date(year, month, day, hour, minute);
 
-        //Set taskProject_id if it is part of a project
         int taskProject_id;
         if(forProject){
             taskProject_id = getTaskManagerApplication().getCurrentProjects().get(projectListIndex).getProject_id();
-            System.out.println("AddItemActivity 241 taskProjId: " + taskProject_id);
         }
         else{
             taskProject_id = -1;
@@ -276,13 +301,16 @@ public class AddItemActivity extends FragmentActivity
         else
             projectName = "Untitled";
 
+        projectTitle = projectName;
+
         //Description
         EditText descriptionInput = (EditText)findViewById(R.id.taskDescription);
         if (!isEmpty(descriptionInput)) {
             projectDescription = descriptionInput.getText().toString();
         }
-        else
+        else {
             projectDescription = "Blank Description";
+        }
 
         //Deadline
         Date deadline = new Date(year, month, day, hour, minute);
@@ -386,7 +414,6 @@ public class AddItemActivity extends FragmentActivity
             hour_ampm = 12;
         }
         else {
-
         }
         return String.valueOf(hour_ampm) + ":"+ pad(minute) + " " + am_pm;
     }

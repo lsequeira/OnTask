@@ -7,8 +7,14 @@ import com.cse120.ontask.database.DBHandler;
 import java.util.*;
 import android.app.Application;
 
+import com.parse.Parse;
+
 //TODO: decide whether to have a separate list for completed/deleted tasks/projects
 public class TaskManagerApplication extends Application {
+
+    public static String appUserId;
+    public static String appUserFirstName;
+    public static String appUserLastName;
 
     public static List<Task> currentTasks;
     public static List<Task> completedTasks;
@@ -20,6 +26,8 @@ public class TaskManagerApplication extends Application {
         super.onCreate();
 
         DBHandler handler = new DBHandler(this, null, null, 1);
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "YVyu6WVhuXingBQmhIC1lWyAewxYwduGjUmqpjSO", "jpfyfJLhABH9AofKw14mktfqKSceHiBkEIcbEas1");
 
         /*--------------Load Tasks--------------*/
         currentTasks = handler.loadTasks(false, false, -1);
@@ -29,7 +37,7 @@ public class TaskManagerApplication extends Application {
 
         completedTasks = handler.loadTasks(true, false, -1);
         if (completedTasks == null) {
-                completedTasks = new ArrayList<Task>();
+            completedTasks = new ArrayList<Task>();
         }
 
         /*--------------Load Projects--------------*/
@@ -48,6 +56,30 @@ public class TaskManagerApplication extends Application {
 
     public void setCurrentTasks(ArrayList<Task> currentTasks) {
         this.currentTasks = currentTasks;
+    }
+
+    public void setAppUserId(String appUserId) {
+        TaskManagerApplication.appUserId = appUserId;
+    }
+
+    public void setAppUserFirstName(String firstName) {
+        TaskManagerApplication.appUserFirstName = firstName;
+    }
+
+    public void setAppUserLastName(String lastName) {
+        TaskManagerApplication.appUserLastName = lastName;
+    }
+
+    public String getAppUserId() {
+        return appUserId;
+    }
+
+    public String getAppUserFirstName() {
+        return appUserFirstName;
+    }
+
+    public String getAppUserLastName() {
+        return appUserLastName;
     }
 
     public List<Task> getCurrentTasks() {
@@ -79,7 +111,7 @@ public class TaskManagerApplication extends Application {
 
         System.out.println("TaskManager 80 taskprojid: " +task.getTaskProject_id());
         //Add To Database
-        handler.addTask(task);
+        handler.addTask(this, task);
 
         handler.close();
     }
@@ -96,7 +128,7 @@ public class TaskManagerApplication extends Application {
         }
 
         //Add To Database
-        handler.addProject(project);
+        handler.addProject(this, project);
 
         handler.close();
     }
@@ -147,9 +179,25 @@ public class TaskManagerApplication extends Application {
     }
 
     public void deleteProject(Project p, int listIndex){
-        currentProjects.remove(listIndex);
+        int taskListIndex = 0;
+        Task taskToDelete;
         DBHandler handler = new DBHandler(this, null, null, 1);
+        while(currentProjects.get(listIndex).getTaskList().size() > 0){
+            taskToDelete = currentProjects.get(listIndex).getTaskList().get(taskListIndex);
+            currentProjects.get(listIndex).getTaskList().remove(taskListIndex);
+            handler.deleteTask(taskToDelete);
+            taskListIndex++;
+        }
+        currentProjects.remove(listIndex);
         handler.deleteProject(p);
+        handler.close();
+    }
+
+    public void deleteProjectTask(Task t, int listIndex, int parentProjectIndex) {
+        currentProjects.get(parentProjectIndex).getTaskList().remove(listIndex);
+
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.deleteTask(t);
         handler.close();
     }
 }

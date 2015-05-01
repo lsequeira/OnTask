@@ -6,12 +6,13 @@ public class Task implements  Serializable{
 
     private static final long serialVersionUID = 6879876854546843515L;
 
+    private int task_id;
     private int taskAutoIncKey;
     protected String description;
     protected String title;
     protected Urgency urgency;
     protected Date deadline;
-    private UserId user_id;
+    protected String user_id;
     private boolean forProject;
     private int taskProject_id;
     protected boolean isComplete;
@@ -22,7 +23,6 @@ public class Task implements  Serializable{
         this.description = description;
         this.urgency = urgency;
         this.deadline = deadline;
-        user_id = new User().GetId();
     }
 
     public Task(String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
@@ -31,23 +31,23 @@ public class Task implements  Serializable{
         this.description = description;
         this.urgency = urgency;
         this.deadline = deadline;
-        user_id = new User().GetId();
         this.forProject = forProject;
         this.taskProject_id = taskProject_id;
         this.isComplete = isComplete;
     }
 
-    public Task(int taskAutoIncKey, String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete)
+    public Task(int taskAutoIncKey, String title, String description, Date deadline, Urgency urgency, boolean forProject, int taskProject_id, boolean isComplete, int task_id, String user_id)
     {
         this.taskAutoIncKey = taskAutoIncKey;
         this.title = title;
         this.description = description;
         this.urgency = urgency;
         this.deadline = deadline;
-        user_id = new User().GetId();
         this.forProject = forProject;
         this.taskProject_id = taskProject_id;
         this.isComplete = isComplete;
+        this.task_id = task_id;
+        this.user_id = user_id;
     }
 
 
@@ -56,14 +56,12 @@ public class Task implements  Serializable{
         return title;
     }
 
-    public Task(String title, String description,
-                Urgency urgency, Date deadline, User user){
+    public Task(String title, String description, Urgency urgency, Date deadline, User user){
 
         this.description = description;
         this.title = title;
         this.urgency = urgency;
         this.deadline = deadline;
-        this.user_id = user.GetId();
     }
 
     public Task(){
@@ -77,6 +75,9 @@ public class Task implements  Serializable{
     */
 
     //Getters
+    public int getTask_id() {
+        return task_id;
+    }
     public int getTaskAutoIncKey() {
         return taskAutoIncKey;
     }
@@ -92,7 +93,7 @@ public class Task implements  Serializable{
     public Date getDeadline(){
         return deadline;
     }
-    public UserId getUserID(){
+    public String getUserId(){
         return user_id;
     }
     public boolean getForProject(){
@@ -107,6 +108,9 @@ public class Task implements  Serializable{
     //End Getters
 
     //Setters
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
+    }
     public void setTaskAutoIncKey(int taskAutoIncKey) {
         this.taskAutoIncKey = taskAutoIncKey;
     }
@@ -122,8 +126,8 @@ public class Task implements  Serializable{
     public void setDeadline(Date deadline){
         this.deadline = deadline;
     }
-    public void setUser(User user){
-        this.user_id = user.GetId();
+    public void setUserId(String id){
+        this.user_id = id;
     }
     public void setForProject(boolean forProject){
         this.forProject = forProject;

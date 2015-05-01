@@ -63,15 +63,16 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
         int spinnerPos = 0;
         boolean isHomeView = true;
+        String projectTitle = "";
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             spinnerPos = bundle.getInt("SpinnerView");
-            System.out.println("Spinner pos bundle: " + spinnerPos);
             isHomeView = bundle.getBoolean("isHomeView");
-            System.out.println("Home view bundle: " + isHomeView);
+            projectTitle = bundle.getString("projectTitle");
         }
-        else
-            System.out.println("This is null");
+        else{
+
+        }
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_top_action_bar, container, false);
@@ -88,10 +89,13 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
             // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
             spinner.setSelection(spinnerPos);
+
             hideProjectWidgets();
             System.out.println("chk hiding project widgets");
         }
         else{
+            TextView projTitleTextView = (TextView) view.findViewById(R.id.projectTitle);
+            projTitleTextView.setText(projectTitle);
             hideHomeWidgets();
             System.out.println("chk hiding home widgets");
         }
@@ -112,7 +116,7 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
     }
 
     public void hideProjectWidgets() {
-        ImageButton backButton = (ImageButton) view.findViewById(R.id.projectBackButton);
+        com.cse120.ontask.custom_shapes.CircleButton backButton = (com.cse120.ontask.custom_shapes.CircleButton) view.findViewById(R.id.projectBackButton);
         backButton.setVisibility(View.GONE);
 
         TextView projTitle = (TextView) view.findViewById(R.id.projectTitle);

@@ -46,6 +46,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     private int listID;
     private boolean isProjTaskList;
     private int projectListIndex;
+    private String projectTitle;
 
     private OnFragmentInteractionListener mListener;
 
@@ -88,7 +89,6 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         }
 
         //Set the adapter to retrieve the list of tasks from the TaskManagerApplication
-
         mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.currentTasks);
     }
 
@@ -108,18 +108,21 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
             projectListIndex = bundle.getInt("projectListIndex");
             listID = bundle.getInt("SpinnerView");
             isHomeView = bundle.getBoolean("isHomeView");
+            projectTitle = bundle.getString("projectTitle");
         }
 
         TopActionBarFragment childFrag = new TopActionBarFragment();
         Bundle childBundle = new Bundle();
         childBundle.putInt("SpinnerView", listID);
         childBundle.putBoolean("isHomeView", isHomeView);
+        childBundle.putString("projectTitle", projectTitle);
         childFrag.setArguments(childBundle);
         this.getChildFragmentManager().beginTransaction().add(R.id.content_parent,childFrag).commit();
 
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         // Set the adapter
         if (projectListIndex == UNSPECIFIED) {
+            System.out.println("Fell in here");
             mListView.setAdapter(mAdapter);
         }
         else {
@@ -210,19 +213,24 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
                 break;
         }
         mListView.setAdapter(mAdapter);
-        //mAdapter = new TaskListAdapter(getActivity(),filteredList);
     }
 
     //Load a project's task list
     public void projectTaskListView(int listIndex, int spinnerID){
-        //test
         System.out.println("Project List Index :" + listIndex);
         System.out.println("Spinner Position: " + spinnerID);
         Project p;
         switch (spinnerID){
             case 1:
-                p = TaskManagerApplication.currentProjects.get(listIndex);
-                mAdapter = new TaskListAdapter(getActivity(), p.getTaskList());
+                //TODO:if deleting project and list is empty it breaks; need to find way to account for this without making a blank list
+                if(TaskManagerApplication.currentProjects.size() > 0) {
+                    p = TaskManagerApplication.currentProjects.get(listIndex);
+                    mAdapter = new TaskListAdapter(getActivity(), p.getTaskList());
+                }
+                else{
+                    List<Task> blankList = new ArrayList<>();
+                    mAdapter = new TaskListAdapter(getActivity(), blankList);
+                }
                 break;
             case 3:
                 p = TaskManagerApplication.completedProjects.get(listIndex);

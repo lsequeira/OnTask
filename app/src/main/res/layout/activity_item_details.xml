@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cse120.ontask.ItemDetailsActivity">
@@ -77,12 +78,12 @@
             android:layout_width="100dp"
             android:layout_height="38dp"
             android:id="@+id/deleteButton"
-            android:onClick="DeleteButtonOnClick"
+            android:onClick="deleteButtonOnClick"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/deletetaskbutton"
+            android:background="@drawable/delete"
             android:layout_gravity="center_horizontal" />
 
         <Button
@@ -96,23 +97,27 @@
             android:onClick="CompletedButtonOnClick" />
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/light_blue"
         android:id="@+id/topActionBar"
         android:layout_alignParentTop="true"
-        android:weightSum="1">
+        android:weightSum="5"
+        android:layout_alignParentEnd="true">
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="Back"
-            android:background="@drawable/backbutton"
-            android:id="@+id/backButton"
-            android:onClick="BackButtonOnClick"
-            android:layout_margin="5dp" />
+        <com.cse120.ontask.custom_shapes.CircleButton
+            android:id="@+id/addButton"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:onClick="backButtonOnClick"
+            android:src="@drawable/ic_action_back"
+            app:cb_color="@color/add_button_green"
+            android:padding="5dp"
+            android:layout_weight=".5"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/space" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,26 +125,35 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Task Details"
             android:id="@+id/topActionBarTitle"
-            android:layout_marginLeft="85dp"
-            android:paddingTop="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:paddingTop="0dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="4"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal" />
 
-        <Button
-            android:layout_width="52dp"
-            android:layout_height="23dp"
+        <ImageButton
+            android:layout_width="42dp"
+            android:layout_height="37dp"
             android:id="@+id/updateButton"
             android:onClick="UpdateButtonOnClick"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/updatetaskbutton"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="0.15"
+            android:background="@drawable/edit_button"
+            android:layout_weight=".5"
+            android:largeHeap="true"
+            android:layout_alignTop="@+id/staticTitle"
+            android:layout_alignEnd="@+id/itemDescription"
             android:layout_gravity="center_vertical"
-            android:layout_alignBottom="@+id/topActionBarTitle"
-            android:layout_alignParentEnd="true" />
+            android:layout_marginRight="5dp" />
 
-    </RelativeLayout>
+        <!-- <Space
+            android:layout_width="15dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/space"
+            android:layout_marginEnd="49dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/topActionBarTitle" />
+        -->
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

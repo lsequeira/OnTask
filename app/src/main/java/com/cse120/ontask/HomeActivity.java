@@ -1,6 +1,5 @@
 package com.cse120.ontask;
 
-import android.content.ClipData;
 import android.content.res.TypedArray;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -12,10 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cse120.ontask.sliding_menu.NavDrawerItem;
@@ -59,6 +55,7 @@ public class HomeActivity extends FragmentActivity
 
     private int projectListIndex;
     private int parentProjIndex;
+    private String projectTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +63,24 @@ public class HomeActivity extends FragmentActivity
 
         setContentView(R.layout.activity_home);
 
+        projectListIndex = NO_PROJECT_LIST_INDEX;
+        isHomeView = true;
+
         //Get Data from Bundle (if any)
         Intent intentExtras = getIntent();
         Bundle extras = intentExtras.getExtras();
         if(extras != null)
         {
             spinnerPos = extras.getInt("SpinnerView");
+            if (extras.containsKey("projectListIndex")) {
+                projectListIndex = extras.getInt("projectListIndex");
+            }
+            if (extras.containsKey("isHomeView")) {
+                isHomeView = extras.getBoolean("isHomeView");
+            }
+            if(extras.containsKey("projectTitle")){
+                projectTitle = extras.getString("projectTitle");
+            }
         }
         else {
             spinnerPos = 0;
@@ -112,8 +121,7 @@ public class HomeActivity extends FragmentActivity
 
         if (savedInstanceState == null) {
             // Display Home Screen Initially
-            isHomeView = true;
-            displayView(0, NO_PROJECT_LIST_INDEX);
+            displayView(0, projectListIndex);
         }
     }
 
@@ -141,6 +149,7 @@ public class HomeActivity extends FragmentActivity
                 bundle.putInt("projectListIndex", projectListIndex);
                 bundle.putInt("SpinnerView", spinnerPos);
                 bundle.putBoolean("isHomeView", isHomeView);
+                bundle.putString("projectTitle", projectTitle);
                 fragment.setArguments(bundle);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -148,6 +157,7 @@ public class HomeActivity extends FragmentActivity
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.addToBackStack("");
                 transaction.commit();
+
 
                 break;
             case 1:
@@ -192,7 +202,7 @@ public class HomeActivity extends FragmentActivity
 
             startActivity(i);
         }
-        else if (listID == CURR_PROJ && isProjTaskList) {
+        else if ((listID == CURR_PROJ || listID == COMP_PROJ) && isProjTaskList) {
             parentProjIndex = itemListIndex;
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);
@@ -206,6 +216,7 @@ public class HomeActivity extends FragmentActivity
         else{
             isHomeView = false;
             projectListIndex = itemListIndex;
+            projectTitle = TaskManagerApplication.currentProjects.get(projectListIndex).getTitle();
             displayView(0, projectListIndex);
         }
        //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
@@ -257,6 +268,15 @@ public class HomeActivity extends FragmentActivity
     public void projectBackButtonOnClick(View v){
         isHomeView = true;
         displayView(0, NO_PROJECT_LIST_INDEX);
+    }
+
+    public void projectTitleOnClick(View v){
+        isHomeView = false;
+        Intent i = new Intent(this, ItemDetailsActivity.class);
+        i.putExtra("itemSelected",projectListIndex);
+        i.putExtra("listID", CURR_PROJ);
+        i.putExtra("isProjTaskList", false);
+        startActivity(i);
     }
 
     public void navButtonOnClick(View v) {
