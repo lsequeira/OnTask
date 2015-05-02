@@ -95,8 +95,6 @@ ADDED from AndroidManifest.xml:44:9
 		ADDED from AndroidManifest.xml:45:13
 activity#com.facebook.FacebookActivity
 ADDED from AndroidManifest.xml:49:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:54:13
 	android:label
 		ADDED from AndroidManifest.xml:52:13
 	android:configChanges

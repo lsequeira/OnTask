@@ -63,7 +63,7 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
 
         //Delete Database with line below
-        //context.deleteDatabase(DATABASE_NAME);
+        context.deleteDatabase(DATABASE_NAME);
 
         genTaskID = new Random();
         genProjID = new Random();
