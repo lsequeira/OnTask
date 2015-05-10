@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.cse120.ontask.sliding_menu.NavDrawerItem;
 import com.cse120.ontask.sliding_menu.NavDrawerListAdapter;
+import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
 
@@ -142,8 +143,11 @@ public class HomeActivity extends FragmentActivity
     private void displayView(int position, int projectListIndex) {
         // update the main content by replacing fragments
         TaskListFragment fragment = null;
+        FriendsListFragment friendsListFragment = null;
+        FragmentTransaction transaction;
         switch (position) {
             case 0:
+                // Home
                 fragment = new TaskListFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("projectListIndex", projectListIndex);
@@ -152,7 +156,7 @@ public class HomeActivity extends FragmentActivity
                 bundle.putString("projectTitle", projectTitle);
                 fragment.setArguments(bundle);
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_container, fragment, "TaskListFragment");
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.addToBackStack("");
@@ -161,16 +165,27 @@ public class HomeActivity extends FragmentActivity
 
                 break;
             case 1:
-                System.out.println("Choose 1st position");
+                // Friends
+                friendsListFragment = new FriendsListFragment();
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_container, friendsListFragment, "FriendsListFragment");
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.addToBackStack("");
+                transaction.commit();
                 break;
             case 2:
-                System.out.println("Choose 2nd position");
+                // Requests
                 break;
             case 3:
-                System.out.println("Choose 3rd position");
+                // Options
+
                 break;
             case 4:
-                System.out.println("Choose 4th position");
+                // Logout
+                LoginManager.getInstance().logOut();
+                Intent i = new Intent(this, LogInActivity.class);
+                startActivity(i);
                 break;
             default:
                 break;

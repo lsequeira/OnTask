@@ -18,6 +18,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestBatch;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -27,6 +30,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class FBLoginFragment extends Fragment {
@@ -71,7 +78,35 @@ public class FBLoginFragment extends Fragment {
         mTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+                GraphRequestBatch batch = new GraphRequestBatch(
+                        GraphRequest.newMyFriendsRequest(newToken,
+                                new GraphRequest.GraphJSONArrayCallback() {
+                                    @Override
+                                    public void onCompleted(JSONArray jsonArray, GraphResponse response) {
+                                        ArrayList<String> friends = new ArrayList<String>();
+                                        System.out.println("getFriendsData onCompleted : jsonArray " + jsonArray);
+                                        try {
+                                            for (int i = 0; i < jsonArray.length(); i++) {
+                                                JSONObject data = jsonArray.getJSONObject(i);
+                                                System.out.println("Friend Name: " + data.getString("name"));
+                                                friends.add(data.getString("name"));
+                                            }
 
+                                            mListener.setFriends(friends);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })
+
+                );
+                batch.addCallback(new GraphRequestBatch.Callback() {
+                    @Override
+                    public void onBatchCompleted(GraphRequestBatch graphRequests) {
+                        // Application code for when the batch finishes
+                    }
+                });
+                batch.executeAsync();
             }
         };
 
@@ -99,6 +134,11 @@ public class FBLoginFragment extends Fragment {
 
                                     pUser.pinInBackground();
                                     pUser.saveEventually();
+
+                                    System.out.println("Added user to Parse");
+                                }
+                                else {
+                                    System.out.println("User already in Parse");
                                 }
 
                             } else {
@@ -164,5 +204,6 @@ public class FBLoginFragment extends Fragment {
 
     interface OnFragmentInteractionListener {
         public void switchActivity(String appUserId, String appUserFirstName, String appUserLastName);
+        public void setFriends(ArrayList<String> friends);
     }
 }

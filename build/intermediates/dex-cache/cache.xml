@@ -2,18 +2,18 @@
 <items version="2" >
 
     <item
-        jar="/Users/Luis/GitHub/OnTask/app/libs/Parse-1.9.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="1b065010f3c9d441ede9078aca8eabcd1c81e647">
-        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/Parse-1.9.1-9594f9304475c746884bd9d91d5cdb9b6e3510d7.jar" />
-    </item>
-    <item
         jar="/Users/Luis/GitHub/OnTask/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
         <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/classes-fc7bec180f82c0c31617f0229b5aa594391040aa.jar" />
+    </item>
+    <item
+        jar="/Users/Luis/GitHub/OnTask/app/libs/Parse-1.9.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1b065010f3c9d441ede9078aca8eabcd1c81e647">
+        <dex dex="/Users/Luis/GitHub/OnTask/app/build/intermediates/pre-dexed/debug/Parse-1.9.1-9594f9304475c746884bd9d91d5cdb9b6e3510d7.jar" />
     </item>
     <item
         jar="/Users/Luis/GitHub/OnTask/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"

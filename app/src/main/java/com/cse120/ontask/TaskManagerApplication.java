@@ -16,6 +16,8 @@ public class TaskManagerApplication extends Application {
     public static String appUserFirstName;
     public static String appUserLastName;
 
+    public static List<String> facebookFriends;
+
     public static List<Task> currentTasks;
     public static List<Task> completedTasks;
     public static List<Project> currentProjects;
@@ -58,6 +60,10 @@ public class TaskManagerApplication extends Application {
         this.currentTasks = currentTasks;
     }
 
+    public void setFacebookFriends(ArrayList<String> facebookFriends) {
+        TaskManagerApplication.facebookFriends = facebookFriends;
+    }
+
     public void setAppUserId(String appUserId) {
         TaskManagerApplication.appUserId = appUserId;
     }
@@ -68,6 +74,10 @@ public class TaskManagerApplication extends Application {
 
     public void setAppUserLastName(String lastName) {
         TaskManagerApplication.appUserLastName = lastName;
+    }
+
+    public List<String> getFacebookFriends() {
+        return facebookFriends;
     }
 
     public String getAppUserId() {

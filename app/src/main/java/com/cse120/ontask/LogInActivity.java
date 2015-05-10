@@ -1,13 +1,42 @@
 package com.cse120.ontask;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
 
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import java.util.ArrayList;
+
 public class LogInActivity extends FragmentActivity implements FBLoginFragment.OnFragmentInteractionListener{
+
+    // Get Facebook Debug Hash Key
+    /*
+    public static void showHashKey(Context context) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                    "com.cse120.ontask", PackageManager.GET_SIGNATURES); //Your            package name here
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }
+    }
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +47,8 @@ public class LogInActivity extends FragmentActivity implements FBLoginFragment.O
          */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        //showHashKey(getApplicationContext());
 
         //Intent i = new Intent(this, HomeActivity.class);
         //startActivity(i);
@@ -62,6 +93,11 @@ public class LogInActivity extends FragmentActivity implements FBLoginFragment.O
 
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void setFriends(ArrayList<String> friends) {
+        getTaskManagerApplication().setFacebookFriends(friends);
     }
 
     private TaskManagerApplication getTaskManagerApplication() {
