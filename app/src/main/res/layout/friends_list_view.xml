@@ -7,7 +7,8 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:id="@+id/friendImage"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:background="@drawable/friendsicon" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,6 +16,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/friendName"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:layout_marginTop="15dp" />
 
 </LinearLayout>

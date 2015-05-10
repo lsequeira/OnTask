@@ -25,13 +25,15 @@ public class HomeActivity extends FragmentActivity
         implements TopActionBarFragment.TopActionBarListener,
                    TaskListFragment.OnFragmentInteractionListener,
                    AdapterView.OnItemSelectedListener,
-                   TopActionBarFragment.Callback {
+                   TopActionBarFragment.Callback,
+                   FriendsListFragment.OnFragmentInteractionListener{
 
     //list IDs
     private static final int CURR_TASK = 0;
     private static final int CURR_PROJ = 1;
     private static final int COMP_TASK = 2;
     private static final int COMP_PROJ = 3;
+    private static final int REQU_TASK = 4;
     private static final int NO_PROJECT_LIST_INDEX = -1;
 
     //changes as the bottom action bar buttons are pressed
@@ -53,6 +55,8 @@ public class HomeActivity extends FragmentActivity
 
     //Checks if Home view or Project view
     boolean isHomeView;
+    boolean isFriendsView;
+    boolean isRequestsView;
 
     private int projectListIndex;
     private int parentProjIndex;
@@ -66,6 +70,8 @@ public class HomeActivity extends FragmentActivity
 
         projectListIndex = NO_PROJECT_LIST_INDEX;
         isHomeView = true;
+        isFriendsView = false;
+        isRequestsView = false;
 
         //Get Data from Bundle (if any)
         Intent intentExtras = getIntent();
@@ -78,6 +84,12 @@ public class HomeActivity extends FragmentActivity
             }
             if (extras.containsKey("isHomeView")) {
                 isHomeView = extras.getBoolean("isHomeView");
+            }
+            if (extras.containsKey("isFriendsView")) {
+                isFriendsView = extras.getBoolean("isFriendsView");
+            }
+            if (extras.containsKey("isRequestsView")) {
+                isRequestsView = extras.getBoolean("isRequestsView");
             }
             if(extras.containsKey("projectTitle")){
                 projectTitle = extras.getString("projectTitle");
@@ -126,6 +138,11 @@ public class HomeActivity extends FragmentActivity
         }
     }
 
+    @Override
+    public void friendSelected(int friendListPosition) {
+
+    }
+
     /**
      * Slide menu item click listener
      * */
@@ -145,14 +162,18 @@ public class HomeActivity extends FragmentActivity
         TaskListFragment fragment = null;
         FriendsListFragment friendsListFragment = null;
         FragmentTransaction transaction;
+        Bundle bundle;
         switch (position) {
             case 0:
                 // Home
                 fragment = new TaskListFragment();
-                Bundle bundle = new Bundle();
+
+                bundle = new Bundle();
                 bundle.putInt("projectListIndex", projectListIndex);
                 bundle.putInt("SpinnerView", spinnerPos);
                 bundle.putBoolean("isHomeView", isHomeView);
+                bundle.putBoolean("isFriendsView", isFriendsView);
+                bundle.putBoolean("isRequestsView", isRequestsView);
                 bundle.putString("projectTitle", projectTitle);
                 fragment.setArguments(bundle);
 
@@ -161,11 +182,9 @@ public class HomeActivity extends FragmentActivity
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 transaction.addToBackStack("");
                 transaction.commit();
-
-
                 break;
             case 1:
-                // Friends
+                // Friends List
                 friendsListFragment = new FriendsListFragment();
 
                 transaction = getSupportFragmentManager().beginTransaction();
@@ -176,6 +195,22 @@ public class HomeActivity extends FragmentActivity
                 break;
             case 2:
                 // Requests
+                fragment = new TaskListFragment();
+
+                bundle = new Bundle();
+                bundle.putInt("projectListIndex", projectListIndex);
+                bundle.putInt("SpinnerView", 4);
+                bundle.putBoolean("isHomeView", isHomeView);
+                bundle.putBoolean("isFriendsView", isFriendsView);
+                bundle.putBoolean("isRequestsView", true);
+                bundle.putString("projectTitle", projectTitle);
+                fragment.setArguments(bundle);
+
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_container, fragment, "TaskListFragment");
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.addToBackStack("");
+                transaction.commit();
                 break;
             case 3:
                 // Options
@@ -191,7 +226,7 @@ public class HomeActivity extends FragmentActivity
                 break;
         }
 
-        if (fragment != null) {
+        if (fragment != null || friendsListFragment != null) {
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
@@ -204,11 +239,11 @@ public class HomeActivity extends FragmentActivity
     }
 
     //Method for TaskListFragment interaction
-    public void onFragmentInteraction(int itemListIndex, int listID, boolean isProjTaskList, int parentProjectIndex){
+    public void onFragmentInteraction(int itemListIndex, int listID, boolean isProjTaskList, int parentProjectIndex, boolean isRequestsView){
         System.out.println("itemListIndex: " + itemListIndex + " listID: " + listID + " isProjTaskList " + isProjTaskList + " parentProjectIndex " + parentProjectIndex);
 
         Intent i;
-        if(listID == CURR_TASK || listID == COMP_TASK) {
+        if(listID == CURR_TASK || listID == COMP_TASK || listID == REQU_TASK) {
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);
             i.putExtra("listID", listID);
@@ -217,7 +252,7 @@ public class HomeActivity extends FragmentActivity
 
             startActivity(i);
         }
-        else if ((listID == CURR_PROJ || listID == COMP_PROJ) && isProjTaskList) {
+        else if ((listID == CURR_PROJ || listID == COMP_PROJ) && (isProjTaskList && !isRequestsView)) {
             parentProjIndex = itemListIndex;
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);
@@ -228,13 +263,21 @@ public class HomeActivity extends FragmentActivity
             System.out.println("Task inside project clicked!");
             startActivity(i);
         }
+        else if (isRequestsView) {
+            i = new Intent(this, ItemDetailsActivity.class);
+            i.putExtra("itemSelected", itemListIndex);
+            i.putExtra("listID", REQU_TASK);
+            i.putExtra("isProjTaskList", isProjTaskList);
+            i.putExtra("parentProjectIndex", parentProjectIndex);
+
+            startActivity(i);
+        }
         else{
             isHomeView = false;
             projectListIndex = itemListIndex;
             projectTitle = TaskManagerApplication.currentProjects.get(projectListIndex).getTitle();
             displayView(0, projectListIndex);
         }
-       //Toast.makeText(this, taskSelected.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

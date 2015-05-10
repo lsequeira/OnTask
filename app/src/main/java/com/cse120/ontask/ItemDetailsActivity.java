@@ -91,6 +91,10 @@ public class ItemDetailsActivity extends FragmentActivity {
                 itemDisplayed = TaskManagerApplication.completedProjects.get(listIndex);
                 hideItemButtons();
                 break;
+            case 4:
+                itemDisplayed = TaskManagerApplication.requestedTasks.get(listIndex);
+                isTask = true;
+                break;
             default:
                 break;
         }

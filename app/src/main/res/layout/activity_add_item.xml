@@ -52,9 +52,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:focusable="false"
-        android:layout_marginBottom="28dp"
-        android:layout_above="@+id/addTaskButton"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/urgencyText"
+        android:layout_marginTop="3dp">
 
         <RadioButton
             android:id="@+id/radio_lowest"
@@ -94,12 +94,12 @@
 
     <EditText
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:id="@+id/taskDescription"
         android:hint="Enter description..."
         android:gravity="top"
         android:background="@color/input_gray"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/taskTitle"
         android:layout_alignParentEnd="true" />
 
@@ -109,8 +109,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Urgency"
         android:id="@+id/urgencyText"
-        android:layout_above="@+id/urgencyRadioGroup"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/taskDate"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -120,7 +121,7 @@
         android:id="@+id/taskDate"
         android:layout_below="@+id/taskDescription"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="10dp"
         android:onClick="datePickerButtonOnClick"/>
 
     <Button
@@ -154,5 +155,24 @@
         android:layout_alignBottom="@+id/taskTime"
         android:layout_alignEnd="@+id/urgencyRadioGroup" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Suggest Task"
+        android:id="@+id/suggestTaskButton"
+        android:onClick="suggestTaskButtonOnClick"
+        android:layout_above="@+id/addTaskButton"
+        android:layout_centerHorizontal="true" />
+
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="25dp"
+        android:elevation="10dp"></FrameLayout>
 
 </RelativeLayout>
+

@@ -37,6 +37,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
     private static final int CURR_PROJ = 1;
     private static final int COMP_TASK = 2;
     private static final int COMP_PROJ = 3;
+    private static final int REQU_TASK = 4;
     private static final int UNSPECIFIED = -1;
 
     // TODO: Rename and change types of parameters
@@ -45,6 +46,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
 
     private int listID;
     private boolean isProjTaskList;
+    private boolean isRequestsView;
     private int projectListIndex;
     private String projectTitle;
 
@@ -101,6 +103,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         projectListIndex = UNSPECIFIED;
         listID = CURR_TASK;
         isProjTaskList = false;
+        isRequestsView = false;
         boolean isHomeView = true;
 
         Bundle bundle = this.getArguments();
@@ -108,6 +111,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
             projectListIndex = bundle.getInt("projectListIndex");
             listID = bundle.getInt("SpinnerView");
             isHomeView = bundle.getBoolean("isHomeView");
+            isRequestsView = bundle.getBoolean("isRequestsView");
             projectTitle = bundle.getString("projectTitle");
         }
 
@@ -115,13 +119,21 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         Bundle childBundle = new Bundle();
         childBundle.putInt("SpinnerView", listID);
         childBundle.putBoolean("isHomeView", isHomeView);
+        childBundle.putBoolean("isRequestsView", isRequestsView);
         childBundle.putString("projectTitle", projectTitle);
         childFrag.setArguments(childBundle);
         this.getChildFragmentManager().beginTransaction().add(R.id.content_parent,childFrag).commit();
 
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         // Set the adapter
-        if (projectListIndex == UNSPECIFIED) {
+        if (isRequestsView) {
+            isProjTaskList = false;
+            isRequestsView = true;
+            mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.requestedTasks);
+            mListView.setAdapter(mAdapter);
+            listID = REQU_TASK;
+        }
+        else if (projectListIndex == UNSPECIFIED) {
             System.out.println("Fell in here");
             mListView.setAdapter(mAdapter);
         }
@@ -159,7 +171,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(position, listID, isProjTaskList, projectListIndex);
+            mListener.onFragmentInteraction(position, listID, isProjTaskList, projectListIndex, isRequestsView);
             //System.out.println(DummyContent.ITEMS.get(position).id);
         }
     }
@@ -189,7 +201,7 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(int taskListIndex, int listID, boolean projTaskList, int parentProjectIndex);
+        public void onFragmentInteraction(int taskListIndex, int listID, boolean projTaskList, int parentProjectIndex, boolean isRequestsView);
     }
 
     //Filter the Task List here based on the Spinner
@@ -210,6 +222,10 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
             case 3:
                 mAdapter = new ProjectListAdapter(getActivity(), TaskManagerApplication.completedProjects);
                 listID = COMP_PROJ;
+                break;
+            case 4:
+                mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.requestedTasks);
+                listID = REQU_TASK;
                 break;
         }
         mListView.setAdapter(mAdapter);

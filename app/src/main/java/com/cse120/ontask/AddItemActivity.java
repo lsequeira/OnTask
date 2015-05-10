@@ -1,5 +1,6 @@
 package com.cse120.ontask;
 
+import com.cse120.ontask.task_attributes.Friend;
 import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Date;
@@ -10,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddItemActivity extends FragmentActivity
-        implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        implements DatePickerDialog.OnDateSetListener,
+                   TimePickerDialog.OnTimeSetListener,
+                   FriendsListFragment.OnFragmentInteractionListener {
 
     private int day, month, year, hour, minute;
 
@@ -171,6 +175,17 @@ public class AddItemActivity extends FragmentActivity
     public void cancelTaskButtonOnClick(View v) {
         //Returns to previous ChooseTaskOrProject Activity
         finish();
+    }
+
+    public void suggestTaskButtonOnClick(View v) {
+        FriendsListFragment friendsListFragment = new FriendsListFragment();
+        FragmentTransaction transaction;
+
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, friendsListFragment, "FriendsListFragment");
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.addToBackStack("");
+        transaction.commit();
     }
 
     public void addTaskButtonOnClick(View v) {
@@ -543,5 +558,25 @@ public class AddItemActivity extends FragmentActivity
 
         Button submitButton = (Button) findViewById(R.id.addTaskButton);
         submitButton.setText("Add Project");
+    }
+
+    @Override
+    public void friendSelected(int friendListPosition) {
+        Task t = createTaskObject();
+        System.out.println("Friend Position: " + friendListPosition);
+
+        Friend friend = getTaskManagerApplication().getFacebookFriends().get(friendListPosition);
+        getTaskManagerApplication().suggestTask(t, friend);
+
+        FriendsListFragment friendsListFragment = new FriendsListFragment();
+        FragmentTransaction transaction;
+
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.remove(friendsListFragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.addToBackStack("");
+        transaction.commit();
+
+        Toast.makeText(this, new StringBuilder().append("Suggested task to ").append(friend.getName()), Toast.LENGTH_SHORT).show();
     }
 }

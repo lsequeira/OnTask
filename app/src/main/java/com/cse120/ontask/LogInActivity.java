@@ -14,6 +14,8 @@ import android.view.View;
 import android.content.Intent;
 
 
+import com.cse120.ontask.task_attributes.Friend;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -90,13 +92,14 @@ public class LogInActivity extends FragmentActivity implements FBLoginFragment.O
         getTaskManagerApplication().setAppUserId(appUserId);
         getTaskManagerApplication().setAppUserFirstName(appUserFirstName);
         getTaskManagerApplication().setAppUserLastName(appUserLastName);
+        getTaskManagerApplication().loadRequests();
 
         Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
 
     @Override
-    public void setFriends(ArrayList<String> friends) {
+    public void setFriends(ArrayList<Friend> friends) {
         getTaskManagerApplication().setFacebookFriends(friends);
     }
 

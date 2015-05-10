@@ -1,13 +1,19 @@
 package com.cse120.ontask;
 
+import com.cse120.ontask.task_attributes.Friend;
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
 import com.cse120.ontask.database.DBHandler;
 
 import java.util.*;
 import android.app.Application;
+import android.net.ParseException;
+import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 //TODO: decide whether to have a separate list for completed/deleted tasks/projects
 public class TaskManagerApplication extends Application {
@@ -16,10 +22,11 @@ public class TaskManagerApplication extends Application {
     public static String appUserFirstName;
     public static String appUserLastName;
 
-    public static List<String> facebookFriends;
+    public static List<Friend> facebookFriends;
 
     public static List<Task> currentTasks;
     public static List<Task> completedTasks;
+    public static List<Task> requestedTasks;
     public static List<Project> currentProjects;
     public static List<Project> completedProjects;
 
@@ -56,11 +63,19 @@ public class TaskManagerApplication extends Application {
         handler.close();
     }
 
+    public void loadRequests() {
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        requestedTasks = handler.loadRequests(appUserId);
+        if (requestedTasks == null) {
+            requestedTasks = new ArrayList<Task>();
+        }
+    }
+
     public void setCurrentTasks(ArrayList<Task> currentTasks) {
         this.currentTasks = currentTasks;
     }
 
-    public void setFacebookFriends(ArrayList<String> facebookFriends) {
+    public void setFacebookFriends(ArrayList<Friend> facebookFriends) {
         TaskManagerApplication.facebookFriends = facebookFriends;
     }
 
@@ -76,7 +91,7 @@ public class TaskManagerApplication extends Application {
         TaskManagerApplication.appUserLastName = lastName;
     }
 
-    public List<String> getFacebookFriends() {
+    public List<Friend> getFacebookFriends() {
         return facebookFriends;
     }
 
@@ -108,6 +123,16 @@ public class TaskManagerApplication extends Application {
         return completedProjects;
     }
 
+    public List<Task> getRequestedTasks() {
+        return requestedTasks;
+    }
+
+    public void suggestTask(Task task, Friend friend) {
+        DBHandler handler = new DBHandler(this, null, null, 1);
+        handler.suggestTask(task, appUserId, friend.getId());
+        handler.close();
+    }
+
     public void addTask(Task task) {
         DBHandler handler = new DBHandler(this, null, null, 1);
 
@@ -119,10 +144,8 @@ public class TaskManagerApplication extends Application {
             currentTasks.add(task);
         }
 
-        System.out.println("TaskManager 80 taskprojid: " +task.getTaskProject_id());
         //Add To Database
         handler.addTask(this, task);
-
         handler.close();
     }
 
@@ -139,7 +162,6 @@ public class TaskManagerApplication extends Application {
 
         //Add To Database
         handler.addProject(this, project);
-
         handler.close();
     }
 

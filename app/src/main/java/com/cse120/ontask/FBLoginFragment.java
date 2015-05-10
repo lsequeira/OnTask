@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cse120.ontask.R;
+import com.cse120.ontask.task_attributes.Friend;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -83,13 +84,13 @@ public class FBLoginFragment extends Fragment {
                                 new GraphRequest.GraphJSONArrayCallback() {
                                     @Override
                                     public void onCompleted(JSONArray jsonArray, GraphResponse response) {
-                                        ArrayList<String> friends = new ArrayList<String>();
+                                        ArrayList<Friend> friends = new ArrayList<Friend>();
                                         System.out.println("getFriendsData onCompleted : jsonArray " + jsonArray);
                                         try {
                                             for (int i = 0; i < jsonArray.length(); i++) {
                                                 JSONObject data = jsonArray.getJSONObject(i);
-                                                System.out.println("Friend Name: " + data.getString("name"));
-                                                friends.add(data.getString("name"));
+
+                                                friends.add(new Friend(data.getString("name"), data.getString("id")));
                                             }
 
                                             mListener.setFriends(friends);
@@ -204,6 +205,6 @@ public class FBLoginFragment extends Fragment {
 
     interface OnFragmentInteractionListener {
         public void switchActivity(String appUserId, String appUserFirstName, String appUserLastName);
-        public void setFriends(ArrayList<String> friends);
+        public void setFriends(ArrayList<Friend> friends);
     }
 }

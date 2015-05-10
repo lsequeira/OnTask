@@ -63,7 +63,7 @@ public class DBHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
 
         //Delete Database with line below
-        context.deleteDatabase(DATABASE_NAME);
+        //context.deleteDatabase(DATABASE_NAME);
 
         genTaskID = new Random();
         genProjID = new Random();
@@ -104,6 +104,37 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void suggestTask(Task task, String userId, String friendId) {
+        task.setTask_id(genTaskID.nextInt(1073741824));
+
+        // Add to "UserRequests" on the server database
+        ParseObject pTaskReq = new ParseObject("UserRequests");
+
+        pTaskReq.put("task_id", task.getTask_id());
+        pTaskReq.put("user_id", friendId);
+        pTaskReq.put("friend_id", userId);
+
+        pTaskReq.pinInBackground();
+        pTaskReq.saveEventually();
+
+        // Add to "Task" on the server database
+        ParseObject pTask = new ParseObject("Task");
+
+        pTask.put("title", task.getTitle());
+        pTask.put("description", task.getDescription());
+        pTask.put("deadline", dateToStringConvert(task.getDeadline()));
+        pTask.put("urgency", urgencyToIntegerConvert(task.getUrgency()));
+        pTask.put("for_project", task.getForProject());
+        pTask.put("project_id", task.getTaskProject_id());
+        pTask.put("is_complete", task.getIsCompleted());
+        pTask.put("task_id", task.getTask_id());
+        pTask.put("user_id", friendId);
+        pTask.put("accepted", false);
+
+        pTask.pinInBackground();
+        pTask.saveEventually();
+    }
+
     /* Database Handler Functions */
     public void addTask(TaskManagerApplication app, Task task) {
         int prevRowID = 0;
@@ -120,7 +151,7 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        task.setTaskAutoIncKey(prevRowID+1);
+        task.setTaskAutoIncKey(prevRowID + 1);
 
         task.setTask_id(genTaskID.nextInt(1073741824));
 
@@ -152,6 +183,7 @@ public class DBHandler extends SQLiteOpenHelper {
         pTask.put("is_complete", task.getIsCompleted());
         pTask.put("task_id", task.getTask_id());
         pTask.put("user_id", app.getAppUserId());
+        pTask.put("accepted", true);
 
         pTask.pinInBackground();
         pTask.saveEventually();
@@ -174,7 +206,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
 
         //Set what will be the next auto incremented key
-        project.setProjectAutoIncKey(prevRowID+1);
+        project.setProjectAutoIncKey(prevRowID + 1);
 
         //Range from 0 to 2^30
         project.setProject_id(genProjID.nextInt(1073741824));
@@ -417,6 +449,42 @@ public class DBHandler extends SQLiteOpenHelper {
         return DBProjects;
     }
 
+    public ArrayList<Task> loadRequests(String appUserId) {
+        final ArrayList<Task> requestList = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Task");
+        query.whereEqualTo("user_id", appUserId);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> requests, com.parse.ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < requests.size(); i++) {
+                        // TODO: Autoincrement Key
+                        if (!requests.get(i).getBoolean("accepted")) {
+                            String title = requests.get(i).getString("title");
+                            String desc = requests.get(i).getString("description");
+                            Date deadline = stringToDateConvert(requests.get(i).getString("deadline"));
+                            Urgency urgency = integerToUrgencyConvert(requests.get(i).getInt("urgency"));
+                            boolean for_project = requests.get(i).getBoolean("for_project");
+                            int project_id = requests.get(i).getInt("project_id");
+                            boolean complete = requests.get(i).getBoolean("is_complete");
+                            int task_id = requests.get(i).getInt("task_id");
+                            String user_id = requests.get(i).getString("user_id");
+                            boolean accepted = requests.get(i).getBoolean("accepted");
+
+                            Task task = new Task(0, title, desc, deadline, urgency, for_project, project_id, complete, task_id, user_id);
+
+                            requestList.add(task);
+                        }
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+        return requestList;
+    }
+
     public boolean deleteTask(Task task) {
         boolean result = false;
         Task DBTask = new Task();
@@ -435,6 +503,23 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+
+        // Update the server database
+        ParseQuery<ParseObject> pQuery = ParseQuery.getQuery("Task");
+
+        pQuery.whereEqualTo("task_id", task.getTask_id());
+        pQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> tasks, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < tasks.size(); i++) {
+                        tasks.get(i).deleteInBackground();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
 
         return result;
     }
@@ -457,6 +542,40 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+
+        // Update the server database
+        ParseQuery<ParseObject> pQuery = ParseQuery.getQuery("Project");
+
+        pQuery.whereEqualTo("project_id", project.getProject_id());
+        pQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> projects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < projects.size(); i++) {
+                        projects.get(i).deleteInBackground();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+        // Update the server database
+        pQuery = ParseQuery.getQuery("Task");
+
+        pQuery.whereEqualTo("project_id", project.getProject_id());
+        pQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> tasks, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < tasks.size(); i++) {
+                        tasks.get(i).deleteInBackground();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
 
         return result;
     }

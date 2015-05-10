@@ -134,16 +134,15 @@
 
         <ImageButton
             android:layout_width="42dp"
-            android:layout_height="37dp"
+            android:layout_height="41dp"
             android:id="@+id/updateButton"
             android:onClick="UpdateButtonOnClick"
             android:background="@drawable/edit_button"
-            android:layout_weight=".5"
             android:largeHeap="true"
             android:layout_alignTop="@+id/staticTitle"
             android:layout_alignEnd="@+id/itemDescription"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="0dp" />
 
         <!-- <Space
             android:layout_width="15dp"

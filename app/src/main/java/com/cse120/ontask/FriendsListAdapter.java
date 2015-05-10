@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cse120.ontask.task_attributes.Friend;
+
 import org.apache.http.HttpConnection;
 
 import java.io.BufferedInputStream;
@@ -17,14 +19,14 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
-class FriendsListAdapter extends ArrayAdapter<String> {
+class FriendsListAdapter extends ArrayAdapter {
 
-    TaskManagerApplication myApp;
+    //TaskManagerApplication myApp;
 
-    public FriendsListAdapter(Context context, List<String> friends) {
+    public FriendsListAdapter(Context context, List<Friend> friends) {
         super(context, R.layout.friends_list_view, friends);
-        TaskManagerApplication app = (TaskManagerApplication) context.getApplicationContext();
-        myApp = app;
+        //TaskManagerApplication app = (TaskManagerApplication) context.getApplicationContext();
+        //myApp = app;
     }
 
     @Override
@@ -32,13 +34,11 @@ class FriendsListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View customView = inflater.inflate(R.layout.friends_list_view, parent, false);
 
-
-
-        String friend = getItem(position);
+        Friend friend = (Friend) getItem(position);
         TextView friendName = (TextView) customView.findViewById(R.id.friendName);
         ImageView friendImage = (ImageView) customView.findViewById(R.id.friendImage);
 
-        friendName.setText(friend);
+        friendName.setText(friend.getName());
 
         return customView;
     }

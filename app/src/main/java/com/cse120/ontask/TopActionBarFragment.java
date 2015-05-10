@@ -63,11 +63,15 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
                              Bundle savedInstanceState) {
         int spinnerPos = 0;
         boolean isHomeView = true;
+        boolean isFriendsView = false;
+        boolean isRequestsView = false;
         String projectTitle = "";
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             spinnerPos = bundle.getInt("SpinnerView");
             isHomeView = bundle.getBoolean("isHomeView");
+            //isFriendsView = bundle.getBoolean("isFriendsView");
+            isRequestsView = bundle.getBoolean("isRequestsView");
             projectTitle = bundle.getString("projectTitle");
         }
         else{
@@ -77,7 +81,12 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_top_action_bar, container, false);
 
-        if(isHomeView) {
+        if(isRequestsView) {
+            TextView titleText = (TextView) view.findViewById(R.id.projectTitle);
+            titleText.setText("Requests");
+            hideHomeProjectWidgets();
+        }
+        else if(isHomeView) {
             Spinner spinner = (Spinner) view.findViewById(R.id.sortListSpinner);
             spinner.setOnItemSelectedListener(this);
             //spinner.setOnItemClickListener(this);
@@ -127,6 +136,15 @@ public class TopActionBarFragment extends Fragment implements AdapterView.OnItem
         Spinner spinner = (Spinner) view.findViewById(R.id.sortListSpinner);
         spinner.setVisibility(View.GONE);
 
+        ImageButton navButton = (ImageButton) view.findViewById(R.id.navButton) ;
+        navButton.setVisibility(View.GONE);
+    }
+
+    public void hideHomeProjectWidgets(){
+        com.cse120.ontask.custom_shapes.CircleButton backButton = (com.cse120.ontask.custom_shapes.CircleButton) view.findViewById(R.id.projectBackButton);
+        Spinner spinner = (Spinner) view.findViewById(R.id.sortListSpinner);
+        spinner.setVisibility(View.GONE);
+        backButton.setVisibility(View.GONE);
         ImageButton navButton = (ImageButton) view.findViewById(R.id.navButton) ;
         navButton.setVisibility(View.GONE);
     }

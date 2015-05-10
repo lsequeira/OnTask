@@ -23,5 +23,6 @@
         android:background="@drawable/ontask_"
         android:baselineAlignBottom="false"
         android:layout_above="@+id/fragment"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:adjustViewBounds="false" />
 </RelativeLayout>
