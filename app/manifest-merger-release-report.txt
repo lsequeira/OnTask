@@ -1,6 +1,8 @@
 -- Merging decision tree log ---
 manifest
 ADDED from AndroidManifest.xml:2:1
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
 	package
 		ADDED from AndroidManifest.xml:3:5
 		INJECTED from AndroidManifest.xml:0:0
@@ -8,8 +10,6 @@ ADDED from AndroidManifest.xml:2:1
 	android:versionName
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
-	xmlns:android
-		ADDED from AndroidManifest.xml:2:11
 	android:versionCode
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
@@ -39,10 +39,10 @@ MERGED from com.android.support:support-v4:21.0.3:16:5
 		ADDED from AndroidManifest.xml:9:9
 meta-data#com.facebook.sdk.ApplicationId
 ADDED from AndroidManifest.xml:15:9
-	android:value
-		ADDED from AndroidManifest.xml:17:13
 	android:name
 		ADDED from AndroidManifest.xml:16:13
+	android:value
+		ADDED from AndroidManifest.xml:17:13
 activity#com.cse120.ontask.LogInActivity
 ADDED from AndroidManifest.xml:19:9
 	android:screenOrientation
@@ -95,8 +95,6 @@ ADDED from AndroidManifest.xml:44:9
 		ADDED from AndroidManifest.xml:45:13
 activity#com.facebook.FacebookActivity
 ADDED from AndroidManifest.xml:49:9
-	android:screenOrientation
-		ADDED from AndroidManifest.xml:54:13
 	android:label
 		ADDED from AndroidManifest.xml:52:13
 	android:configChanges

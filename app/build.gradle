@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'shirasawa'
-            keyPassword 'mypassword5'
-            storeFile file('C:/Users/Spencer Hirasawa/Desktop/OnTask.jks')
-            storePassword 'mypassword5'
-        }
-    }
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
     repositories {
@@ -25,7 +17,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
         debug {
             debuggable true

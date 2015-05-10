@@ -6,9 +6,9 @@
     <ListView android:id="@android:id/list" android:layout_width="fill_parent"
         android:layout_height="fill_parent" android:background="@color/task_list" android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal|bottom"
-        />
+        android:layout_marginTop="50dp" />
 
-    <!--<TextView android:id="@android:id/empty" android:layout_width="match_parent"
+    <TextView android:id="@android:id/empty" android:layout_width="match_parent"
         android:layout_height="fill_parent" android:gravity="center" android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal|bottom" />
 
@@ -18,5 +18,4 @@
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_gravity="center_horizontal|top" />
--->
 </FrameLayout>
