@@ -210,6 +210,42 @@ public class TaskManagerApplication extends Application {
         handler.close();
     }
 
+    public void deleteRequest(Task t) {
+        // Update the server database
+        ParseQuery<ParseObject> pQuery = ParseQuery.getQuery("Task");
+
+        pQuery.whereEqualTo("task_id", t.getTask_id());
+        pQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> tasks, com.parse.ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < tasks.size(); i++) {
+                        tasks.get(i).deleteInBackground();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+        pQuery = ParseQuery.getQuery("UserRequests");
+        pQuery.whereEqualTo("task_id", t.getTask_id());
+        pQuery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> tasks, com.parse.ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < tasks.size(); i++) {
+                        tasks.get(i).deleteInBackground();
+                    }
+
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+        loadRequests();
+    }
+
     public void deleteProject(Project p, int listIndex){
         int taskListIndex = 0;
         Task taskToDelete;

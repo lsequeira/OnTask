@@ -457,7 +457,7 @@ public class DBHandler extends SQLiteOpenHelper {
             public void done(List<ParseObject> requests, com.parse.ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < requests.size(); i++) {
-                        // TODO: Autoincrement Key
+                        System.out.println("Tasks: " + requests.size());
                         if (!requests.get(i).getBoolean("accepted")) {
                             String title = requests.get(i).getString("title");
                             String desc = requests.get(i).getString("description");
@@ -475,6 +475,7 @@ public class DBHandler extends SQLiteOpenHelper {
                             requestList.add(task);
                         }
                     }
+                    System.out.println("Requests: " + requestList.size());
 
                 } else {
                     Log.d("score", "Error: " + e.getMessage());

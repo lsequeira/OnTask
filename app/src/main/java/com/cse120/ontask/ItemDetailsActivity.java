@@ -2,9 +2,14 @@ package com.cse120.ontask;
 
 import com.cse120.ontask.task_attributes.Project;
 import com.cse120.ontask.task_attributes.Task;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
@@ -14,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
 
+import java.util.List;
+
 public class ItemDetailsActivity extends FragmentActivity {
 
     private Task itemDisplayed;
@@ -21,6 +28,7 @@ public class ItemDetailsActivity extends FragmentActivity {
     private int listID;
     private boolean isTask;
     private boolean isProjTaskList;
+    private boolean isRequestsView;
     private int parentProjectIndex;
     private String projectTitle;
 
@@ -59,6 +67,7 @@ public class ItemDetailsActivity extends FragmentActivity {
         listID = itemData.getInt("listID");
         System.out.println("ItemDetailsAct 60 listID: " + listID);
         isProjTaskList = itemData.getBoolean("isProjTaskList");
+        isRequestsView = itemData.getBoolean("isRequestsView");
         parentProjectIndex = itemData.getInt("parentProjectIndex");
         isTask = false;
 
@@ -93,7 +102,7 @@ public class ItemDetailsActivity extends FragmentActivity {
                 break;
             case 4:
                 itemDisplayed = TaskManagerApplication.requestedTasks.get(listIndex);
-                isTask = true;
+                isTask = false;
                 break;
             default:
                 break;
@@ -157,6 +166,9 @@ public class ItemDetailsActivity extends FragmentActivity {
             getTaskManagerApplication().updateTask(t, listIndex);
             getTaskManagerApplication().getCurrentTasks().remove(listIndex);
         }
+        else if (isRequestsView) {
+
+        }
         else {
             Project p;
             getTaskManagerApplication().getCurrentProjects().get(listIndex).setIsCompleted(true);
@@ -178,6 +190,10 @@ public class ItemDetailsActivity extends FragmentActivity {
             System.out.println("ItemDetailsAct 172 is a project");
             bundle.putBoolean("isHomeView", false);
         }
+        if(listID == 4){
+            System.out.println("Is a request");
+            bundle.putBoolean("isRequestView", true);
+        }
         else {
             bundle.putBoolean("isHomeView", isHomeView);
         }
@@ -196,6 +212,9 @@ public class ItemDetailsActivity extends FragmentActivity {
             //bundle.putInt("projectListIndex", parentProjectIndex);
             bundle.putBoolean("isHomeView", isHomeView);
             bundle.putString("projectTitle", projectTitle);
+        }
+        else if (isRequestsView) {
+            getTaskManagerApplication().deleteRequest(itemDisplayed);
         }
         else if(isProjTaskList) {
             getTaskManagerApplication().deleteProjectTask(itemDisplayed,listIndex, parentProjectIndex);

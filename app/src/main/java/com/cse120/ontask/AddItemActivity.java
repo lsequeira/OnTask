@@ -568,11 +568,22 @@ public class AddItemActivity extends FragmentActivity
         Friend friend = getTaskManagerApplication().getFacebookFriends().get(friendListPosition);
         getTaskManagerApplication().suggestTask(t, friend);
 
+        /*
         FriendsListFragment friendsListFragment = new FriendsListFragment();
         FragmentTransaction transaction;
 
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.remove(friendsListFragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        transaction.addToBackStack("");
+        transaction.commit();
+        */
+
+        BlankFragment blankFragment = new BlankFragment();
+        FragmentTransaction transaction;
+
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, blankFragment, "BlankFragment");
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.addToBackStack("");
         transaction.commit();

@@ -128,7 +128,6 @@ public class TaskListFragment extends Fragment implements AbsListView.OnItemClic
         // Set the adapter
         if (isRequestsView) {
             isProjTaskList = false;
-            isRequestsView = true;
             mAdapter = new TaskListAdapter(getActivity(), TaskManagerApplication.requestedTasks);
             mListView.setAdapter(mAdapter);
             listID = REQU_TASK;

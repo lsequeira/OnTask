@@ -195,6 +195,7 @@ public class HomeActivity extends FragmentActivity
                 break;
             case 2:
                 // Requests
+                getTaskManagerApplication().loadRequests();
                 fragment = new TaskListFragment();
 
                 bundle = new Bundle();
@@ -240,14 +241,16 @@ public class HomeActivity extends FragmentActivity
 
     //Method for TaskListFragment interaction
     public void onFragmentInteraction(int itemListIndex, int listID, boolean isProjTaskList, int parentProjectIndex, boolean isRequestsView){
-        System.out.println("itemListIndex: " + itemListIndex + " listID: " + listID + " isProjTaskList " + isProjTaskList + " parentProjectIndex " + parentProjectIndex);
+        System.out.println("itemListIndex: " + itemListIndex + " listID: " + listID + " isProjTaskList: " + isProjTaskList + " parentProjectIndex: "
+                + parentProjectIndex + " isRequestsView: " + isRequestsView);
 
         Intent i;
-        if(listID == CURR_TASK || listID == COMP_TASK || listID == REQU_TASK) {
+        if(listID == CURR_TASK || listID == COMP_TASK) {
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);
             i.putExtra("listID", listID);
             i.putExtra("isProjTaskList", isProjTaskList);
+            i.putExtra("isRequestsView", false);
             i.putExtra("parentProjectIndex", parentProjectIndex);
 
             startActivity(i);
@@ -257,7 +260,8 @@ public class HomeActivity extends FragmentActivity
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);
             i.putExtra("listID", listID);
-            i.putExtra("isProjTaskList", isProjTaskList);
+            i.putExtra("isProjTaskList", true);
+            i.putExtra("isRequestsView", false);
             i.putExtra("parentProjectIndex", parentProjectIndex);
 
             System.out.println("Task inside project clicked!");
@@ -267,7 +271,8 @@ public class HomeActivity extends FragmentActivity
             i = new Intent(this, ItemDetailsActivity.class);
             i.putExtra("itemSelected", itemListIndex);
             i.putExtra("listID", REQU_TASK);
-            i.putExtra("isProjTaskList", isProjTaskList);
+            i.putExtra("isProjTaskList", false);
+            i.putExtra("isRequestsView", isRequestsView);
             i.putExtra("parentProjectIndex", parentProjectIndex);
 
             startActivity(i);
@@ -354,6 +359,11 @@ public class HomeActivity extends FragmentActivity
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private TaskManagerApplication getTaskManagerApplication() {
+        TaskManagerApplication tma = (TaskManagerApplication) getApplication();
+        return tma;
     }
 
 }
